@@ -6,7 +6,12 @@ import com.young.sort.list.SimpleDragSortCursorAdapter;
 import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.database.Cursor;
@@ -37,6 +42,9 @@ public class CityManageActivity extends FragmentActivity {
                     .add(artistNames[i]);
         }
         adapter.changeCursor(cursor);
+        
+        ActionBar bar = getActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
     }
 
     private class MAdapter extends SimpleDragSortCursorAdapter {
@@ -60,4 +68,33 @@ public class CityManageActivity extends FragmentActivity {
             return v;
         }
     }
+    
+    @Override  
+    public boolean onCreateOptionsMenu(Menu menu) {  
+        MenuInflater inflater = getMenuInflater();  
+        inflater.inflate(R.menu.city, menu);  
+        return true;  
+    }  
+    
+    @Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+		
+		case android.R.id.home:            
+	         Intent intent = new Intent(this, MainActivity.class);            
+	         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+	         startActivity(intent);            
+	         return true;    
+
+		case R.id.add_city:
+			//TO: open searchCity view
+//			Intent settingIntent = new Intent(this, SearchCityActivity.class);
+//		    startActivity(settingIntent);
+			return true;
+			
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
 }
