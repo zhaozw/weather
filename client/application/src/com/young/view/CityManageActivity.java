@@ -89,8 +89,8 @@ public class CityManageActivity extends FragmentActivity {
 
 		case R.id.add_city:
 			//TO: open searchCity view
-//			Intent settingIntent = new Intent(this, SearchCityActivity.class);
-//		    startActivity(settingIntent);
+			Intent searchCityIntent = new Intent(this, CitySearchActivity.class);
+		    startActivity(searchCityIntent);
 			return true;
 			
 		}
