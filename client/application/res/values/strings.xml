@@ -7,6 +7,7 @@
     <string name="action_setting">Setting</string>
     <string name="add_city">AddCity</string>
     <string name="searchCity">Search</string>
+    <string name="title_search_hint">please input city</string>
 
     <string-array name="city_names">
         <item>上海</item>
@@ -18,6 +19,29 @@
         <item>丽江</item>
         <item>昆明</item>
         <item>济南</item>
+    </string-array>
+    
+    <string-array name="all_citys">
+        <item>上海</item>
+        <item>厦门</item>
+        <item>杭州</item>
+        <item>苏州</item>
+        <item>哈尔滨</item>
+        <item>泉州</item>
+        <item>丽江</item>
+        <item>昆明</item>
+        <item>济南</item>
+        <item>上海</item>
+        <item>厦门</item>
+        <item>杭州</item>
+        <item>苏州</item>
+        <item>哈尔滨</item>
+        <item>泉州</item>
+        <item>丽江</item>
+        <item>昆明</item>
+        <item>济南</item>
+        <item>安徽</item>
+        <item>惠安</item>
     </string-array>
 
     <string name="hello_world">Hello world!</string>

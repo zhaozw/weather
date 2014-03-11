@@ -9,11 +9,12 @@ package com.young.view;
 
 public final class R {
     public static final class array {
+        public static final int all_citys=0x7f090001;
         public static final int city_names=0x7f090000;
-        public static final int pref_example_list_titles=0x7f090001;
-        public static final int pref_example_list_values=0x7f090002;
-        public static final int pref_sync_frequency_titles=0x7f090003;
-        public static final int pref_sync_frequency_values=0x7f090004;
+        public static final int pref_example_list_titles=0x7f090002;
+        public static final int pref_example_list_values=0x7f090003;
+        public static final int pref_sync_frequency_titles=0x7f090004;
+        public static final int pref_sync_frequency_values=0x7f090005;
     }
     public static final class attr {
         /** <p>Must be an integer value, such as "<code>100</code>".
@@ -304,21 +305,22 @@ containing a value of this type.
         public static final int tabs_pattern_diagonal=0x7f020010;
     }
     public static final class id {
-        public static final int ItemText=0x7f06000b;
-        public static final int action_city=0x7f06000f;
-        public static final int action_refresh=0x7f06000e;
-        public static final int action_setting=0x7f060010;
-        public static final int add_city=0x7f06000c;
+        public static final int ItemText=0x7f06000c;
+        public static final int action_city=0x7f060010;
+        public static final int action_refresh=0x7f06000f;
+        public static final int action_setting=0x7f060011;
+        public static final int add_city=0x7f06000d;
         public static final int clickRemove=0x7f060000;
         public static final int click_remove=0x7f060006;
         public static final int drag_handle=0x7f060005;
         public static final int flingRemove=0x7f060001;
         public static final int hotCitys=0x7f06000a;
-        public static final int menu_search=0x7f06000d;
+        public static final int menu_search=0x7f06000e;
         public static final int onDown=0x7f060002;
         public static final int onLongPress=0x7f060004;
         public static final int onMove=0x7f060003;
         public static final int pager=0x7f060008;
+        public static final int search_view=0x7f06000b;
         public static final int tabs=0x7f060007;
         public static final int text=0x7f060009;
     }
@@ -327,7 +329,8 @@ containing a value of this type.
         public static final int city_item_click_remove=0x7f030001;
         public static final int city_manage=0x7f030002;
         public static final int city_search=0x7f030003;
-        public static final int hot_city_item=0x7f030004;
+        public static final int city_search_action_bar=0x7f030004;
+        public static final int hot_city_item=0x7f030005;
     }
     public static final class menu {
         public static final int city=0x7f0b0000;
@@ -340,31 +343,32 @@ containing a value of this type.
         public static final int action_setting=0x7f080003;
         public static final int add_city=0x7f080004;
         public static final int app_name=0x7f080000;
-        public static final int hello_world=0x7f080006;
-        public static final int menu_settings=0x7f080007;
-        public static final int pref_default_display_name=0x7f08000d;
-        public static final int pref_description_social_recommendations=0x7f08000b;
+        public static final int hello_world=0x7f080007;
+        public static final int menu_settings=0x7f080008;
+        public static final int pref_default_display_name=0x7f08000e;
+        public static final int pref_description_social_recommendations=0x7f08000c;
         /**  Example settings for Data & Sync 
          */
-        public static final int pref_header_data_sync=0x7f08000f;
+        public static final int pref_header_data_sync=0x7f080010;
         /**  Strings related to Settings 
  Example General settings 
          */
-        public static final int pref_header_general=0x7f080009;
+        public static final int pref_header_general=0x7f08000a;
         /**  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f080012;
-        public static final int pref_ringtone_silent=0x7f080015;
-        public static final int pref_title_add_friends_to_messages=0x7f08000e;
-        public static final int pref_title_display_name=0x7f08000c;
-        public static final int pref_title_new_message_notifications=0x7f080013;
-        public static final int pref_title_ringtone=0x7f080014;
-        public static final int pref_title_social_recommendations=0x7f08000a;
-        public static final int pref_title_sync_frequency=0x7f080010;
-        public static final int pref_title_system_sync_settings=0x7f080011;
-        public static final int pref_title_vibrate=0x7f080016;
+        public static final int pref_header_notifications=0x7f080013;
+        public static final int pref_ringtone_silent=0x7f080016;
+        public static final int pref_title_add_friends_to_messages=0x7f08000f;
+        public static final int pref_title_display_name=0x7f08000d;
+        public static final int pref_title_new_message_notifications=0x7f080014;
+        public static final int pref_title_ringtone=0x7f080015;
+        public static final int pref_title_social_recommendations=0x7f08000b;
+        public static final int pref_title_sync_frequency=0x7f080011;
+        public static final int pref_title_system_sync_settings=0x7f080012;
+        public static final int pref_title_vibrate=0x7f080017;
         public static final int searchCity=0x7f080005;
-        public static final int title_activity_city_search=0x7f080008;
+        public static final int title_activity_city_search=0x7f080009;
+        public static final int title_search_hint=0x7f080006;
     }
     public static final class style {
         public static final int ActionBarStyle=0x7f0a0002;
