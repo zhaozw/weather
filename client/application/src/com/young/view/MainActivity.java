@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.young.view.R;
+import com.young.client.WeatherClient;
 import com.young.tab.slide.PagerSlidingTabStrip;
 
 public class MainActivity extends FragmentActivity {
@@ -77,7 +78,9 @@ public class MainActivity extends FragmentActivity {
 			
 		case R.id.action_refresh:
 			//TO: refresh the weather
-			Toast.makeText(this, "refresh", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(this, "refresh", Toast.LENGTH_SHORT).show();
+			WeatherClient wClient = new WeatherClient("123");
+			wClient.getWeatherInfo();
 			return true;
 		}
 
