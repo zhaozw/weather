@@ -25,7 +25,7 @@ import android.util.Log;
 
 public class WeatherClient {
 	
-	final static String serverUri = "http://www.baidu.com";
+	final static String serverUri = "http://106.187.94.192/weather/index.php?r=Test/ConnectDB";
     private HttpClient getClient; 
     private String cityParam;
     
@@ -36,11 +36,11 @@ public class WeatherClient {
     	getClient = new DefaultHttpClient();   
     }
     
-    public void getWeatherInfo(){
+    public String getWeatherInfo(){
     	Log.i("WeatherClient", "获取天气信息");   
     	Map<String, String> params = new HashMap<String, String>();
-    	params.put("city", cityParam);
-    	doPost(serverUri, params);
+    	params.put("location", cityParam);
+    	return doGet(serverUri, params);
     }
     
     @SuppressWarnings("rawtypes")
@@ -54,13 +54,13 @@ public class WeatherClient {
             Object val = entry.getValue();  
             paramStr += paramStr = "&" + key + "=" + val;  
         }  
-        if (!paramStr.equals("")) {  
-            paramStr = paramStr.replaceFirst("&", "?");  
-        }  
+//        if (!paramStr.equals("")) {  
+//            paramStr = paramStr.replaceFirst("&", "?");  
+//        }  
         return paramStr;
     }
     
-    private void doGet(String url, Map params) {
+    private String doGet(String url, Map params) {
     	String paramString = buildParamString(params);
     	url += paramString;
     	try {             
@@ -72,23 +72,16 @@ public class WeatherClient {
             Log.i("doGet", "resCode = " + response.getStatusLine().getStatusCode()); //获取响应码  
             if(response.getStatusLine().getStatusCode()==HttpStatus.SC_OK){  
                 Log.i("doGet", "请求服务器端成功");               
-                Log.i("doGet", "result = " + EntityUtils.toString(response.getEntity(), "utf-8")); //获取响应内容  
-                //获得输入流  
-                InputStream  inStrem = response.getEntity().getContent();  
-                int result = inStrem.read();  
-                while (result != -1){  
-                    System.out.print((char)result);  
-                    result = inStrem.read();  
-                }  
-                //关闭输入流  
-                inStrem.close();      
+                Log.i("doGet", "result = " + EntityUtils.toString(response.getEntity(), "utf-8")); //获取响应内容   
+                return EntityUtils.toString(response.getEntity(), "utf-8");
             }else {  
-                Log.i("doGet", "请求服务器端失败");  
+                Log.i("doGet", "请求服务器端失败");                
             }             
         } catch (Exception e) {  
             // TODO Auto-generated catch block  
             e.printStackTrace();  
         }  
+    	return null;
     }
     
     @SuppressWarnings("rawtypes")

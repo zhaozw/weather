@@ -32,7 +32,7 @@ public class HttpUtil
 	private static final String CHARSET = HTTP.UTF_8;
 	public static HttpClient httpClient;
 	public static final String BASE_URL = 
-		"http://www.lemoving.com";
+		"http://106.187.94.192/weather/index.php?r=Test/ConnectDB&location=%E5%8C%97%E4%BA%AC";
 
 	
 	public static String getRequest(String url)

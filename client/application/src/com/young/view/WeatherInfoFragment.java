@@ -1,5 +1,6 @@
 package com.young.view;
 
+import com.young.client.WeatherClient;
 import com.young.view.R;
 
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 
 public class WeatherInfoFragment extends Fragment {
 
+	public static final int GET_WEATHER_SCUESS = 3;
+	public static final int GET_WEATHER_FAIL = 4;
 	private static final String ARG_POSITION = "position";
 
 	private int position;
@@ -45,6 +48,8 @@ public class WeatherInfoFragment extends Fragment {
 		final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources()
 				.getDisplayMetrics());
 
+//		WeatherClient wClient = new WeatherClient("±±¾©");
+//		wClient.getWeatherInfo();
 		TextView v = new TextView(getActivity());
 		params.setMargins(margin, margin, margin, margin);
 		v.setLayoutParams(params);
