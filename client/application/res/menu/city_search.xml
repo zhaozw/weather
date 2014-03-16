@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
-    <item android:id="@+id/menu_search"         
+    <item android:id="@+id/menu_city_search"         
 		android:title="@string/searchCity"         
 		android:icon="@drawable/ic_action_user"         
 		android:showAsAction="always"         

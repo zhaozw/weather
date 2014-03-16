@@ -12,7 +12,7 @@
         android:layout_weight="1"  
         android:iconifiedByDefault="false"  
         android:inputType="textFilter"  
-        android:queryHint="@string/title_search_hint" >  
+        android:queryHint="@string/search_hint" >  
     </SearchView>  
   
 </LinearLayout>  

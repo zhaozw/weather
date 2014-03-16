@@ -7,7 +7,7 @@
     <string name="action_setting">Setting</string>
     <string name="add_city">AddCity</string>
     <string name="searchCity">Search</string>
-    <string name="title_search_hint">please input city</string>
+    <string name="search_hint">please input city</string>
 
     <string-array name="city_names">
         <item>上海</item>

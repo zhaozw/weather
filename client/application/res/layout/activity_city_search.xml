@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="45.0dip">
+
+        <TextView
+            android:id="@+id/hot_city_title"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="热门城市"
+            android:textColor="#ffffffff"
+            android:textSize="20.0dip" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingTop="45.0dip" >
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@android:color/black" >
+
+            <FrameLayout
+                android:id="@+id/city_content_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                 <GridView
+			        android:id="@+id/hotCitys"
+			        android:layout_width="fill_parent"
+			        android:layout_height="fill_parent"
+			        android:layout_alignParentLeft="true"
+			        android:layout_alignParentTop="true"
+			        android:columnWidth="90dp"
+			        android:gravity="center"
+			        android:horizontalSpacing="10dp"
+			        android:numColumns="auto_fit"
+			        android:stretchMode="columnWidth"
+			        android:verticalSpacing="10dp" >
+			    </GridView>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/search_content_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <ListView
+                    android:id="@+id/search_list"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:cacheColorHint="#00000000"
+                    android:focusableInTouchMode="true"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/search_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10.0dip"
+                    android:src="@drawable/biz_plugin_weather_selectcity_empty"
+                    android:visibility="gone" />
+            </FrameLayout>
+        </FrameLayout>
+	   
+    </RelativeLayout>
+
+</RelativeLayout>
