@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Environment;
+import com.google.gson.Gson;  
 
 import com.young.app.Application;
 import com.young.bean.City;
@@ -134,9 +135,9 @@ public class Application extends android.app.Application {
 	public String loadWeather(int cityIndex){
 		JSONObject currentCityWeather = new JSONObject();
 		try {
-			L.i(mSpUtil.getAllWeather());
-			JSONObject allWeather = new JSONObject("{allWeather:[{weather:'test1'},{weather:'test2'},{weather:'test3'}]}");
-			JSONArray weatherList = allWeather.getJSONArray("allWeather");
+			L.i(mSpUtil.getAllWeather().toString());
+			//JSONObject allWeather = new JSONObject("{allWeather:[{weather:'test1'},{weather:'test2'},{weather:'test3'}]}");
+			JSONArray weatherList = new JSONArray(mSpUtil.getAllWeather().toString());
 			currentCityWeather = weatherList.getJSONObject(cityIndex);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -146,21 +147,27 @@ public class Application extends android.app.Application {
 		
 	}
 	
-	public List<String> loadAllCityFromSharePreference() {
-		JSONArray cityList = new JSONArray();
+	public List<String> loadAllCityFromSharePreference() {		
 		List<String> citys = new ArrayList<String>();
 		try {
-			L.i(mSpUtil.getAllCity());
-			JSONObject allCity = new JSONObject("{allCity:[{city:'test1'},{city:'test2'},{city:'test3'}]}");
-			cityList = allCity.getJSONArray("allCity");
+			L.i(mSpUtil.getAllCity().toString());
+			//JSONObject allCity = new JSONObject("{allCity:[{city:'test1'},{city:'test2'},{city:'test3'}]}");
+			JSONArray cityList = new JSONArray(mSpUtil.getAllCity().toString());
 			for(int i=0; i<cityList.length();i++){
-				JSONObject city = (JSONObject) cityList.get(i);
-				citys.add(city.getString("city"));
+				String city = (String) cityList.get(i);
+				citys.add(city);
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return citys;
+	}
+	
+	public void saveCityChangeToSharePreference(List<String> newCitys) {
+		Gson gson = new Gson();
+		String citys = gson.toJson(newCitys);
+		L.i(citys);
+		mSpUtil.setAllCity(citys);
 	}
 }

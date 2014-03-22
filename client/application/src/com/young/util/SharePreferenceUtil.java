@@ -37,7 +37,7 @@ public class SharePreferenceUtil {
 	}
 	
 	public String getAllCity() {
-		return sp.getString(CITYS_JSON_STRING, "{allWeather:[{city:'test1'},{city:'test2'}]}");
+		return sp.getString(CITYS_JSON_STRING, "[{city:'test1'},{city:'test2'},{city:'test3'}]");
 	}
 	
 	//all weather
@@ -47,7 +47,7 @@ public class SharePreferenceUtil {
 	}
 	
 	public String getAllWeather() {
-		return sp.getString(WEATHERS_JSON_STRING, "");
+		return sp.getString(WEATHERS_JSON_STRING, "[{weather:'test1'},{weather:'test2'},{weather:'test3'}]");
 	}
 
 	// timesamp

@@ -3,6 +3,7 @@ package com.young.view;
 import java.util.ArrayList;
 import java.util.List;
 import com.young.adapter.SearchCityAdapter;
+import com.young.adapter.HotCityAdapter;
 import com.young.app.Application;
 import com.young.bean.City;
 import com.young.util.L;
@@ -36,12 +37,12 @@ public class CitySearchActivity extends FragmentActivity
 	SearchView searchView; 
 	private View mCityContainer;
 	private View mSearchContainer;
-	Object[] citys; 
 	Object[] hotCitys;  
 	private Application mApplication;
 	private List<City> mCities;
 	
 	private SearchCityAdapter mSearchCityAdapter;
+	private HotCityAdapter mHotCityAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,15 @@ public class CitySearchActivity extends FragmentActivity
 		mSearchContainer = findViewById(R.id.search_content_container);
 		
 		hotCityListView = (GridView) findViewById(R.id.hotCitys); 
+		hotCityListView
+			.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				L.i(mHotCityAdapter.getItem(position));
+				startManageActivity(mHotCityAdapter.getItem(position));
+			}
+		});
 		searchResultView = (ListView) findViewById(R.id.search_list);
 		searchResultView
 			.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
@@ -58,35 +68,27 @@ public class CitySearchActivity extends FragmentActivity
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				L.i(mSearchCityAdapter.getItem(position).toString());
-				//startActivity(mSearchCityAdapter.getItem(position));
+				startManageActivity(mSearchCityAdapter.getItem(position).getName());
 			}
 		});
 		
 		mApplication = Application.getInstance();
-		
-		initActionbar();
-		
-		citys = loadCityData();
-		hotCitys = loadHotCityData();
-        hotCityListView.setAdapter(new ArrayAdapter<Object>(getApplicationContext(),  
-        		android.R.layout.simple_expandable_list_item_1, hotCitys));  
+				
+		mHotCitysList = loadHotCityData();
+		mHotCityAdapter = new HotCityAdapter(CitySearchActivity.this,
+				mHotCitysList);
+        hotCityListView.setAdapter(mHotCityAdapter);  
                
         ActionBar bar = getActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
 	}
 	
-	public void initActionbar() {  
-        getActionBar().setDisplayShowHomeEnabled(true);  
-        getActionBar().setDisplayShowTitleEnabled(true);  
-        getActionBar().setDisplayShowCustomEnabled(true);  
-        LayoutInflater mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);  
-        View mTitleView = mInflater.inflate(R.layout.city_search_action_bar,  
-                null);  
-        getActionBar().setCustomView(  
-                mTitleView,  
-                new ActionBar.LayoutParams(LayoutParams.MATCH_PARENT,  
-                        LayoutParams.WRAP_CONTENT));  
-    }  
+	private void startManageActivity(String city) {
+		Intent i = new Intent();
+		i.putExtra("city", city);
+		setResult(RESULT_OK, i);
+		finish();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -119,22 +121,14 @@ public class CitySearchActivity extends FragmentActivity
 
 		return super.onOptionsItemSelected(item);
 	}
-
-	public Object[] loadCityData() {
-		mCities = mApplication.getCityList();
-        for (int i = 0; i < mCities.size(); i++) {
-        	L.i(mCities.get(i).toString());
-        	mCitysList.add(mCities.get(i).getName());  
-        }
-		return mCitysList.toArray();
-	}
 	
-	public Object[] loadHotCityData() {
+	public ArrayList<String> loadHotCityData() {
 		String[] hotCitys = getResources().getStringArray(R.array.all_citys);
+		ArrayList<String> hotCityList = new ArrayList<String>();
         for (int i = 0; i < hotCitys.length; i++) {
-        	mHotCitysList.add(hotCitys[i]);  
+        	hotCityList.add(hotCitys[i]);  
         }
-		return mHotCitysList.toArray();
+		return hotCityList;
 	}
 	
 	@Override
@@ -159,17 +153,6 @@ public class CitySearchActivity extends FragmentActivity
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	public Object[] searchItem(String name) {  
-        ArrayList<String> mSearchList = new ArrayList<String>();  
-        for (int i = 0; i < mCitysList.size(); i++) {  
-            int index = mCitysList.get(i).indexOf(name);  
-            if (index != -1) {  
-                mSearchList.add(mCitysList.get(i));  
-            }  
-        }  
-        return mSearchList.toArray();  
-    }  
  
 
 }
