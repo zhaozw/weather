@@ -3,7 +3,7 @@ package com.young.util;
 import java.io.File;
 import java.io.IOException;
 
-import com.young.service.Application;
+import com.young.app.Application;
 
 import android.text.TextUtils;
 import android.util.Log;

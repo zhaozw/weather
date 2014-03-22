@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -23,7 +25,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.young.app.Application;
+import com.young.util.L;
 import com.young.view.R;
+import com.young.adapter.CityPagerAdapter;
 import com.young.client.WeatherClient;
 import com.young.tab.slide.PagerSlidingTabStrip;
 
@@ -33,19 +38,31 @@ public class MainActivity extends FragmentActivity {
 
 	private PagerSlidingTabStrip tabs;
 	private ViewPager pager;
-	private MyPagerAdapter adapter;
+	private CityPagerAdapter adapter;
 
 	private Drawable oldBackground = null;
 	private int baseColor = 0xFF96AA39;
+
+	private Application mApplication;
+	private List<String> citys = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		mApplication = Application.getInstance();
 
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		pager = (ViewPager) findViewById(R.id.pager);
-		adapter = new MyPagerAdapter(getSupportFragmentManager());
+		L.i("");
+		citys = mApplication.loadAllCityFromSharePreference();
+		//test data
+		if(citys == null || citys.size() == 0){
+			citys.add("test1");
+			citys.add("test2");
+			citys.add("test3");
+		}
+		adapter = new CityPagerAdapter(getSupportFragmentManager(), citys);
 
 		pager.setAdapter(adapter);
 
@@ -168,31 +185,4 @@ public class MainActivity extends FragmentActivity {
 			handler.removeCallbacks(what);
 		}
 	};
-
-	public class MyPagerAdapter extends FragmentPagerAdapter {
-
-		private final String[] TITLES = { "上海", "厦门", "乌鲁木齐", "三亚", "拉斯维加斯", "杭州",
-				"南京", "武夷山" };
-
-		public MyPagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			return TITLES[position];
-		}
-
-		@Override
-		public int getCount() {
-			return TITLES.length;
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			return WeatherInfoFragment.newInstance(position);
-		}
-
-	}
-
 }

@@ -1,4 +1,4 @@
-package com.young.service;
+package com.young.app;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -6,10 +6,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Environment;
+
+import com.young.app.Application;
 import com.young.bean.City;
 import com.young.db.CityDB;
-import com.young.service.Application;
 import com.young.util.L;
 import com.young.util.NetUtil;
 import com.young.util.SharePreferenceUtil;
@@ -31,7 +37,7 @@ public class Application extends android.app.Application {
 	public void onCreate() {
 		super.onCreate();
 		mApplication = this;
-		mCityDB = openCityDB();// 这个必须最先复制完,所以我放在单线程中处理,待优化
+		mCityDB = openCityDB();
 		initData();
 	}
 
@@ -75,8 +81,8 @@ public class Application extends android.app.Application {
 				}
 				fos.close();
 				is.close();
-				getSharePreferenceUtil().setVersion(1);// 用于管理数据库版本，如果数据库有重大更新时使用
-			} catch (IOException e) {
+				getSharePreferenceUtil().setVersion(1);
+				} catch (IOException e) {
 				e.printStackTrace();
 				T.showLong(mApplication, e.getMessage());
 				System.exit(0);
@@ -96,7 +102,7 @@ public class Application extends android.app.Application {
 
 	private boolean prepareCityList() {
 		mCityList = new ArrayList<City>();
-		mCityList = mCityDB.getAllCity();// 获取数据库中所有城市
+		mCityList = mCityDB.getAllCity();// 获取数据库中�?��城市
 		return true;
 	}
 
@@ -115,5 +121,46 @@ public class Application extends android.app.Application {
 	
 	public List<City> getCityList() {
 		return mCityList;
+	}
+	
+	public void setAllWeather(String weathers){
+		mSpUtil.setAllWeather(weathers);
+	}
+	
+	public String getAllWeather(){
+		return mSpUtil.getAllWeather();
+	}
+	
+	public String loadWeather(int cityIndex){
+		JSONObject currentCityWeather = new JSONObject();
+		try {
+			L.i(mSpUtil.getAllWeather());
+			JSONObject allWeather = new JSONObject("{allWeather:[{weather:'test1'},{weather:'test2'},{weather:'test3'}]}");
+			JSONArray weatherList = allWeather.getJSONArray("allWeather");
+			currentCityWeather = weatherList.getJSONObject(cityIndex);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return currentCityWeather.toString();
+		
+	}
+	
+	public List<String> loadAllCityFromSharePreference() {
+		JSONArray cityList = new JSONArray();
+		List<String> citys = new ArrayList<String>();
+		try {
+			L.i(mSpUtil.getAllCity());
+			JSONObject allCity = new JSONObject("{allCity:[{city:'test1'},{city:'test2'},{city:'test3'}]}");
+			cityList = allCity.getJSONArray("allCity");
+			for(int i=0; i<cityList.length();i++){
+				JSONObject city = (JSONObject) cityList.get(i);
+				citys.add(city.getString("city"));
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return citys;
 	}
 }

@@ -5,12 +5,13 @@ import android.content.SharedPreferences;
 
 public class SharePreferenceUtil {
 	public static final String CITY_SHAREPRE_FILE = "city";
-	private static final String CASH_CITY = "_city";
-	private static final String SIMPLE_CLIMATE = "simple_climate";
-	private static final String SIMPLE_TEMP = "simple_temp";
+	private static final String MAIN_CITY = "main_city";
+	private static final String CITYS_JSON_STRING = "all_city";
+	private static final String WEATHERS_JSON_STRING = "all_weather";
 	private static final String TIMESAMP = "timesamp";
 	private static final String TIME = "time";
 	private static final String VERSION = "version";
+	
 	private SharedPreferences sp;
 	private SharedPreferences.Editor editor;
 
@@ -19,35 +20,34 @@ public class SharePreferenceUtil {
 		editor = sp.edit();
 	}
 
-	// city
-	public void setCity(String city) {
-		// TODO Auto-generated method stub
-		editor.putString(CASH_CITY, city);
+	//main city
+	public void setMainCity(String city) {
+		editor.putString(MAIN_CITY, city);
 		editor.commit();
 	}
 
-	public String getCity() {
-		return sp.getString(CASH_CITY, "");
+	public String getMainCity() {
+		return sp.getString(MAIN_CITY, "");
 	}
-
-	// SimpleClimate
-	public void setSimpleClimate(String climate) {
-		editor.putString(SIMPLE_CLIMATE, climate);
+	
+	//all city
+	public void setAllCity(String citys) {
+		editor.putString(CITYS_JSON_STRING, citys);
 		editor.commit();
 	}
-
-	public String getSimpleClimate() {
-		return sp.getString(SIMPLE_CLIMATE, "N/A");
+	
+	public String getAllCity() {
+		return sp.getString(CITYS_JSON_STRING, "{allWeather:[{city:'test1'},{city:'test2'}]}");
 	}
-
-	// SimpleTemp
-	public void setSimpleTemp(String temp) {
-		editor.putString(SIMPLE_TEMP, temp);
+	
+	//all weather
+	public void setAllWeather(String weathers) {
+		editor.putString(WEATHERS_JSON_STRING, weathers);
 		editor.commit();
 	}
-
-	public String getSimpleTemp() {
-		return sp.getString(SIMPLE_TEMP, "");
+	
+	public String getAllWeather() {
+		return sp.getString(WEATHERS_JSON_STRING, "");
 	}
 
 	// timesamp

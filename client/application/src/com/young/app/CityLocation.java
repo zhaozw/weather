@@ -1,4 +1,4 @@
-package com.young.service;
+package com.young.app;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,17 +12,17 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-public class LocationService {
+public class CityLocation {
 
 	private LocationManager locationManager;
-	Location location;
+	CityLocation location;
 	Context mContext;
 	private String networkProvider = LocationManager.NETWORK_PROVIDER;// 通过network获取location
 
 	// private String GpsProvider =
 	// LocationManager.GPS_PROVIDER;//通过gps获取location
 
-	public LocationService(Context mContext) {
+	public CityLocation(Context mContext) {
 		this.mContext = mContext;
 		initLocation(mContext);
 	}

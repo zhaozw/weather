@@ -3,8 +3,8 @@ package com.young.view;
 import java.util.ArrayList;
 import java.util.List;
 import com.young.adapter.SearchCityAdapter;
+import com.young.app.Application;
 import com.young.bean.City;
-import com.young.service.Application;
 import com.young.util.L;
 
 import android.app.ActionBar;

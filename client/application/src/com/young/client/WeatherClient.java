@@ -2,8 +2,9 @@ package com.young.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,7 +32,12 @@ public class WeatherClient {
     
     public WeatherClient(String city){
     	Log.i("WeatherClient", "创建Client对象成功");   
-    	this.cityParam = city;
+    	try {
+			this.cityParam = URLEncoder.encode(city, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	//得到HttpClient对象 
     	getClient = new DefaultHttpClient();   
     }

@@ -4,7 +4,7 @@ package com.young.bean;
 public class WeatherInfo {
 	private String city;
 
-	private String yujing;// 是否有预警，如果无，则为“暂无预警�?
+	private String yujing;
 	private String alarmtext;
 
 	private String warning;
