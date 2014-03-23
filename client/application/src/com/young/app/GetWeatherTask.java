@@ -12,10 +12,10 @@ public class GetWeatherTask extends AsyncTask<Void, Void, Integer> {
 	private static final int SUCCESS = 0;
 	private static final int FAIL = -1;
 	private Handler mHandler;
-	private City mCity;
+	private String mCity;
 	private Application mApplication;
 
-	public GetWeatherTask(Handler handler, City city) {
+	public GetWeatherTask(Handler handler, String city) {
 		this.mHandler = handler;
 		this.mCity = city;
 		mApplication = Application.getInstance();
@@ -24,10 +24,10 @@ public class GetWeatherTask extends AsyncTask<Void, Void, Integer> {
 	@Override
 	protected Integer doInBackground(Void... params) {
 		try {
-			WeatherClient wClient = new WeatherClient(mCity.getName());
+			WeatherClient wClient = new WeatherClient(mCity);
 			String netResult = wClient.getWeatherInfo();
 			if (!TextUtils.isEmpty(netResult)) {
-				mApplication.setAllWeather(netResult);
+				mApplication.updateOneCityWeather(mCity, netResult);
 				return SUCCESS;
 			}
 		} catch (Exception e) {
@@ -40,12 +40,11 @@ public class GetWeatherTask extends AsyncTask<Void, Void, Integer> {
 	protected void onPostExecute(Integer result) {
 		super.onPostExecute(result);
 		if(result < 0 ){
-			mHandler.sendEmptyMessage(WeatherInfoFragment.GET_WEATHER_FAIL);// 获取天气信息失败
+			//mHandler.sendEmptyMessage(WeatherInfoFragment.GET_WEATHER_FAIL);// 获取天气信息失败
 			L.i("get weather fail");
 		}else{
-			mHandler.sendEmptyMessage(WeatherInfoFragment.GET_WEATHER_SCUESS);// 获取天气信息成功，通知主线程更新
+			//mHandler.sendEmptyMessage(WeatherInfoFragment.GET_WEATHER_SCUESS);// 获取天气信息成功，通知主线程更新
 			L.i("get weather scuess");
-			L.i(mApplication.getAllWeather());
 		}
 	}
 }

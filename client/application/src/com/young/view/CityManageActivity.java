@@ -3,8 +3,10 @@ package com.young.view;
 import java.util.List;
 
 import com.young.app.Application;
+import com.young.app.GetWeatherTask;
 import com.young.sort.list.DragSortListView;
 import com.young.sort.list.SimpleDragSortCursorAdapter;
+import com.young.util.L;
 
 import android.database.MatrixCursor;
 import android.os.Bundle;
@@ -19,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.database.Cursor;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class CityManageActivity extends FragmentActivity {
 
@@ -27,6 +28,7 @@ public class CityManageActivity extends FragmentActivity {
     private Application mApplication;
     
     private List<String> cityList;
+    private List<String> oCityList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class CityManageActivity extends FragmentActivity {
         DragSortListView dslv = (DragSortListView) findViewById(android.R.id.list);
         dslv.setAdapter(adapter);
         
+        oCityList = mApplication.loadAllCityFromSharePreference();
         cityList = mApplication.loadAllCityFromSharePreference();
         loadCity(cityList);
         
@@ -76,10 +79,30 @@ public class CityManageActivity extends FragmentActivity {
                 @Override
                 public void onClick(View v) {
                 	String cityName = (String) ((TextView) v).getText();
-                    Toast.makeText(mContext, cityName + "city clicked", Toast.LENGTH_SHORT).show();
+                    int cityIndex = cityList.indexOf(cityName);
+                    startMainActivity(cityIndex);
                 }
             });
             return v;
+        }
+        
+        
+        public void doAfterDrop(int from, int to) {
+        	//do something after drop
+        	L.i("drop from "+ from +" to "+to);
+        	String cityFrom = cityList.get(from);
+        	String cityTo = cityList.get(to);
+        	cityList.set(to, cityFrom);
+        	cityList.set(from, cityTo);
+        	mApplication.saveCityChangeToSharePreference(cityList);
+        }
+        
+        
+        public void doAfterRemove(int which)  {
+        	//do something after remove
+        	L.i("remove city " + which);
+        	cityList.remove(which);
+        	mApplication.saveCityChangeToSharePreference(cityList);
         }
     }
     
@@ -95,11 +118,12 @@ public class CityManageActivity extends FragmentActivity {
 
 		switch (item.getItemId()) {
 		
-		case android.R.id.home:            
-	         Intent intent = new Intent(this, MainActivity.class);            
-	         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
-	         startActivity(intent);            
-	         return true;    
+		case android.R.id.home:        
+			saveCityChangesToServer();		 
+			Intent intent = new Intent(this, MainActivity.class);            
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+			startActivity(intent);       
+			return true;    
 
 		case R.id.add_city:
 			//TO: open searchCity view
@@ -116,6 +140,15 @@ public class CityManageActivity extends FragmentActivity {
 		startActivityForResult(searchCityIntent, 0);
 	}
     
+    private void startMainActivity(int city) {
+		Intent i = new Intent();
+		i.putExtra("cityIndex", city);
+		setResult(RESULT_OK, i);
+		saveCityChangesToServer();
+		new GetWeatherTask(null, cityList.get(city)).execute();;
+		finish();
+	}
+    
     @Override  
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
@@ -126,4 +159,16 @@ public class CityManageActivity extends FragmentActivity {
 			loadCity(cityList);
 		}
     }  
+    
+    private void saveCityChangesToServer() {
+    	if(!oCityList.equals(cityList)){
+			//TODO 与服务器交互通知城市变化
+			L.i("与服务器交互通知城市变化");
+		}
+    }
+    
+//    @Override
+//    public void onDestroy() {
+//    	
+//    }
 }

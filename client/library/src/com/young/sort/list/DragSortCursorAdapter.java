@@ -129,7 +129,12 @@ public abstract class DragSortCursorAdapter extends CursorAdapter implements Dra
 
             cleanMapping();        
             notifyDataSetChanged();
+            doAfterDrop(from, to);
         }
+    }
+    
+    public void doAfterDrop(int from, int to) {
+    	//TO something after drop
     }
 
     /**
@@ -155,6 +160,11 @@ public abstract class DragSortCursorAdapter extends CursorAdapter implements Dra
 
         cleanMapping();
         notifyDataSetChanged();
+        doAfterRemove(which);
+    }
+    
+    public void doAfterRemove(int which) {
+    	//TO something after remove
     }
 
     /**

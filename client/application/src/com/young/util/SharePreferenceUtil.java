@@ -47,7 +47,7 @@ public class SharePreferenceUtil {
 	}
 	
 	public String getAllWeather() {
-		return sp.getString(WEATHERS_JSON_STRING, "[{weather:'test1'},{weather:'test2'},{weather:'test3'}]");
+		return sp.getString(WEATHERS_JSON_STRING, "[]");
 	}
 
 	// timesamp

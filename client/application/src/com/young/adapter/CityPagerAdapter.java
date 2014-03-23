@@ -28,7 +28,7 @@ public class CityPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		return WeatherInfoFragment.newInstance(position);
+		return WeatherInfoFragment.newInstance(position, getPageTitle(position).toString());
 	}
 	
 	@Override

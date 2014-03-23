@@ -6,14 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.os.Environment;
 import com.google.gson.Gson;  
-
 import com.young.app.Application;
 import com.young.bean.City;
 import com.young.db.CityDB;
@@ -128,19 +125,46 @@ public class Application extends android.app.Application {
 		mSpUtil.setAllWeather(weathers);
 	}
 	
+	public void updateOneCityWeather(String city, String weather){
+		boolean isUpdate = false;
+		JSONArray weatherList = null;
+		try {
+			JSONObject newWeather = new JSONObject(weather.toString());		
+			weatherList = new JSONArray(getAllWeather().toString());			
+			for(int i=0; i<weatherList.length(); i++){
+				if(city.equals(weatherList.getJSONObject(i).getString("city"))){
+					weatherList.put(i, newWeather);
+					isUpdate = true;
+					break;
+				}
+			}
+			if(!isUpdate){
+				weatherList.put(newWeather);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		L.i("weatherChange",weatherList.toString());
+		mSpUtil.setAllWeather(weatherList.toString());
+	}
+	
 	public String getAllWeather(){
 		return mSpUtil.getAllWeather();
 	}
 	
-	public String loadWeather(int cityIndex){
+	public String loadWeather(String cityName){
 		JSONObject currentCityWeather = new JSONObject();
 		try {
-			L.i(mSpUtil.getAllWeather().toString());
-			//JSONObject allWeather = new JSONObject("{allWeather:[{weather:'test1'},{weather:'test2'},{weather:'test3'}]}");
 			JSONArray weatherList = new JSONArray(mSpUtil.getAllWeather().toString());
-			currentCityWeather = weatherList.getJSONObject(cityIndex);
+			for(int i=0; i<weatherList.length(); i++){
+				L.i("compare",cityName+"-"+weatherList.getJSONObject(i).getString("city"));
+				if(cityName.equals(weatherList.getJSONObject(i).getString("city"))){
+					currentCityWeather = weatherList.getJSONObject(i);
+					break;
+				}
+			}
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return currentCityWeather.toString();
@@ -150,15 +174,12 @@ public class Application extends android.app.Application {
 	public List<String> loadAllCityFromSharePreference() {		
 		List<String> citys = new ArrayList<String>();
 		try {
-			L.i(mSpUtil.getAllCity().toString());
-			//JSONObject allCity = new JSONObject("{allCity:[{city:'test1'},{city:'test2'},{city:'test3'}]}");
 			JSONArray cityList = new JSONArray(mSpUtil.getAllCity().toString());
 			for(int i=0; i<cityList.length();i++){
 				String city = (String) cityList.get(i);
 				citys.add(city);
 			}
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return citys;

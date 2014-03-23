@@ -38,11 +38,12 @@ public class CitySearchActivity extends FragmentActivity
 	private View mCityContainer;
 	private View mSearchContainer;
 	Object[] hotCitys;  
-	private Application mApplication;
 	private List<City> mCities;
 	
 	private SearchCityAdapter mSearchCityAdapter;
 	private HotCityAdapter mHotCityAdapter;
+	
+	private Application mApplication;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,8 @@ public class CitySearchActivity extends FragmentActivity
 		setContentView(R.layout.activity_city_search);
 		mCityContainer = findViewById(R.id.city_content_container);
 		mSearchContainer = findViewById(R.id.search_content_container);
+		mApplication = Application.getInstance();
+		mCities = mApplication.getCityList();
 		
 		hotCityListView = (GridView) findViewById(R.id.hotCitys); 
 		hotCityListView
@@ -71,9 +74,7 @@ public class CitySearchActivity extends FragmentActivity
 				startManageActivity(mSearchCityAdapter.getItem(position).getName());
 			}
 		});
-		
-		mApplication = Application.getInstance();
-				
+						
 		mHotCitysList = loadHotCityData();
 		mHotCityAdapter = new HotCityAdapter(CitySearchActivity.this,
 				mHotCitysList);

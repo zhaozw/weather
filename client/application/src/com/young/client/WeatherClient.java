@@ -29,13 +29,28 @@ public class WeatherClient {
 	final static String serverUri = "http://106.187.94.192/weather/index.php?r=Test/ConnectDB";
     private HttpClient getClient; 
     private String cityParam;
+    private String cityListParam;
     
     public WeatherClient(String city){
     	Log.i("WeatherClient", "创建Client对象成功");   
     	try {
 			this.cityParam = URLEncoder.encode(city, "utf-8");
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	//得到HttpClient对象 
+    	getClient = new DefaultHttpClient();   
+    }
+    
+    public WeatherClient(String[] city){
+    	Log.i("WeatherClient", "创建Client对象成功"); 
+    	String paramTmp = "";
+    	for(int i=0; i<city.length; i++){
+    		paramTmp += (city[i] + ",");
+    	}
+    	try {
+			this.cityListParam = URLEncoder.encode(paramTmp.substring(-1), "utf-8");
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
     	//得到HttpClient对象 
@@ -46,6 +61,14 @@ public class WeatherClient {
     	Log.i("WeatherClient", "获取天气信息");   
     	Map<String, String> params = new HashMap<String, String>();
     	params.put("location", cityParam);
+    	return doGet(serverUri, params);
+    }
+    
+    public String getAllWeatherInfo(){
+    	Log.i("WeatherClient", "获取所有城市天气信息");   
+    	Map<String, String> params = new HashMap<String, String>();
+    	//TODO 需约定传多个城市获取所有天气信息的接口参数
+    	params.put("location", cityListParam);
     	return doGet(serverUri, params);
     }
     
@@ -77,14 +100,14 @@ public class WeatherClient {
             //判断请求是否成功    
             Log.i("doGet", "resCode = " + response.getStatusLine().getStatusCode()); //获取响应码  
             if(response.getStatusLine().getStatusCode()==HttpStatus.SC_OK){  
-                Log.i("doGet", "请求服务器端成功");               
-                Log.i("doGet", "result = " + EntityUtils.toString(response.getEntity(), "utf-8")); //获取响应内容   
-                return EntityUtils.toString(response.getEntity(), "utf-8");
+                Log.i("doGet", "请求服务器端成功");      
+                String netResult = EntityUtils.toString(response.getEntity(), "utf-8");
+                Log.i("doGet", "result = " + netResult); //获取响应内容   
+                return netResult;
             }else {  
                 Log.i("doGet", "请求服务器端失败");                
             }             
         } catch (Exception e) {  
-            // TODO Auto-generated catch block  
             e.printStackTrace();  
         }  
     	return null;
@@ -134,11 +157,5 @@ public class WeatherClient {
             }  
         }  
     }
-    
-    public static void main(String args[]) { 
-//    	WeatherClient wcClient = new WeatherClient("123");
-//    	wcClient.getWeatherInfo();
-    	System.out.println("test start");
-    } 
 
 }

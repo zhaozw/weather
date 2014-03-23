@@ -19,16 +19,19 @@ public class WeatherInfoFragment extends Fragment {
 	public static final int GET_WEATHER_SCUESS = 1;
 	public static final int GET_WEATHER_FAIL = 0;
 	private static final String ARG_POSITION = "position";
+	private static final String ARG_POSITION_TITLE = "positionTitle";
 
 	private int position;
+	private String positionTitle;
 	private String weatherInfoString;
 	private Application mApplication;
 	private TextView v;
 
-	public static WeatherInfoFragment newInstance(int position) {
+	public static WeatherInfoFragment newInstance(int position, String positionTitle) {
 		WeatherInfoFragment f = new WeatherInfoFragment();
 		Bundle b = new Bundle();
 		b.putInt(ARG_POSITION, position);
+		b.putString(ARG_POSITION_TITLE, positionTitle);
 		f.setArguments(b);
 		return f;
 	}
@@ -67,7 +70,7 @@ public class WeatherInfoFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             //相当于Fragment的onResume
-        	weatherInfoString = mApplication.loadWeather(position);
+        	weatherInfoString = mApplication.loadWeather(positionTitle);
         	//v.setText("WEATHER CHANGED " + (position + 1) + "------" + weatherInfoString);
         } else {
             //相当于Fragment的onPause
@@ -77,7 +80,8 @@ public class WeatherInfoFragment extends Fragment {
 	private void initData(){
 		mApplication = Application.getInstance();
 		position = getArguments().getInt(ARG_POSITION);
-		weatherInfoString = mApplication.loadWeather(position);
+		positionTitle = getArguments().getString(ARG_POSITION_TITLE);
+		weatherInfoString = mApplication.loadWeather(positionTitle);
 	}
 
 }
