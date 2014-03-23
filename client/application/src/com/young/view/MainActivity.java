@@ -13,8 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.young.app.Application;
+import com.young.util.DeviceUtil;
 import com.young.view.R;
 import com.young.adapter.CityPagerAdapter;
+import com.young.client.HttpUtil;
 import com.young.client.WeatherClient;
 import com.young.tab.slide.PagerSlidingTabStrip;
 
@@ -57,6 +59,8 @@ public class MainActivity extends FragmentActivity {
 		buildPager(0);
 		tabs.setViewPager(pager);
 
+		DeviceUtil.DEVICE_ID = DeviceUtil.getDeviceId(getBaseContext(), getContentResolver());
+		
 	}
 	
 	@Override  

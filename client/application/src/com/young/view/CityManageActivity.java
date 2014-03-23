@@ -1,9 +1,12 @@
 package com.young.view;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.young.app.Application;
 import com.young.app.GetWeatherTask;
+import com.young.client.HttpUtil;
 import com.young.sort.list.DragSortListView;
 import com.young.sort.list.SimpleDragSortCursorAdapter;
 import com.young.util.L;
@@ -164,6 +167,17 @@ public class CityManageActivity extends FragmentActivity {
     	if(!oCityList.equals(cityList)){
 			//TODO 与服务器交互通知城市变化
 			L.i("与服务器交互通知城市变化");
+			List<String> otherCitys = cityList;
+			otherCitys.remove(0);
+			Map<String ,Object> rawParams = new HashMap<String, Object>();
+			rawParams.put("stay", cityList.get(0));
+			rawParams.put("other", otherCitys);
+			try {
+				HttpUtil.postRequest("http://106.187.94.192/weather/index.php?r=machine/ChangeLocation", rawParams);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
     }
     
