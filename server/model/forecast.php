@@ -1,8 +1,7 @@
 <?php
-class forecast extends EMongoDocument
+class Forecast extends EMongoDocument
 {
 	public $weatherinfo;
-	public $city;
 
 	public static function model($className=__CLASS__)
       {

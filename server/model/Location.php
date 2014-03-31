@@ -13,5 +13,10 @@ class Location extends EMongoDocument
       {
         return 'location';
       }
+
+    public function primaryKey()
+      {
+        return 'location_id';
+      }
 }
 ?>
