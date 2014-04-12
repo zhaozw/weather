@@ -1,20 +1,50 @@
 package com.young.db;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.text.TextUtils;
-
-import com.young.bean.City;
+import com.young.common.util.L;
+import com.young.common.util.T;
+import com.young.config.AppConfig.DBContent;
+import com.young.entity.City;
 
 public class CityDB {
-	public static final String CITY_DB_NAME = "city.db";
 	private static final String CITY_TABLE_NAME = "city";
 	private SQLiteDatabase db;
 
-	public CityDB(Context context, String path) {
+	public CityDB(Context context) {
+		String path = "/data"
+				+ Environment.getDataDirectory().getAbsolutePath()
+				+ File.separator + "com.young.modules" + File.separator
+				+ DBContent.CITY_DB_NAME;
+		File dbFile = new File(path);
+		if (!dbFile.exists()) {
+			L.i("db is not exists");
+			try {
+				InputStream is = context.getAssets().open(DBContent.CITY_DB_NAME);
+				FileOutputStream fos = new FileOutputStream(dbFile);
+				int len = -1;
+				byte[] buffer = new byte[1024];
+				while ((len = is.read(buffer)) != -1) {
+					fos.write(buffer, 0, len);
+					fos.flush();
+				}
+				fos.close();
+				is.close();
+				} catch (IOException e) {
+				e.printStackTrace();
+				T.showLong(context, e.getMessage());
+				System.exit(0);
+			}
+		}
 		db = context.openOrCreateDatabase(path, Context.MODE_PRIVATE, null);
 	}
 
@@ -45,22 +75,22 @@ public class CityDB {
 	public City getCity(String city) {
 		if (TextUtils.isEmpty(city))
 			return null;
-		City item = getCityInfo(city);//先全部搜索
+		City item = getCityInfo(city);
 		if (item == null) {
-			item = getCityInfo(parseName(city));//处理一下之后再搜索
+			item = getCityInfo(parseName(city));
 		}
 		return item;
 	}
 
 	/**
-	 * 去掉市或县搜索
+
 	 * 
 	 * @param city
 	 * @return
 	 */
 	private String parseName(String city) {
-		city = city.replaceAll("市$", "").replaceAll("县$", "")
-				.replaceAll("区$", "");
+		city = city.replaceAll("锟斤拷$", "").replaceAll("锟斤拷$", "")
+				.replaceAll("锟斤拷$", "");
 		return city;
 	}
 
