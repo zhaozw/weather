@@ -287,7 +287,9 @@ containing a value of this type.
     }
     public static final class drawable {
         public static final int actionbar_bottom=0x7f020000;
+        public static final int background_blue=0x7f020012;
         public static final int background_card=0x7f020001;
+        public static final int background_gray=0x7f020013;
         public static final int background_tab=0x7f020002;
         public static final int background_tabs=0x7f020003;
         public static final int background_tabs_diagonal=0x7f020004;

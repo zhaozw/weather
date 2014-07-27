@@ -26,24 +26,22 @@ import android.util.Log;
 
 public class WeatherClient {
 	
-	final static String serverUri = "http://106.187.94.192/weather/index.php?r=Test/ConnectDB";
+	final static String serverUri = "http://api.k780.com:88/?app=weather.future&weaid=1&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json";//"http://106.187.94.192/weather/index.php?r=Test/ConnectDB";
     private HttpClient getClient; 
     private String cityParam;
     private String cityListParam;
     
     public WeatherClient(String city){
-    	Log.i("WeatherClient", "����Client����ɹ�");   
     	try {
 			this.cityParam = URLEncoder.encode(city, "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-    	//�õ�HttpClient���� 
     	getClient = new DefaultHttpClient();   
     }
     
     public WeatherClient(String[] city){
-    	Log.i("WeatherClient", "����Client����ɹ�"); 
+    	Log.i("WeatherClient", "refresh citys"); 
     	String paramTmp = "";
     	for(int i=0; i<city.length; i++){
     		paramTmp += (city[i] + ",");
@@ -53,28 +51,25 @@ public class WeatherClient {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-    	//�õ�HttpClient���� 
     	getClient = new DefaultHttpClient();   
     }
     
     public String getWeatherInfo(){
-    	Log.i("WeatherClient", "��ȡ������Ϣ");   
+    	Log.i("WeatherClient", "get single Weather Info");   
     	Map<String, String> params = new HashMap<String, String>();
     	params.put("location", cityParam);
     	return doGet(serverUri, params);
     }
     
     public String getAllWeatherInfo(){
-    	Log.i("WeatherClient", "��ȡ���г���������Ϣ");   
+    	Log.i("WeatherClient", "get all Weather Info");   
     	Map<String, String> params = new HashMap<String, String>();
-    	//TODO ��Լ����������л�ȡ����������Ϣ�Ľӿڲ���
     	params.put("location", cityListParam);
     	return doGet(serverUri, params);
     }
     
     @SuppressWarnings("rawtypes")
 	private String buildParamString(Map params){
-    	/* ����HTTPGet���� */  
         String paramStr = "";  
         Iterator iter = params.entrySet().iterator();  
         while (iter.hasNext()) {  
@@ -93,19 +88,16 @@ public class WeatherClient {
     	String paramString = buildParamString(params);
     	url += paramString;
     	try {             
-            //�õ�HttpGet����  
-            HttpGet request = new HttpGet(url);  
-            //�ͻ���ʹ��GET��ʽִ����̣���÷������˵Ļ�Ӧresponse  
+            HttpGet request = new HttpGet(serverUri);  
             HttpResponse response = getClient.execute(request);  
-            //�ж������Ƿ�ɹ�    
-            Log.i("doGet", "resCode = " + response.getStatusLine().getStatusCode()); //��ȡ��Ӧ��  
+            Log.i("doGet", "resCode = " + response.getStatusLine().getStatusCode());  
             if(response.getStatusLine().getStatusCode()==HttpStatus.SC_OK){  
-                Log.i("doGet", "����������˳ɹ�");      
+                Log.i("doGet", "服务器获取天气成功");      
                 String netResult = EntityUtils.toString(response.getEntity(), "utf-8");
-                Log.i("doGet", "result = " + netResult); //��ȡ��Ӧ����   
+                Log.i("doGet", "result = " + netResult);   
                 return netResult;
             }else {  
-                Log.i("doGet", "�����������ʧ��");                
+                Log.i("doGet", "服务器获取天气失败");                
             }             
         } catch (Exception e) {  
             e.printStackTrace();  
@@ -121,15 +113,13 @@ public class WeatherClient {
         try {  
             HttpPost request = new HttpPost(url);  
 
-            //ʵ��UrlEncodedFormEntity����  
             UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(  
                     postParameters, "utf-8");  
  
-            //ʹ��HttpPost����������UrlEncodedFormEntity��Entity  
             request.setEntity(formEntity);  
             HttpResponse response = getClient.execute(request);
             if(response.getStatusLine().getStatusCode()==HttpStatus.SC_OK){  
-            	 Log.i("doGet", "����������˳ɹ�");
+            	 Log.i("doPost", "服务器获取天气成功");
 	            in = new BufferedReader(  
 	                    new InputStreamReader(  
 	                            response.getEntity().getContent()));  
@@ -143,7 +133,7 @@ public class WeatherClient {
 	            String resultStr = string.toString();  
 	            System.out.println(resultStr);  
             }else{
-            	 Log.i("doPost", "�����������ʧ��");
+            	 Log.i("doPost", "服务器获取天气失败");
             }
         } catch(Exception e) {  
             // Do something about exceptions  

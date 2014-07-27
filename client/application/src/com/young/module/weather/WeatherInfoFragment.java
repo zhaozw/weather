@@ -3,10 +3,12 @@ package com.young.module.weather;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.young.common.util.L;
 import com.young.common.util.SharePreferenceUtil;
 import com.young.modules.R;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
@@ -57,11 +59,11 @@ public class WeatherInfoFragment extends Fragment {
 				.getDisplayMetrics());
 
 		v = new TextView(getActivity());
-		params.setMargins(margin, margin, margin, margin);
-		v.setLayoutParams(params);
+		params.setMargins(0, margin, 0, 0);
+		//params.setMargins(margin, margin, margin, margin);
 		v.setLayoutParams(params);
 		v.setGravity(Gravity.CENTER);
-		v.setBackgroundResource(R.drawable.background_card);
+		v.setBackgroundColor(Color.rgb(103,172,250));
 		v.setText(weatherInfoString);
 
 		fl.addView(v);
@@ -90,10 +92,9 @@ public class WeatherInfoFragment extends Fragment {
 		}
 		JSONObject currentCityWeather = new JSONObject();
 		try {
-			String allWeather = MainActivity.mSpUtil.getAllWeather().toString();
+			String allWeather = "[{city:厦门},{city:北京},{city:上海}]";//MainActivity.mSpUtil.getAllWeather().toString();
 			JSONArray weatherList = new JSONArray(allWeather);
 			for(int i=0; i<weatherList.length(); i++){
-				L.i("compare",cityName+"-"+weatherList.getJSONObject(i).getString("city"));
 				if(cityName.equals(weatherList.getJSONObject(i).getString("city"))){
 					currentCityWeather = weatherList.getJSONObject(i);
 					break;

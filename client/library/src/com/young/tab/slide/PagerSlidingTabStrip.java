@@ -20,6 +20,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
@@ -30,6 +31,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -74,8 +76,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	private Paint dividerPaint;
 
 	private int indicatorColor = 0xFF666666;
-	private int underlineColor = 0x1A000000;
-	private int dividerColor = 0x1A000000;
+	private int underlineColor = Color.argb(127,255,255,255);
+	private int dividerColor = Color.rgb(103,172,250);
 
 	private boolean shouldExpand = false;
 	private boolean textAllCaps = true;
@@ -84,11 +86,11 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	private int indicatorHeight = 8;
 	private int underlineHeight = 2;
 	private int dividerPadding = 12;
-	private int tabPadding = 24;
+	private int tabPadding = 20;
 	private int dividerWidth = 1;
 
 	private int tabTextSize = 12;
-	private int tabTextColor = 0xFF666666;
+	private int tabTextColor = Color.argb(127,255,255,255);//0xFF666666;
 	private Typeface tabTypeface = null;
 	private int tabTypefaceStyle = Typeface.BOLD;
 
@@ -322,6 +324,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 		View currentTab = tabsContainer.getChildAt(currentPosition);
 		float lineLeft = currentTab.getLeft();
 		float lineRight = currentTab.getRight();
+		float lineWidth = currentTab.getWidth();
+		float middleWidth = (lineWidth-8)/2;		
 
 		// if there is an offset, start interpolating left and right coordinates between current and next tab
 		if (currentPositionOffset > 0f && currentPosition < tabCount - 1) {
@@ -334,12 +338,13 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 			lineRight = (currentPositionOffset * nextTabRight + (1f - currentPositionOffset) * lineRight);
 		}
 
-		canvas.drawRect(lineLeft, height - indicatorHeight, lineRight, height, rectPaint);
+		canvas.drawRect(lineLeft+middleWidth, height - indicatorHeight - 1, lineRight-middleWidth, height - 1, rectPaint);
 
 		// draw underline
 
 		rectPaint.setColor(underlineColor);
-		canvas.drawRect(0, height - underlineHeight, tabsContainer.getWidth(), height, rectPaint);
+		canvas.drawRect(0, 0, tabsContainer.getWidth(), 2, rectPaint);
+		canvas.drawRect(0, height - underlineHeight - 4, tabsContainer.getWidth(), height - 4, rectPaint);
 
 		// draw divider
 

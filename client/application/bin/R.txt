@@ -40,7 +40,9 @@ int dimen activity_vertical_margin 0x7f070001
 int dimen item_height 0x7f070002
 int dimen section_div_height 0x7f070003
 int drawable actionbar_bottom 0x7f020000
+int drawable background_blue 0x7f020012
 int drawable background_card 0x7f020001
+int drawable background_gray 0x7f020013
 int drawable background_tab 0x7f020002
 int drawable background_tabs 0x7f020003
 int drawable background_tabs_diagonal 0x7f020004
