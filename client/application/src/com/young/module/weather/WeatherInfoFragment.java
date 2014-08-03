@@ -67,7 +67,6 @@ public class WeatherInfoFragment extends Fragment {
         windowManager.getDefaultDisplay().getMetrics(metrics);
 		int width = metrics.widthPixels;
 		
-		//ScrollView sView = new ScrollView(getActivity());
 		View view=View.inflate(getActivity(),R.layout.weather_current,null);		
 		
 		LinearLayout backgroundLayout = (LinearLayout)view.findViewById(R.id.todaybackground);
@@ -99,8 +98,10 @@ public class WeatherInfoFragment extends Fragment {
         ViewGroup.LayoutParams params = fetureWeatherList.getLayoutParams();  
         params.height = totalHeight;  
         fetureWeatherList.setLayoutParams(params);  
+        
+        fetureWeatherList.setFocusable(false);
 		
-		//sView.addView(view);
+        //view.scrollTo(0, 0);
 		
 		return view;
 	}

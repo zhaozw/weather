@@ -2,19 +2,19 @@
   
     <item
         android:id="@+id/action_refresh"
-        android:icon="@drawable/ic_action_user"
+        android:icon="@drawable/refresh1"
         android:showAsAction="always"
         android:title="@string/action_refresh"/>    
         
     <item
         android:id="@+id/action_city"
-        android:icon="@drawable/ic_action_user"
+        android:icon="@drawable/addcity1"
         android:showAsAction="always"
         android:title="@string/action_city"/>
    
     <item
         android:id="@+id/action_setting"
-        android:icon="@drawable/ic_action_user"
+        android:icon="@drawable/edit1"
         android:showAsAction="always"
         android:title="@string/action_setting"/>    
 

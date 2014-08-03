@@ -19,6 +19,8 @@ package com.young.tab.slide;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -337,8 +339,11 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 			lineLeft = (currentPositionOffset * nextTabLeft + (1f - currentPositionOffset) * lineLeft);
 			lineRight = (currentPositionOffset * nextTabRight + (1f - currentPositionOffset) * lineRight);
 		}
+		
+		Bitmap mBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.select);
+		canvas.drawBitmap(mBitmap, lineLeft+middleWidth-3, height - indicatorHeight - 4, rectPaint);
 
-		canvas.drawRect(lineLeft+middleWidth, height - indicatorHeight - 1, lineRight-middleWidth, height - 1, rectPaint);
+		//canvas.drawRect(lineLeft+middleWidth, height - indicatorHeight - 1, lineRight-middleWidth, height - 1, rectPaint);
 
 		// draw underline
 
