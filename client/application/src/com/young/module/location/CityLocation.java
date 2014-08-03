@@ -27,6 +27,7 @@ public class CityLocation {
 		initLocation(mContext);
 	}
 
+	
 	private void initLocation(Context mContext) {
 		locationManager = (LocationManager) mContext
 				.getSystemService(Context.LOCATION_SERVICE);
