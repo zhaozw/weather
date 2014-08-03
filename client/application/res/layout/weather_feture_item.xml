@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"    
+    android:layout_height="80dp"
+    android:minHeight="?android:attr/listPreferredItemHeight">
+    
+    <LinearLayout
+        android:layout_weight="0.2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        
+        <TextView
+            android:id="@+id/feture_weather_desc"
+            android:layout_width="match_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:text="明天多云"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+        
+        <TextView
+            android:id="@+id/feture_date"
+            android:layout_width="match_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:text="星期五 7月12日"
+            android:textColor="#ffffff"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+    
+    <ImageView
+        android:id="@+id/feture_weather_img"
+        android:layout_weight="0.2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    
+    <TextView
+        android:id="@+id/feture_weather_temp"
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        android:text="20~30"/>
+
+    
+
+</LinearLayout>

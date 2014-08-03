@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >            
+    		
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:orientation="horizontal" 
+                android:id="@+id/todaybackground">                
+                
+                <com.young.common.view.RingView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+    		</LinearLayout>
+    		
+          <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="vertical" 
+                android:id="@+id/todayInfo">  
+                
+               <LinearLayout 
+                    android:layout_width="match_parent"
+                	android:layout_height="200dp"
+                	android:layout_weight="0.16">
+                	
+                   <TextView
+                        android:id="@+id/today_date"
+	                    android:layout_width="0.0dip"
+	                    android:layout_height="match_parent"
+	                    android:layout_weight="0.2" 
+	                    android:gravity="center"
+	                    style="@style/font_white_12"
+	                    android:text="今天 7月12日"/>
+                
+	                <TextView
+	                    android:id="@+id/yestodayInfo"
+	                    android:layout_width="0.0dip"
+	                    android:layout_height="match_parent"
+	                    android:layout_weight="0.2" 
+	                    android:gravity="center"
+	                    style="@style/font_white_12"
+	                    android:text="昨天26～30度"/>
+
+                </LinearLayout>
+                <LinearLayout 
+                    android:layout_width="match_parent"
+                	android:layout_height="200dp"
+                	android:layout_weight="0.20">
+                   <ImageView 
+                       android:id="@+id/today_weather_img"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:layout_weight="0.2"/>
+                   <TextView
+                       android:id="@+id/today_weather_desc"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:gravity="center_vertical|left"
+                       android:layout_weight="0.2"
+                       android:textColor="#ffffff"
+                       android:textSize="19sp"
+                       android:text="晴" /> 
+                </LinearLayout>
+                <LinearLayout 
+                    android:layout_width="match_parent"
+                	android:layout_height="200dp"
+                	android:layout_weight="0.08">
+                   <TextView
+                       android:id="@+id/current_temp"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:gravity="top|center_horizontal"
+                       style="@style/current_temp"
+                       android:layout_marginTop="-20dp"
+                       android:textAlignment="center"
+                       android:text="20" /> 
+                </LinearLayout>
+                <LinearLayout 
+                    android:layout_width="match_parent"
+                	android:layout_height="200dp"
+                	android:orientation="vertical" 
+                	android:layout_weight="0.16">
+                   <TextView
+                       android:id="@+id/today_temp"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:gravity="center"
+                       android:layout_weight="0.3"
+                       android:textColor="#ffffff"
+                       android:textSize="14sp"
+                       android:text="20-30" /> 
+                   <TextView
+                       android:id="@+id/today_aq"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:gravity="center"
+                       android:layout_weight="0.18"
+                       android:textColor="#ffffff"
+                       android:textSize="18sp"
+                       android:text="重度污染" /> 
+                </LinearLayout>
+
+                <LinearLayout 
+                    android:layout_width="match_parent"
+                	android:layout_height="200dp"
+                	android:layout_weight="0.18">
+                </LinearLayout>
+		        
+    		</LinearLayout>
+            
+			<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/otherInfo"> 
+                
+			    <LinearLayout 
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"
+			        android:layout_weight="0.2">
+                   
+			        <ImageView 
+			            android:layout_width="match_parent"
+			            android:layout_height="match_parent"
+			            android:layout_weight="0.3"/>
+			        
+			        <LinearLayout 
+				        android:layout_width="match_parent"
+				        android:layout_height="match_parent"
+				        android:orientation="vertical"
+				        android:layout_weight="0.2">
+				        <TextView
+				           android:id="@+id/today_felt_temp"
+	                       android:layout_width="match_parent"
+	                       android:layout_height="match_parent"
+	                       android:gravity="left|bottom"
+	                       android:layout_weight="0.18"
+	                       android:textColor="#ffffff"
+	                       android:textSize="16sp"
+	                       android:text="32" />
+				        <TextView
+	                       android:layout_width="match_parent"
+	                       android:layout_height="match_parent"
+	                       android:layout_weight="0.18"
+	                       android:textColor="#ffffff"
+	                       android:textSize="10sp"
+	                       android:text="@string/felt_temp" />
+			        </LinearLayout>
+			        
+			        <TextView
+				        android:background="#ffffff"
+				        android:layout_width="1dp"
+				        android:layout_height="match_parent" />
+			        
+			    </LinearLayout>
+
+
+			    <LinearLayout 
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"
+			        android:layout_weight="0.2">
+			        <ImageView 
+			            android:layout_width="match_parent"
+			            android:layout_height="match_parent"
+			            android:layout_weight="0.3"/>
+			        
+			        <LinearLayout 
+				        android:layout_width="match_parent"
+				        android:layout_height="match_parent"
+				        android:orientation="vertical"
+				        android:layout_weight="0.2">
+				        <TextView
+				           android:id="@+id/today_wind"
+	                       android:layout_width="match_parent"
+	                       android:layout_height="match_parent"
+	                       android:gravity="left|bottom"
+	                       android:layout_weight="0.18"
+	                       android:textColor="#ffffff"
+	                       android:textSize="16sp"
+	                       android:text="1级" />
+				        <TextView
+				           android:id="@+id/today_wind_dir"
+	                       android:layout_width="match_parent"
+	                       android:layout_height="match_parent"
+	                       android:layout_weight="0.18"
+	                       android:textColor="#ffffff"
+	                       android:textSize="10sp"
+	                       android:text="西南风" />
+			        </LinearLayout>
+			        <TextView
+				        android:background="#ffffff"
+				        android:layout_width="1dp"
+				        android:layout_height="match_parent" />
+			    </LinearLayout>
+
+			    <LinearLayout 
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"
+			        android:layout_weight="0.2">
+			        <ImageView 
+			            android:layout_width="match_parent"
+			            android:layout_height="match_parent"
+			            android:layout_weight="0.3"/>
+			        
+			        <LinearLayout 
+				        android:layout_width="match_parent"
+				        android:layout_height="match_parent"
+				        android:orientation="vertical"
+				        android:layout_weight="0.2">
+				        <TextView
+				           android:id="@+id/today_humidity"
+	                       android:layout_width="match_parent"
+	                       android:layout_height="match_parent"
+	                       android:gravity="left|bottom"
+	                       android:layout_weight="0.18"
+	                       android:textColor="#ffffff"
+	                       android:textSize="16sp"
+	                       android:text="64%" />
+				        <TextView
+	                       android:layout_width="match_parent"
+	                       android:layout_height="match_parent"
+	                       android:layout_weight="0.18"
+	                       android:textColor="#ffffff"
+	                       android:textSize="10sp"
+	                       android:text="@string/humidity" />
+			        </LinearLayout> 
+			    </LinearLayout>
+            </LinearLayout>
+            
+			<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:id="@+id/fetureInfo">
+			    
+			    <ListView
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content" 
+			        android:dividerHeight="0.0dip"
+        			android:fadingEdge="none"
+        			android:scrollbars="none"
+        			android:divider="@null" 
+			        android:id="@+id/fetureList">
+				</ListView>
+			    
+			</LinearLayout>
+   
+        </LinearLayout>
+    </ScrollView>
+    
+    
+

@@ -13,5 +13,15 @@
         <item name="android:background">#67acfa</item>
         <item name="android:singleLine">true</item>
     </style>
+    
+    <style name="current_temp">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">130sp</item>
+    </style>
+    
+    <style name="font_white_12">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 
 </resources>

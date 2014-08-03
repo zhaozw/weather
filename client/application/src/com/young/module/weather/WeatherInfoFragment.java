@@ -4,20 +4,30 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.young.common.adapter.FetureWeatherAdapter;
 import com.young.common.util.L;
 import com.young.common.util.SharePreferenceUtil;
+import com.young.common.view.RingView;
 import com.young.modules.R;
 
+import android.R.integer;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class WeatherInfoFragment extends Fragment {
@@ -31,6 +41,7 @@ public class WeatherInfoFragment extends Fragment {
 	private String positionTitle;
 	private String weatherInfoString;
 	private TextView v;
+	private FetureWeatherAdapter fwAdapter;
 	
 	public static WeatherInfoFragment newInstance(int position, String positionTitle) {
 		WeatherInfoFragment f = new WeatherInfoFragment();
@@ -49,25 +60,49 @@ public class WeatherInfoFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-
-		FrameLayout fl = new FrameLayout(getActivity());
-		fl.setLayoutParams(params);
-
-		final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources()
-				.getDisplayMetrics());
-
-		v = new TextView(getActivity());
-		params.setMargins(0, margin, 0, 0);
-		//params.setMargins(margin, margin, margin, margin);
-		v.setLayoutParams(params);
-		v.setGravity(Gravity.CENTER);
-		v.setBackgroundColor(Color.rgb(103,172,250));
-		v.setText(weatherInfoString);
-
-		fl.addView(v);
-		return fl;
+		
+		DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) getActivity()
+                .getSystemService(getActivity().WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(metrics);
+		int width = metrics.widthPixels;
+		
+		//ScrollView sView = new ScrollView(getActivity());
+		View view=View.inflate(getActivity(),R.layout.weather_current,null);		
+		
+		LinearLayout backgroundLayout = (LinearLayout)view.findViewById(R.id.todaybackground);
+		LinearLayout.LayoutParams bllParams = new LinearLayout.LayoutParams(width, width);
+		bllParams.setMargins(0, 0, 0, 0);
+		backgroundLayout.setLayoutParams(bllParams);
+		
+		LinearLayout todayInfoLayout = (LinearLayout)view.findViewById(R.id.todayInfo);
+		LinearLayout.LayoutParams tLlParams = new LinearLayout.LayoutParams(width, width);
+		tLlParams.setMargins(0, -width, 0, 0);
+		todayInfoLayout.setLayoutParams(tLlParams);
+		
+		ListView fetureWeatherList = (ListView)view.findViewById(R.id.fetureList);
+		
+		String testString = "[{weather_desc:'晴',weather_date:'明天 8月3日',weather_temp:'20~30'},"
+				+ "{weather_desc:'晴',weather_date:'明天 8月3日',weather_temp:'20~30'},"
+				+ "{weather_desc:'晴',weather_date:'明天 8月3日',weather_temp:'20~30'},"
+				+ "{weather_desc:'晴',weather_date:'明天 8月3日',weather_temp:'20~30'}]";
+		fwAdapter = new FetureWeatherAdapter(getActivity(), testString); 
+		fetureWeatherList.setAdapter(fwAdapter);
+		
+		int totalHeight = 0;  
+        for (int i = 0; i < fwAdapter.getCount(); i++) {  
+            View listItem = fwAdapter.getView(i, null, fetureWeatherList);  
+            listItem.measure(0, 0);  
+            totalHeight += listItem.getMeasuredHeight();  
+        }  
+  
+        ViewGroup.LayoutParams params = fetureWeatherList.getLayoutParams();  
+        params.height = totalHeight;  
+        fetureWeatherList.setLayoutParams(params);  
+		
+		//sView.addView(view);
+		
+		return view;
 	}
 	
 	@Override
