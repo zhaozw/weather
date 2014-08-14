@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Weather</string>
+    <string name="app_name">好天气</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_city">City</string>
     <string name="action_setting">Setting</string>
     <string name="add_city">AddCity</string>
-    <string name="searchCity">Search</string>
-    <string name="search_hint">please input city</string>
+    <string name="searchCity">搜索城市</string>
+    <string name="search_hint">请输入城市名称</string>
     
     <string name="felt_temp">体感温度</string>
     <string name="humidity">湿度</string>
@@ -36,25 +36,27 @@
     
     <string-array name="all_citys">
         <item>上海</item>
-        <item>厦门</item>
+        <item>北京</item>
+        <item>广州</item>
+        <item>深圳</item>
+        <item>武汉</item>
+        <item>南京</item>
+        <item>西安</item>
+        <item>成都</item>
         <item>杭州</item>
-        <item>苏州</item>
+        <item>郑州</item>
+        <item>重庆</item>
+        <item>沈阳</item>
         <item>哈尔滨</item>
-        <item>泉州</item>
-        <item>丽江</item>
-        <item>昆明</item>
-        <item>济南</item>
-        <item>上海</item>
+        <item>长沙</item>
+        <item>苏州</item>
+        <item>大连</item>
+        <item>天津</item>
+        <item>宁波</item>
+        <item>无锡</item>
         <item>厦门</item>
-        <item>杭州</item>
-        <item>苏州</item>
-        <item>哈尔滨</item>
-        <item>泉州</item>
-        <item>丽江</item>
-        <item>昆明</item>
-        <item>济南</item>
-        <item>安徽</item>
-        <item>惠安</item>
+        <item>泰州</item>
+
     </string-array>
 
     <string name="hello_world">Hello world!</string>

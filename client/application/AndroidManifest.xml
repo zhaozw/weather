@@ -16,32 +16,35 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
     
+    <uses-sdk	android:minSdkVersion="11" android:targetSdkVersion="19" />
     <application
         android:name="com.young.MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme" 
+        android:icon="@drawable/ic_launcher">
         <activity
             android:name="com.young.module.weather.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.young.module.location.CityManageActivity"
+            android:logo="@drawable/icon"
             android:label="城市管理" >
         </activity>
         <activity
             android:name="com.young.module.location.CitySearchActivity"
-            android:label="搜索" >
+            android:logo="@drawable/icon"
+            android:label="" >
         </activity>
             
         <activity
             android:name="com.young.module.setting.SettingsActivity"
+            android:logo="@drawable/icon"
             android:label="设置" />
     </application>
 

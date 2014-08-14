@@ -21,6 +21,7 @@ public class CityLocation {
 
 	// private String GpsProvider =
 	// LocationManager.GPS_PROVIDER;//ͨ��gps��ȡlocation
+	
 
 	public CityLocation(Context mContext) {
 		this.mContext = mContext;

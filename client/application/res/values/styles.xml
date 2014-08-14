@@ -5,12 +5,13 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:windowBackground">@color/background_window</item>
         <item name="android:actionBarStyle">@style/ActionBarStyle</item>
-        <item name="@android:attr/actionBarSize">40px</item>  
+
     </style>
 
     <style name="ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:icon">@drawable/ic_launcher_actionbar</item>
         <item name="android:background">#67acfa</item>
+
         <item name="android:singleLine">true</item>
     </style>
     

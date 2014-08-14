@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background_window">#FFE5E5E5</color>
+    <color name="background_window">#ffffff</color>
+    <color name="city_item_divider">#c9c9c9</color>
+    <color name="city_manage_bg">#ffffff</color>
     <drawable name="background_blue">#67acfa</drawable>
     <drawable name="background_gray">#ffffff</drawable>
 </resources>

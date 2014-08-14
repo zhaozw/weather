@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,6 +34,7 @@ public class MainActivity extends FragmentActivity {
 	private ViewPager pager;
 	private CityPagerAdapter adapter;
 	//private int baseColor = 0xFF96AA39;
+	private ActionBar actionBar;
 
 	private List<String> citys = new ArrayList<String>();
 	
@@ -52,6 +54,8 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		actionBar = getActionBar();
+		actionBar.setDisplayShowTitleEnabled(false);
 		setContentView(R.layout.activity_main);
 		if (mSpUtil == null)
 			mSpUtil = new SharePreferenceUtil(this);
@@ -65,6 +69,7 @@ public class MainActivity extends FragmentActivity {
 
 		DeviceUtil.DEVICE_ID = DeviceUtil.getDeviceId(getBaseContext(), getContentResolver());
 		
+
 	}
 	
 	@Override  

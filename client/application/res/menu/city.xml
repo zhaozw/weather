@@ -2,7 +2,7 @@
   
     <item
         android:id="@+id/add_city"
-        android:icon="@drawable/ic_action_user"
+        android:icon="@drawable/btn_add_location"
         android:showAsAction="always"
         android:title="@string/add_city"/>    
 

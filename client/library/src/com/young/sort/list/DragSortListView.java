@@ -753,7 +753,7 @@ public class DragSortListView extends ListView {
 
         final Drawable divider = getDivider();
         final int dividerHeight = getDividerHeight();
-        // Log.d("mobeta", "div="+divider+" divH="+dividerHeight);
+         Log.d("mobeta", "div="+divider+" divH="+dividerHeight);
 
         if (divider != null && dividerHeight != 0) {
             final ViewGroup expItem = (ViewGroup) getChildAt(expPosition
@@ -2589,7 +2589,7 @@ public class DragSortListView extends ListView {
      * A word of warning about a "feature" in Android that you may run into when
      * dealing with movable list items: for an adapter that <em>does</em> have
      * stable IDs, ListView will attempt to locate each item based on its ID and
-     * move the check state from the item's old position to the new position â€?     * which is all fine and good (and removes the need for calling this
+     * move the check state from the item's old position to the new position ï¿½?     * which is all fine and good (and removes the need for calling this
      * function), except for the half-baked approach. Apparently to save time in
      * the naive algorithm used, ListView will only search for an ID in the
      * close neighborhood of the old position. If the user moves an item too far

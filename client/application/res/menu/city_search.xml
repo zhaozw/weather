@@ -2,8 +2,9 @@
     
     <item android:id="@+id/menu_city_search"         
 		android:title="@string/searchCity"         
-		android:icon="@drawable/ic_action_user"         
-		android:showAsAction="always"         
-		android:actionViewClass="android.widget.SearchView" />
+		android:iconifiedByDefault="true" 
+		android:queryHint="@string/search_hint"       
+		android:showAsAction="always"
+		android:actionLayout="@layout/city_search_action_bar" />
 
 </menu>
