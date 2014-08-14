@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;  
 import android.util.AttributeSet;  
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;  
 import android.view.WindowManager;
   
@@ -32,33 +33,17 @@ public class RingView extends View {
   
     @Override  
     protected void onDraw(Canvas canvas) {  
-    	DisplayMetrics metrics = new DisplayMetrics() ;
-        WindowManager windowManager = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
-        windowManager.getDefaultDisplay().getMetrics(metrics);
-		int width = metrics.widthPixels;
-        // TODO Auto-generated method stub  
 		
-        int center = width/2;  
+        int center = canvas.getWidth()/2;//width/2;  
         int radius = center*4/5;
         int top = center*15/14;
-        int innerCircle = dip2px(context, radius); //设置内圆半径  
-        int ringWidth = dip2px(context, 1); //设置圆环宽度  
-          
-        //绘制内圆  
-//        this.paint.setARGB(120, 255, 255, 255); 
-//        this.paint.setStrokeWidth(1);  
-//        canvas.drawCircle(center,top, innerCircle, this.paint);  
+        int innerCircle = radius;//dip2px(context, radius); //设置内圆半径  
+        int ringWidth = 2;//dip2px(context, 1); //设置圆环宽度  
           
         //绘制圆环  
         this.paint.setARGB(120, 255 ,255, 255);  
         this.paint.setStrokeWidth(ringWidth);  
-        canvas.drawCircle(center,top, innerCircle+1+ringWidth/2, this.paint);  
-          
-        //绘制外圆  
-//        this.paint.setARGB(120, 255, 255, 255);  
-//        this.paint.setStrokeWidth(1);  
-//        canvas.drawCircle(center,top, innerCircle+ringWidth, this.paint);  
-  
+        canvas.drawCircle(center,top, innerCircle+1+ringWidth/2, this.paint);   
           
         super.onDraw(canvas);  
     }  

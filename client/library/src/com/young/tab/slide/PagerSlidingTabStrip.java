@@ -86,7 +86,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	private int scrollOffset = 52;
 	private int indicatorHeight = 8;
-	private int underlineHeight = 2;
+	private int underlineHeight = 1;
 	private int dividerPadding = 12;
 	private int tabPadding = 20;
 	private int dividerWidth = 1;
@@ -327,7 +327,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 		float lineLeft = currentTab.getLeft();
 		float lineRight = currentTab.getRight();
 		float lineWidth = currentTab.getWidth();
-		float middleWidth = (lineWidth-8)/2;		
+		Bitmap mBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.select);
+		float middleWidth = (lineWidth-mBitmap.getWidth())/2;		
 
 		// if there is an offset, start interpolating left and right coordinates between current and next tab
 		if (currentPositionOffset > 0f && currentPosition < tabCount - 1) {
@@ -339,9 +340,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 			lineLeft = (currentPositionOffset * nextTabLeft + (1f - currentPositionOffset) * lineLeft);
 			lineRight = (currentPositionOffset * nextTabRight + (1f - currentPositionOffset) * lineRight);
 		}
-		
-		Bitmap mBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.select);
-		canvas.drawBitmap(mBitmap, lineLeft+middleWidth-3, height - indicatorHeight - 4, rectPaint);
+				
+		canvas.drawBitmap(mBitmap, lineLeft + middleWidth, height - mBitmap.getWidth() - 2, rectPaint);
 
 		//canvas.drawRect(lineLeft+middleWidth, height - indicatorHeight - 1, lineRight-middleWidth, height - 1, rectPaint);
 
@@ -349,7 +349,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 		rectPaint.setColor(underlineColor);
 		canvas.drawRect(0, 0, tabsContainer.getWidth(), 2, rectPaint);
-		canvas.drawRect(0, height - underlineHeight - 4, tabsContainer.getWidth(), height - 4, rectPaint);
+		canvas.drawRect(0, height - underlineHeight - mBitmap.getWidth()/2, tabsContainer.getWidth(), height - mBitmap.getWidth()/2, rectPaint);
 
 		// draw divider
 
