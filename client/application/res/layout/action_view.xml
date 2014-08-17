@@ -1,0 +1,7 @@
+<com.young.common.view.RotateImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/title_update_progress"
+    style="@android:style/Widget.ActionButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:scaleType="centerInside"
+    android:src="@drawable/refresh1" />

@@ -67,10 +67,10 @@ public class GetWeatherTask extends AsyncTask<Void, Void, Integer> {
 	protected void onPostExecute(Integer result) {
 		super.onPostExecute(result);
 		if(result < 0 ){
-			//mHandler.sendEmptyMessage(WeatherInfoFragment.GET_WEATHER_FAIL);
+			mHandler.sendEmptyMessage(MainActivity.UPDATE_WEATHER_FAIL);
 			L.i("get weather fail");
 		}else{
-			//mHandler.sendEmptyMessage(WeatherInfoFragment.GET_WEATHER_SCUESS);
+			mHandler.sendEmptyMessage(MainActivity.UPDATE_WEATHER_SCUESS);
 			L.i("get weather scuess");
 		}
 	}
