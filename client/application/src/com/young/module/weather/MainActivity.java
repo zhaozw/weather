@@ -52,8 +52,10 @@ public class MainActivity extends FragmentActivity {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case UPDATE_WEATHER_SCUESS:
+				hideRefreshAnimation();
 				break;
 			case UPDATE_WEATHER_FAIL:
+				hideRefreshAnimation();
 				break;
 			default:
 				break;
@@ -135,6 +137,7 @@ public class MainActivity extends FragmentActivity {
 			// TO: refresh the weather
 			showRefreshAnimation(item);
 			Toast.makeText(this, "refresh", Toast.LENGTH_SHORT).show();
+			new UpdateAllWeatherTask(handler).execute();
 			return true;
 		}
 

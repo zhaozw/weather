@@ -1,12 +1,16 @@
 package com.young.common.util;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -61,6 +65,75 @@ public class HttpUtil
 		}
 		return null;
 	}
+	
+	public static String postRequestToGetWeathers(String url)throws Exception
+		{
+			L.i("enter postRequestToGetWeathers");
+			HttpPost post = new HttpPost(url);
+			
+			//向服务器写json
+//	        JSONObject json = new JSONObject();
+//	        json.put("mac", DeviceUtil.DEVICE_ID);
+//	        System.out.println("param = " + json);
+//	        StringEntity se = new StringEntity(json.toString());
+//	        se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+//	        post.setEntity(se);
+	        
+	        List<NameValuePair> postParameters = new ArrayList<NameValuePair>();  
+	        postParameters.add(new BasicNameValuePair("mac", DeviceUtil.DEVICE_ID));
+	        System.out.println("param = " + postParameters);
+	        // 设置字符集
+	        HttpEntity entity = new UrlEncodedFormEntity(postParameters, HTTP.UTF_8);
+	        // 设置参数实体
+	        post.setEntity(entity);
+			
+			HttpClient client = new DefaultHttpClient();//getHttpClient();
+			HttpResponse httpResponse = client.execute(post);
+			
+			if (httpResponse.getStatusLine()
+				.getStatusCode() == 200)
+			{
+				
+				String result = EntityUtils
+					.toString(httpResponse.getEntity());
+				System.out.println("result = " + result);
+				return result;
+			}
+			return null;
+		}
+	
+	public static String postData(String posturl,List<NameValuePair> nameValuePairs)
+	{
+	  String strResult = null;
+	  try {
+	   HttpParams parms = new BasicHttpParams();
+	   parms.setParameter("charset", HTTP.UTF_8);
+	   HttpClient httpclient = new DefaultHttpClient(parms);
+	   
+	   // 你的URL
+	   HttpPost httppost = new HttpPost(posturl);
+	   httppost.addHeader("charset", HTTP.UTF_8);
+	   httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,HTTP.UTF_8));
+	   
+	   HttpResponse response;
+	   response = httpclient.execute(httppost);
+
+	if(response.getStatusLine().getStatusCode() == 200){
+	    /*读返回数据*/
+	             strResult = EntityUtils.toString(response.getEntity()); 
+	   }
+	  } catch (ClientProtocolException e) {
+	   // TODO Auto-generated catch block
+	   e.printStackTrace();
+	   //return e.toString();
+	  } catch (IOException e) {
+	   // TODO Auto-generated catch block
+	   e.printStackTrace();
+	   //return e.toString();
+	  }
+	  //Log.d("postData",strResult);
+	  return strResult;
+	 }
 
 	public static String postRequest(String url
 		, Map<String ,Object> rawParams)throws Exception

@@ -26,7 +26,7 @@ import android.util.Log;
 
 public class WeatherClient {
 	
-	final static String serverUri = "http://api.k780.com:88/?app=weather.future&weaid=1&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json";//"http://106.187.94.192/weather/index.php?r=Test/ConnectDB";
+	final static String serverUri = "http://106.187.94.192/weather/index.php?r=Report/SendForecast";
     private HttpClient getClient; 
     private String cityParam;
     private String cityListParam;

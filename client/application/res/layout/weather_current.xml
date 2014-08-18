@@ -91,15 +91,38 @@
                 	android:layout_height="200dp"
                 	android:orientation="vertical" 
                 	android:layout_weight="0.16">
-                   <TextView
-                       android:id="@+id/today_temp"
-                       android:layout_width="match_parent"
-                       android:layout_height="match_parent"
-                       android:gravity="center"
-                       android:layout_weight="0.3"
-                       android:textColor="#ffffff"
-                       android:textSize="14sp"
-                       android:text="20-30" /> 
+                   <LinearLayout 
+	                    android:layout_width="match_parent"
+	                	android:layout_height="match_parent"
+	                	android:layout_weight="0.3">
+	                	
+                       	<TextView
+	                      android:id="@+id/today_temp_low"
+	                      android:layout_width="match_parent"
+	                      android:layout_height="match_parent"
+	                      android:gravity="center_vertical|right"
+	                      android:layout_weight="0.1"
+	                      android:textColor="#ffffff"
+	                      android:textSize="14sp"
+	                      android:text="20" /> 
+	                      
+                       	<ImageView 
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:src="@drawable/temp"
+				            android:layout_weight="0.1"/>
+	                      
+                       	<TextView
+	                      android:id="@+id/today_temp_high"
+	                      android:layout_width="match_parent"
+	                      android:layout_height="match_parent"
+	                      android:gravity="center_vertical|left"
+	                      android:layout_weight="0.1"
+	                      android:textColor="#ffffff"
+	                      android:textSize="14sp"
+	                      android:text="30" /> 
+                	</LinearLayout>
+                   
                    <TextView
                        android:id="@+id/today_aq"
                        android:layout_width="match_parent"

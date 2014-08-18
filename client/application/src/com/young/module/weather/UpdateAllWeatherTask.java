@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 
 import com.young.MyApplication;
+import com.young.common.util.HttpUtil;
 import com.young.common.util.L;
 import com.young.common.util.WeatherClient;
 
@@ -18,18 +19,17 @@ public class UpdateAllWeatherTask extends AsyncTask<Void, Void, Integer> {
 	private static final int SUCCESS = 0;
 	private static final int FAIL = -1;
 	private Handler mHandler;
-	private String[] mCitys;
 
-	public UpdateAllWeatherTask(Handler handler, String[] citys) {
+	public UpdateAllWeatherTask(Handler handler) {
 		this.mHandler = handler;
-		this.mCitys = citys;
 	}
 
 	@Override
 	protected Integer doInBackground(Void... params) {
 		try {
-			WeatherClient wClient = new WeatherClient(mCitys);
-			String netResult = wClient.getAllWeatherInfo();
+			//WeatherClient wClient = new WeatherClient(mCitys);
+			String netResult = HttpUtil.postRequestToGetWeathers(
+					"http://106.187.94.192/weather/index.php?r=Report/SendForecast");//wClient.getAllWeatherInfo();
 			if (!TextUtils.isEmpty(netResult)) {
 				setAllWeather(netResult);
 				return SUCCESS;
