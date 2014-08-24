@@ -3,6 +3,7 @@ package com.young.module.weather;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 import com.young.modules.R;
 import com.young.common.adapter.CityPagerAdapter;
 import com.young.common.util.DeviceUtil;
+import com.young.common.util.L;
 import com.young.common.util.SharePreferenceUtil;
 import com.young.common.view.RotateImageView;
 import com.young.entity.City;
@@ -89,6 +91,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == 0 && resultCode == RESULT_OK) {
 			int cityIndex = data.getExtras().getInt("cityIndex");
+			L.i("currentTabNum", cityIndex+"");
 			buildAdapter();
 			buildPager(cityIndex);
 			tabs.setViewPager(pager);
@@ -102,9 +105,10 @@ public class MainActivity extends FragmentActivity {
 		adapter = new CityPagerAdapter(getSupportFragmentManager(), citys);
 	}
 
-	private void buildPager(int currentItem) {
+	private void buildPager(int currentItemNum) {
+		
 		pager.setAdapter(adapter);
-		pager.setCurrentItem(currentItem, false);
+		pager.setCurrentItem(currentItemNum, false);
 		final int pageMargin = (int) TypedValue.applyDimension(
 				TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
 						.getDisplayMetrics());

@@ -134,8 +134,6 @@ public class WeatherInfoFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
         	weatherInfoString = loadWeather(positionTitle);
-        	L.i("showCityTab", positionTitle);
-        	//v.setText("WEATHER CHANGED " + (position + 1) + "------" + weatherInfoString);
         } else {
         }
     }
@@ -144,7 +142,6 @@ public class WeatherInfoFragment extends Fragment {
 		position = getArguments().getInt(ARG_POSITION);
 		positionTitle = getArguments().getString(ARG_POSITION_TITLE);
 		weatherInfoString = loadWeather(positionTitle);
-		L.i("initCityTab", positionTitle);
 	}
 	
 	public String loadWeather(String cityName){

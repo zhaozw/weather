@@ -50,6 +50,14 @@ public class ChangeMyCitiesTask extends AsyncTask<Void, Void, Integer> {
 				if(cityOp.indexOf("merge") >= 0){
 					myCities.add(mCity);
 					saveCityChangeToSharePreference(myCities);
+					String weatherResult = HttpUtil.postRequestByNVP(
+							"http://106.187.94.192/weather/index.php?r=ReportOne/SendForecast",param);
+					if (!TextUtils.isEmpty(weatherResult)) {
+						String allWeather = MainActivity.mSpUtil.getAllWeather().toString();
+						JSONArray weatherList = new JSONArray(allWeather);
+						weatherList.put(new JSONObject(weatherResult));
+						MainActivity.mSpUtil.setAllWeather(weatherList.toString());
+					}
 				}
 				
 				return SUCCESS;

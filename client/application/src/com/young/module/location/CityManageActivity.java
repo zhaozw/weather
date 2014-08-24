@@ -187,11 +187,11 @@ public class CityManageActivity extends FragmentActivity {
 	}
     
     private void startMainActivity(int city) {
-		Intent i = new Intent(this, MainActivity.class);
+		Intent i = new Intent();		
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		i.putExtra("cityIndex", city);
 		setResult(RESULT_OK, i);
-		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
-		startActivity(i); 
+		this.finish();
 	}
     
     @Override  
