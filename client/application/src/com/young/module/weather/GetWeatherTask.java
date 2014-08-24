@@ -1,5 +1,8 @@
 package com.young.module.weather;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,10 +11,9 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.text.TextUtils;
 
-import com.young.MyApplication;
+import com.young.common.util.DeviceUtil;
+import com.young.common.util.HttpUtil;
 import com.young.common.util.L;
-import com.young.common.util.WeatherClient;
-import com.young.entity.City;
 
 public class GetWeatherTask extends AsyncTask<Void, Void, Integer> {
 	private static final int SUCCESS = 0;
@@ -27,8 +29,11 @@ public class GetWeatherTask extends AsyncTask<Void, Void, Integer> {
 	@Override
 	protected Integer doInBackground(Void... params) {
 		try {
-			WeatherClient wClient = new WeatherClient(mCity);
-			String netResult = wClient.getWeatherInfo();
+			Map<String, String> param = new HashMap<String, String>();
+			param.put("mac", DeviceUtil.DEVICE_ID);
+			param.put("location", mCity);
+			String netResult = HttpUtil.postRequestByNVP(
+					"http://106.187.94.192/weather/index.php?r=ReportOne/SendForecast",param);
 			if (!TextUtils.isEmpty(netResult)) {
 				updateOneCityWeather(mCity, netResult);
 				return SUCCESS;
@@ -67,10 +72,8 @@ public class GetWeatherTask extends AsyncTask<Void, Void, Integer> {
 	protected void onPostExecute(Integer result) {
 		super.onPostExecute(result);
 		if(result < 0 ){
-			mHandler.sendEmptyMessage(MainActivity.UPDATE_WEATHER_FAIL);
 			L.i("get weather fail");
 		}else{
-			mHandler.sendEmptyMessage(MainActivity.UPDATE_WEATHER_SCUESS);
 			L.i("get weather scuess");
 		}
 	}
