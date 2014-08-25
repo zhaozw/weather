@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.young.common.adapter.FetureWeatherAdapter;
+import com.young.common.util.DateUtil;
 import com.young.common.util.L;
 import com.young.modules.R;
 
@@ -85,18 +86,19 @@ public class WeatherInfoFragment extends Fragment {
 		TextView todayTempDesc = (TextView) view.findViewById(R.id.today_weather_desc);
 		
 		try {
-			yestodayInfo.setText(new Date()+"刷新");
+			forecast = DateUtil.sortJsonArrayByDate(forecast, "days");
+			yestodayInfo.setText("昨天温度:"+forecast.getJSONObject(0).getString("temp_low")+"℃~"+forecast.getJSONObject(0).getString("temp_high")+"℃");
 			curentTemp.setText(scene.getJSONObject(0).getString("l1"));
 			todayHumidity.setText(scene.getJSONObject(0).getString("l2")+"%");
 			todayWind.setText(scene.getJSONObject(0).getString("l3")+"级");
 			todayWindDir.setText(scene.getJSONObject(0).getString("l4"));
 			
-			todayDate.setText("今天 "+dateParse(forecast.getJSONObject(0).getString("days")));
-			todayTempLow.setText(forecast.getJSONObject(0).getString("temp_low")+"℃");
-			todayTempHigh.setText(forecast.getJSONObject(0).getString("temp_high")+"℃");
-			todayTempDesc.setText(forecast.getJSONObject(0).getString("weather"));
+			todayDate.setText("今天 "+DateUtil.dateParse(forecast.getJSONObject(1).getString("days")));
+			todayTempLow.setText(forecast.getJSONObject(1).getString("temp_low")+"℃");
+			todayTempHigh.setText(forecast.getJSONObject(1).getString("temp_high")+"℃");
+			todayTempDesc.setText(forecast.getJSONObject(1).getString("weather"));
 			
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -122,11 +124,6 @@ public class WeatherInfoFragment extends Fragment {
         //view.scrollTo(0, 0);
 		
 		return view;
-	}
-	
-	private String dateParse(String dateString){
-		String[] dateStrings = dateString.split("-");
-		return Integer.parseInt(dateStrings[1])+"月"+dateStrings[2]+"日";		
 	}
 	
 	@Override
