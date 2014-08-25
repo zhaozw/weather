@@ -34,10 +34,15 @@ public class FetureWeatherAdapter extends BaseAdapter {
 	private JSONArray mFetrueWeathers;
 	private LayoutInflater mInflater;
 	private Context mContext;
-	private final int[] shadeColors = { Color.rgb(103, 172, 250),
-			Color.rgb(91, 163, 245), Color.rgb(84, 153, 231),
-			Color.rgb(76, 143, 222), Color.rgb(68, 131, 208),
-			Color.rgb(60, 121, 200), Color.rgb(52, 111, 190) };
+	private final int[] shadeColors = 
+		{ Color.rgb(62, 174, 250),
+			Color.rgb(47, 162, 242), Color.rgb(39, 151, 227),
+			Color.rgb(28, 141, 219), Color.rgb(18, 128, 203),
+			Color.rgb(19, 118, 186)};
+//		{ Color.rgb(103, 172, 250),
+//			Color.rgb(91, 163, 245), Color.rgb(84, 153, 231),
+//			Color.rgb(76, 143, 222), Color.rgb(68, 131, 208),
+//			Color.rgb(60, 121, 200), Color.rgb(52, 111, 190) };
 
 	public FetureWeatherAdapter(Context context, JSONArray fetrueWeathers) {
 		mContext = context;

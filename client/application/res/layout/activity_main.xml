@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
-    android:background="#67acfa" >
+    android:background="#3eaefa" >
 
     <com.young.tab.slide.PagerSlidingTabStrip
         android:id="@+id/tabs"
