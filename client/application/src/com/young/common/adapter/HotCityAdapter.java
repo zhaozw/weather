@@ -14,13 +14,13 @@ import com.young.entity.City;
 
 public class HotCityAdapter extends BaseAdapter {
 
-	private List<String> mHotCities;
+	private List<City> mHotCities;
 	private LayoutInflater mInflater;
 	private Context mContext;
 
 	// private String mFilterStr;
 
-	public HotCityAdapter(Context context, ArrayList<String> hotCities) {
+	public HotCityAdapter(Context context, ArrayList<City> hotCities) {
 		mContext = context;
 		mHotCities = hotCities;
 		mInflater = LayoutInflater.from(mContext);
@@ -32,7 +32,7 @@ public class HotCityAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public String getItem(int position) {
+	public City getItem(int position) {
 		return mHotCities.get(position);
 	}
 
@@ -48,7 +48,7 @@ public class HotCityAdapter extends BaseAdapter {
 		}
 		TextView cityTv = (TextView) convertView
 				.findViewById(R.id.ItemText);
-		cityTv.setText(mHotCities.get(position));
+		cityTv.setText(mHotCities.get(position).getName());
 		return convertView;
 	}
 

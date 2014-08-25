@@ -6,9 +6,11 @@ import java.util.List;
 import com.young.common.adapter.HotCityAdapter;
 import com.young.common.adapter.SearchCityAdapter;
 import com.young.common.util.L;
+import com.young.common.util.SharePreferenceUtil;
 import com.young.db.CityDB;
 import com.young.entity.City;
 import com.young.modules.R;
+
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
@@ -16,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -27,9 +30,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;  
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CitySearchActivity extends FragmentActivity 
 	implements SearchView.OnQueryTextListener {
+	
+	public static final int UPDATE_CITY_SCUESS = 1;
+	public static final int UPDATE_CITY_FAIL = 0;
+	private Context mContext;
 	
 	ArrayList<String> mCitysList = new ArrayList<String>(); 
 	ArrayList<String> mHotCitysList = new ArrayList<String>(); 
@@ -40,13 +48,35 @@ public class CitySearchActivity extends FragmentActivity
 	private View mSearchContainer;
 	Object[] hotCitys;  
 	private List<City> mCities;
+	private List<City> myCities;
+	private ArrayList<City> hotCities;
 	
 	private SearchCityAdapter mSearchCityAdapter;
 	private HotCityAdapter mHotCityAdapter;
+	private SharePreferenceUtil mSpUtil;
+	
+	private Handler handler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case UPDATE_CITY_SCUESS:
+				startManageActivity();
+				break;
+			case UPDATE_CITY_FAIL:
+				Toast.makeText(mContext, "refresh", Toast.LENGTH_SHORT).show();
+				break;
+			default:
+				break;
+			}
+		}
+	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mContext = this;
+		if (mSpUtil == null)
+			mSpUtil = new SharePreferenceUtil(this);
+		
 		setContentView(R.layout.activity_city_search);
 		mCityContainer = findViewById(R.id.city_content_container);
 		mSearchContainer = findViewById(R.id.search_content_container);
@@ -58,8 +88,8 @@ public class CitySearchActivity extends FragmentActivity
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				L.i(mHotCityAdapter.getItem(position));
-				startManageActivity(mHotCityAdapter.getItem(position));
+				L.i(mHotCityAdapter.getItem(position).getName());
+				new ChangeMyCitiesTask(handler, mHotCityAdapter.getItem(position), "InsLocation/merge").execute();
 			}
 		});
 		searchResultView = (ListView) findViewById(R.id.search_list);
@@ -69,22 +99,21 @@ public class CitySearchActivity extends FragmentActivity
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				L.i(mSearchCityAdapter.getItem(position).toString());
-				startManageActivity(mSearchCityAdapter.getItem(position).getName());
+				new ChangeMyCitiesTask(handler, mSearchCityAdapter.getItem(position), "InsLocation/merge").execute();
 			}
 		});
-						
-		mHotCitysList = loadHotCityData();
-		mHotCityAdapter = new HotCityAdapter(CitySearchActivity.this,
-				mHotCitysList);
-        hotCityListView.setAdapter(mHotCityAdapter);  
+        
+        hotCities = buildHotCity();
+        mHotCityAdapter = new HotCityAdapter(CitySearchActivity.this,hotCities);
+        hotCityListView.setAdapter(mHotCityAdapter); 
                
         ActionBar bar = getActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
 	}
 	
-	private void startManageActivity(String city) {
+	private void startManageActivity() {
 		Intent i = new Intent();
-		i.putExtra("city", city);
+		i.putExtra("flag", "");
 		setResult(RESULT_OK, i);
 		finish();
 	}
@@ -176,6 +205,23 @@ public class CitySearchActivity extends FragmentActivity
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public ArrayList<City> buildHotCity() {
+		ArrayList<City> hotCityList = new ArrayList<City>();
+		hotCityList.add(new City("北京","北京","101010100","beijing","bj"));
+		hotCityList.add(new City("上海","上海","101020100","shanghai","sh"));
+		hotCityList.add(new City("广东","广州","101280101","guangzhou","gz"));
+		hotCityList.add(new City("广东","深圳","101280601","shenzhen","sz"));
+		hotCityList.add(new City("湖北","武汉","101200101","wuhan","wh"));
+		hotCityList.add(new City("江苏","南京","101190101","nanjing","nj"));
+		hotCityList.add(new City("浙江","杭州","101210101","hangzhou","hz"));
+		hotCityList.add(new City("陕西","西安","101110101","xian","xa"));
+		hotCityList.add(new City("河南","郑州","101180101","zhengzhou","zz"));
+		hotCityList.add(new City("四川","成都","101270101","chengdou","cd"));
+		hotCityList.add(new City("辽宁","沈阳","101070101","shenyang","sy"));
+		hotCityList.add(new City("天津","天津","101030100","tianjin","tj"));
+		return hotCityList;
 	}
 	
 	public ArrayList<String> loadHotCityData() {

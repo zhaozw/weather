@@ -1,5 +1,13 @@
 package com.young.common.adapter;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,20 +28,25 @@ import android.widget.TextView;
 
 public class FetureWeatherAdapter extends BaseAdapter{
 	
+	public static final Map<String,String> WEEK_PARSE = new HashMap<String, String>();
+	
 
 	private JSONArray mFetrueWeathers;
 	private LayoutInflater mInflater;
 	private Context mContext;
-	private final int[] shadeColors = {Color.rgb(103,172,250),Color.rgb(91,163,245),Color.rgb(84,153,231),Color.rgb(76,143,222),Color.rgb(68,131,208)};
+	private final int[] shadeColors = {Color.rgb(103,172,250),Color.rgb(91,163,245),Color.rgb(84,153,231),Color.rgb(76,143,222),Color.rgb(68,131,208),Color.rgb(60,121,200)};
 
-	public FetureWeatherAdapter(Context context, String fetrueWeathers) {
+	public FetureWeatherAdapter(Context context, JSONArray fetrueWeathers) {
 		mContext = context;
-		try {
-			mFetrueWeathers = new JSONArray(fetrueWeathers);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		mFetrueWeathers = fetrueWeathers;
 		mInflater = LayoutInflater.from(mContext);
+		WEEK_PARSE.put("星期一", "周一");
+		WEEK_PARSE.put("星期二", "周二");
+		WEEK_PARSE.put("星期三", "周三");
+		WEEK_PARSE.put("星期四", "周四");
+		WEEK_PARSE.put("星期五", "周五");
+		WEEK_PARSE.put("星期六", "周六");
+		WEEK_PARSE.put("星期日", "周日");
 	}
 
 	@Override
@@ -74,14 +87,60 @@ public class FetureWeatherAdapter extends BaseAdapter{
 		TextView tempTv = (TextView) convertView.findViewById(R.id.feture_weather_temp);
 		
 		try {
-			descTv.setText(mFetrueWeathers.getJSONObject(arg0).getString("weather_desc"));
-			dateTv.setText(mFetrueWeathers.getJSONObject(arg0).getString("weather_date"));
-			tempTv.setText(mFetrueWeathers.getJSONObject(arg0).getString("weather_temp"));
-		} catch (JSONException e) {
+			
+			String date = mFetrueWeathers.getJSONObject(arg0).getString("days");
+			String week = mFetrueWeathers.getJSONObject(arg0).getString("week");
+			String dateDesc = "";
+			int tempdays = daysBetween(new Date(),StringToDate(date,"yyyy-MM-dd"));
+			if(tempdays==0){
+				dateDesc = "今天";
+			}else if(tempdays==1){
+				dateDesc = "明天";
+			}else if(tempdays==2){
+				dateDesc = "后天";
+			}else{
+				dateDesc = WEEK_PARSE.get(week);
+			}
+			descTv.setText(dateDesc+mFetrueWeathers.getJSONObject(arg0).getString("weather"));
+			dateTv.setText(week+" "+dateParse(date));
+			tempTv.setText(mFetrueWeathers.getJSONObject(arg0).getString("temp_low")+"℃~"+mFetrueWeathers.getJSONObject(arg0).getString("temp_high")+"℃");
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return convertView;
 	}
+	
+	public static Date StringToDate(String dateStr,String formatStr){
+		DateFormat sdf=new SimpleDateFormat(formatStr);
+		Date date=null;
+		try {
+			date = sdf.parse(dateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
+	
+	private String dateParse(String dateString){
+		String[] dateStrings = dateString.split("-");
+		return Integer.parseInt(dateStrings[1])+"月"+dateStrings[2]+"日";		
+	}
+	
+	
+	public static int daysBetween(Date smdate,Date bdate) throws ParseException    
+    {    
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");  
+        smdate=sdf.parse(sdf.format(smdate));  
+        bdate=sdf.parse(sdf.format(bdate));  
+        Calendar cal = Calendar.getInstance();    
+        cal.setTime(smdate);    
+        long time1 = cal.getTimeInMillis();                 
+        cal.setTime(bdate);    
+        long time2 = cal.getTimeInMillis();         
+        long between_days=(time2-time1)/(1000*3600*24);  
+            
+       return Integer.parseInt(String.valueOf(between_days));           
+    }
 
 }

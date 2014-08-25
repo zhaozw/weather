@@ -1,19 +1,13 @@
 package com.young.module.weather;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
+import java.util.HashMap;
+import java.util.Map;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.text.TextUtils;
-
-import com.young.MyApplication;
+import com.young.common.util.DeviceUtil;
 import com.young.common.util.HttpUtil;
 import com.young.common.util.L;
-import com.young.common.util.WeatherClient;
 
 public class UpdateAllWeatherTask extends AsyncTask<Void, Void, Integer> {
 	private static final int SUCCESS = 0;
@@ -27,9 +21,10 @@ public class UpdateAllWeatherTask extends AsyncTask<Void, Void, Integer> {
 	@Override
 	protected Integer doInBackground(Void... params) {
 		try {
-			//WeatherClient wClient = new WeatherClient(mCitys);
-			String netResult = HttpUtil.postRequestToGetWeathers(
-					"http://106.187.94.192/weather/index.php?r=Report/SendForecast");//wClient.getAllWeatherInfo();
+			Map<String, String> param = new HashMap<String, String>();
+			param.put("mac", DeviceUtil.DEVICE_ID);
+			String netResult = HttpUtil.postRequestByNVP(
+					"http://106.187.94.192/weather/index.php?r=Report/SendForecast",param);//wClient.getAllWeatherInfo();
 			if (!TextUtils.isEmpty(netResult)) {
 				setAllWeather(netResult);
 				return SUCCESS;
@@ -55,19 +50,5 @@ public class UpdateAllWeatherTask extends AsyncTask<Void, Void, Integer> {
 			mHandler.sendEmptyMessage(MainActivity.UPDATE_WEATHER_SCUESS);
 			L.i("get weather scuess");
 		}
-	}
-	
-	public List<String> loadAllCityFromSharePreference() {		
-		List<String> citys = new ArrayList<String>();
-		try {
-			JSONArray cityList = new JSONArray(MainActivity.mSpUtil.getAllCity().toString());
-			for(int i=0; i<cityList.length();i++){
-				String city = (String) cityList.get(i);
-				citys.add(city);
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return citys;
 	}
 }

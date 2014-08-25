@@ -2,24 +2,27 @@ package com.young.common.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.young.common.util.L;
+import com.young.entity.City;
 import com.young.module.weather.WeatherInfoFragment;
 
 public class CityPagerAdapter extends FragmentPagerAdapter {
 
-	private List<String> CITYS = new ArrayList<String>();
+	private List<City> CITYS = new ArrayList<City>();
 
-	public CityPagerAdapter(FragmentManager fm, List<String> citys) {
+	public CityPagerAdapter(FragmentManager fm, List<City> citys) {
 		super(fm);
 		this.CITYS = citys;
 	}
 
 	@Override
 	public CharSequence getPageTitle(int position) {
-		return CITYS.get(position);
+		return CITYS.get(position).getName();
 	}
 
 	@Override

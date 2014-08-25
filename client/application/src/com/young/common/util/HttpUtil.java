@@ -66,21 +66,15 @@ public class HttpUtil
 		return null;
 	}
 	
-	public static String postRequestToGetWeathers(String url)throws Exception
+	public static String postRequestByNVP(String url,Map<String ,String> params)throws Exception
 		{
-			L.i("enter postRequestToGetWeathers");
+			L.i("enter postRequestByNVP");
 			HttpPost post = new HttpPost(url);
-			
-			//向服务器写json
-//	        JSONObject json = new JSONObject();
-//	        json.put("mac", DeviceUtil.DEVICE_ID);
-//	        System.out.println("param = " + json);
-//	        StringEntity se = new StringEntity(json.toString());
-//	        se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-//	        post.setEntity(se);
 	        
 	        List<NameValuePair> postParameters = new ArrayList<NameValuePair>();  
-	        postParameters.add(new BasicNameValuePair("mac", DeviceUtil.DEVICE_ID));
+	        for (Map.Entry<String, String> m : params.entrySet()) {  
+	        	postParameters.add(new BasicNameValuePair(m.getKey(), m.getValue())); 	            	          
+	        }  
 	        System.out.println("param = " + postParameters);
 	        // 设置字符集
 	        HttpEntity entity = new UrlEncodedFormEntity(postParameters, HTTP.UTF_8);
@@ -95,12 +89,28 @@ public class HttpUtil
 			{
 				
 				String result = EntityUtils
-					.toString(httpResponse.getEntity());
-				System.out.println("result = " + result);
+					.toString(httpResponse.getEntity(),HTTP.UTF_8);
+				System.out.println("result = " + convert(result));
 				return result;
 			}
 			return null;
 		}
+	
+	public static String convert(String utfString){  
+	    StringBuilder sb = new StringBuilder();  
+	    int i = -1;  
+	    int pos = 0;  
+	      
+	    while((i=utfString.indexOf("\\u", pos)) != -1){  
+	        sb.append(utfString.substring(pos, i));  
+	        if(i+5 < utfString.length()){  
+	            pos = i+6;  
+	            sb.append((char)Integer.parseInt(utfString.substring(i+2, i+6), 16));  
+	        }  
+	    }  
+	      
+	    return sb.toString();  
+	}  
 	
 	public static String postData(String posturl,List<NameValuePair> nameValuePairs)
 	{
