@@ -60,7 +60,7 @@ public class FetureWeatherAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return mFetrueWeathers.length()-2;
+		return mFetrueWeathers.length();
 	}
 
 	@Override
@@ -96,12 +96,11 @@ public class FetureWeatherAdapter extends BaseAdapter {
 		TextView dateTv = (TextView) convertView.findViewById(R.id.feture_date);
 		TextView tempTv = (TextView) convertView
 				.findViewById(R.id.feture_weather_temp);
-		int pos = arg0 + 2;
 
 		try {
 
-			String date = mFetrueWeathers.getJSONObject(pos).getString("days");
-			String week = mFetrueWeathers.getJSONObject(pos).getString("week");
+			String date = mFetrueWeathers.getJSONObject(arg0).getString("days");
+			String week = mFetrueWeathers.getJSONObject(arg0).getString("week");
 			String dateDesc = "";
 			int tempdays = DateUtil.daysBetween(new Date(),
 					DateUtil.StringToDate(date, "yyyy-MM-dd"));
@@ -115,12 +114,12 @@ public class FetureWeatherAdapter extends BaseAdapter {
 				dateDesc = WEEK_PARSE.get(week);
 			}
 			descTv.setText(dateDesc
-					+ mFetrueWeathers.getJSONObject(pos).getString("weather"));
+					+ mFetrueWeathers.getJSONObject(arg0).getString("weather"));
 			dateTv.setText(week + " " + DateUtil.dateParse(date));
-			tempTv.setText(mFetrueWeathers.getJSONObject(pos).getString(
+			tempTv.setText(mFetrueWeathers.getJSONObject(arg0).getString(
 					"temp_low")
 					+ "℃~"
-					+ mFetrueWeathers.getJSONObject(pos)
+					+ mFetrueWeathers.getJSONObject(arg0)
 							.getString("temp_high") + "℃");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

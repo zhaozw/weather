@@ -1,5 +1,6 @@
 package com.young.module.weather;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -105,7 +106,27 @@ public class WeatherInfoFragment extends Fragment {
 		
 		ListView fetureWeatherList = (ListView)view.findViewById(R.id.fetureList);
 
-		fwAdapter = new FetureWeatherAdapter(getActivity(), forecast); 
+//		forecast.remove(0);
+//		forecast.remove(1);
+		JSONArray forecaseTempArray = new JSONArray();
+		if(forecast != null){
+		for(int i=0;i<forecast.length();i++){
+			try {
+				int dis = DateUtil.daysBetween(new Date(),DateUtil.StringToDate(forecast.getJSONObject(i).getString("days"), "yyyy-MM-dd"));
+				if(dis!=0 && dis!=-1){
+					forecaseTempArray.put(forecast.getJSONObject(i));
+				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+						
+		}
+		}
+		fwAdapter = new FetureWeatherAdapter(getActivity(), forecaseTempArray); 
 		fetureWeatherList.setAdapter(fwAdapter);
 		
 		int totalHeight = 0;  
