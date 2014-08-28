@@ -17,7 +17,7 @@
     
     <style name="current_temp">
         <item name="android:textColor">#ffffff</item>
-        <item name="android:textSize">130sp</item>
+        <item name="android:textSize">140sp</item>
     </style>
     
     <style name="font_white_12">

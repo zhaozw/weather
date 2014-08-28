@@ -118,9 +118,9 @@ public class FetureWeatherAdapter extends BaseAdapter {
 			dateTv.setText(week + " " + DateUtil.dateParse(date));
 			tempTv.setText(mFetrueWeathers.getJSONObject(arg0).getString(
 					"temp_low")
-					+ "℃~"
+					+ "° - "
 					+ mFetrueWeathers.getJSONObject(arg0)
-							.getString("temp_high") + "℃");
+							.getString("temp_high") + "°");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

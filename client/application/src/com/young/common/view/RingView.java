@@ -36,14 +36,14 @@ public class RingView extends View {
 		
         int center = canvas.getWidth()/2;//width/2;  
         int radius = center*4/5;
-        int top = center*15/14;
+        //int top = center*15/14;
         int innerCircle = radius;//dip2px(context, radius); //设置内圆半径  
         int ringWidth = 2;//dip2px(context, 1); //设置圆环宽度  
           
         //绘制圆环  
         this.paint.setARGB(120, 255 ,255, 255);  
         this.paint.setStrokeWidth(ringWidth);  
-        canvas.drawCircle(center,top, innerCircle+1+ringWidth/2, this.paint);   
+        canvas.drawCircle(center,center, innerCircle+1+ringWidth/2, this.paint);   
           
         super.onDraw(canvas);  
     }  
