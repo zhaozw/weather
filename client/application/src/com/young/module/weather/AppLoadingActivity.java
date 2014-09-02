@@ -1,5 +1,6 @@
 package com.young.module.weather;
 
+import com.young.common.util.LocationUtil;
 import com.young.modules.R;
 
 import android.app.Activity;
@@ -24,6 +25,8 @@ public class AppLoadingActivity extends Activity {
         animation.setStartOffset(1000);
         animation.setDuration(1000);
         loadingIv.setAnimation(animation);
+        
+        LocationUtil.startGetLocation(this);
 
 
         // 给animation设置监听器

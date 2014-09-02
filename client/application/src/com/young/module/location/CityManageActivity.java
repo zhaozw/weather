@@ -6,7 +6,9 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.young.common.util.L;
+import com.young.common.util.LocationUtil;
 import com.young.common.util.SharePreferenceUtil;
+import com.young.common.util.T;
 import com.young.entity.City;
 import com.young.module.weather.MainActivity;
 import com.young.sort.list.DragSortListView;
@@ -84,6 +86,8 @@ public class CityManageActivity extends FragmentActivity {
         
         ActionBar bar = getActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
+        
+
     }
     
     public List<City> loadAllCityFromSharePreference() {		
@@ -144,12 +148,19 @@ public class CityManageActivity extends FragmentActivity {
         	saveCityChangeToSharePreference(cityList);
         }
         
-        
+
         public void doAfterRemove(int which)  {
         	//do something after remove
-        	L.i("remove city " + which);
-        	new ChangeMyCitiesTask(handler, cityList.get(which), "ModLocation/delete").execute();
-        	removeCityIndex = which;
+        	L.i("after remove city :" + cityList.size());
+        	if(cityList.size() == 1){       		
+        		T.showShort(mContext, "请至少选中一个城市！");
+        		loadCity(cityList);
+        		return;
+        	}
+        	else{
+        		new ChangeMyCitiesTask(handler, cityList.get(which), "ModLocation/delete").execute();
+            	removeCityIndex = which;
+        	}       	
         }
     }
     
@@ -204,6 +215,9 @@ public class CityManageActivity extends FragmentActivity {
     		cityList = loadAllCityFromSharePreference();
 			loadCity(cityList);
 		}
+    	else if(requestCode == 0 && resultCode == RESULT_CANCELED){
+    		T.showShort(this, "该城市已经在列表当中!");
+    	}
     }  
     
     private void saveCityChangeToSharePreference(List<City> newCitys) {

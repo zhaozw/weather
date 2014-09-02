@@ -57,6 +57,23 @@
             android:logo="@drawable/icon"
             android:screenOrientation="portrait"
             android:label="设置" />
+        
+         <!--百度定位  -->
+        
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" >
+            <intent-filter>
+                <action android:name="com.baidu.location.service_v4.2" >
+                </action>
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="T3q5A4PajlHvby9jDGmyEG83" />
+           
+
     </application>
 
 </manifest>

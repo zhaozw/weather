@@ -3,7 +3,7 @@
     android:id="@+id/loading_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="#3eaefa"
     android:orientation="vertical" >
 
     <ProgressBar
@@ -14,5 +14,14 @@
         android:layout_centerVertical="true"
         android:indeterminate="true"
         android:indeterminateBehavior="repeat" />
+    
+    <ImageView 
+        android:id="@+id/slogn"
+        android:layout_width="120dip"
+        android:layout_height="120dip"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/logo"
+        />
 
 </RelativeLayout>
