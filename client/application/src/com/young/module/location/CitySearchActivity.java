@@ -1,8 +1,15 @@
 package com.young.module.location;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.young.common.adapter.HotCityAdapter;
 import com.young.common.adapter.SearchCityAdapter;
 import com.young.common.util.L;
@@ -37,6 +44,7 @@ public class CitySearchActivity extends FragmentActivity
 	
 	public static final int UPDATE_CITY_SCUESS = 1;
 	public static final int UPDATE_CITY_FAIL = 0;
+	public static final int UPDATE_CITY_REPEAT = 2;
 	private Context mContext;
 	
 	ArrayList<String> mCitysList = new ArrayList<String>(); 
@@ -60,6 +68,12 @@ public class CitySearchActivity extends FragmentActivity
 			switch (msg.what) {
 			case UPDATE_CITY_SCUESS:
 				startManageActivity();
+				break;
+			case UPDATE_CITY_REPEAT:
+				Intent i = new Intent();
+				i.putExtra("flag", "");
+				setResult(RESULT_CANCELED, i);
+				finish();
 				break;
 			case UPDATE_CITY_FAIL:
 				Toast.makeText(mContext, "refresh", Toast.LENGTH_SHORT).show();
@@ -89,7 +103,13 @@ public class CitySearchActivity extends FragmentActivity
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				L.i(mHotCityAdapter.getItem(position).getName());
-				new ChangeMyCitiesTask(handler, mHotCityAdapter.getItem(position), "InsLocation/merge").execute();
+				List<City> cityList =  loadAllCityFromSharePreference();
+				if(cityList.contains(mHotCityAdapter.getItem(position))){
+					handler.sendEmptyMessage(UPDATE_CITY_REPEAT);
+				}
+				else{
+					new ChangeMyCitiesTask(handler, mHotCityAdapter.getItem(position), "InsLocation/merge").execute();
+				}				
 			}
 		});
 		searchResultView = (ListView) findViewById(R.id.search_list);
@@ -209,6 +229,28 @@ public class CitySearchActivity extends FragmentActivity
 	
 	public ArrayList<City> buildHotCity() {
 		ArrayList<City> hotCityList = new ArrayList<City>();
+		SharePreferenceUtil sp = new SharePreferenceUtil(this);
+		City lbs = null;
+		
+		try {
+			String lbstr = sp.getLBS();
+			JSONObject lbsObj;
+			lbsObj = new JSONObject(lbstr);
+			String city = lbsObj.getString("City");
+			city = city.substring(0,city.length()-1);//去除最后一个“市”
+			String district = lbsObj.getString("District");
+			
+			CityDB cityDB = new CityDB(this);
+			lbs = cityDB.getCity(district);
+			if(lbs == null){
+				lbs = cityDB.getCity(city);
+			}
+			L.i(city+":"+district);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		hotCityList.add(lbs);
 		hotCityList.add(new City("北京","北京","101010100","beijing","bj"));
 		hotCityList.add(new City("上海","上海","101020100","shanghai","sh"));
 		hotCityList.add(new City("广东","广州","101280101","guangzhou","gz"));
@@ -231,6 +273,18 @@ public class CitySearchActivity extends FragmentActivity
         	hotCityList.add(hotCitys[i]);  
         }
 		return hotCityList;
+	}
+	
+    public List<City> loadAllCityFromSharePreference() {		
+		List<City> citys = new ArrayList<City>();
+		try {
+			Gson gson = new Gson();
+			Type lt=new TypeToken<List<City>>(){}.getType();
+			citys=gson.fromJson(mSpUtil.getAllCity().toString(),lt);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return citys;
 	}
 	
 	@Override

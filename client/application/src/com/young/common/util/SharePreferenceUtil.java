@@ -10,6 +10,7 @@ public class SharePreferenceUtil {
 	private static final String WEATHERS_JSON_STRING = "all_weather";
 	private static final String TIME = "time";
 	private static final String VERSION = "version";
+	private static final String LBS = "location_base";
 	
 	private SharedPreferences sp;
 	private SharedPreferences.Editor editor;
@@ -67,5 +68,14 @@ public class SharePreferenceUtil {
 
 	public int getVersion() {
 		return sp.getInt(VERSION, -1);
+	}
+	
+	public void setLBS(String lbs) {
+		editor.putString(LBS, lbs);
+		editor.commit();
+	}
+
+	public String getLBS() {
+		return sp.getString(LBS, "");
 	}
 }

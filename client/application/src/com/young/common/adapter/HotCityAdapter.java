@@ -48,7 +48,12 @@ public class HotCityAdapter extends BaseAdapter {
 		}
 		TextView cityTv = (TextView) convertView
 				.findViewById(R.id.ItemText);
-		cityTv.setText(mHotCities.get(position).getName());
+		if(position == 0){
+			cityTv.setText("自动定位");
+		}
+		else{
+			cityTv.setText(mHotCities.get(position).getName());
+		}		
 		return convertView;
 	}
 

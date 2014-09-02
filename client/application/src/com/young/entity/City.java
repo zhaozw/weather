@@ -72,4 +72,12 @@ public class City implements Serializable {
 				+ number + ", pinyin=" + pinyin + ", py=" + py + "]";
 	}
 
+	public boolean equals(Object obj) {   
+        if (obj instanceof City) {   
+        	City city = (City) obj;   
+            return this.province.equals(city.province)   
+                    && this.name.equals(city.name) && this.number.equals(city.number);   
+        }   
+        return super.equals(obj); 
+	}
 }
