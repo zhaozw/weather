@@ -168,7 +168,8 @@ public class CityManageActivity extends FragmentActivity {
 		case android.R.id.home:        
 			Intent intent = new Intent(this, MainActivity.class);            
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
-			startActivity(intent);       
+			startActivity(intent);  
+			//finish();
 			return true;    
 
 		case R.id.add_city:
