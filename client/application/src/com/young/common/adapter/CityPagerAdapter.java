@@ -2,14 +2,13 @@ package com.young.common.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-
-import com.young.common.util.L;
+import android.support.v4.view.PagerAdapter;
+import android.view.ViewGroup;
 import com.young.entity.City;
-import com.young.module.weather.WeatherInfoFragment;
+import com.young.module.weather.WeatherFragment;
 
 public class CityPagerAdapter extends FragmentPagerAdapter {
 
@@ -32,14 +31,22 @@ public class CityPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		return WeatherInfoFragment.newInstance(position, getPageTitle(position).toString());
+		WeatherFragment fragment = new WeatherFragment();
+		return fragment;
 	}
+
+	@Override
+	 public Object instantiateItem(ViewGroup container, int position) {
+		 WeatherFragment f = (WeatherFragment) super.instantiateItem(container, position);
+	     String title = CITYS.get(position).getName();
+	     f.setPosition(position);
+	     f.setPositionTitle(title);
+	     return f;
+	 }
 	
 	@Override
-    public int getItemPosition(Object object) {
-        return POSITION_NONE;
-    }
+	public int getItemPosition(Object object) {
+		return PagerAdapter.POSITION_NONE;
+	}
 
 }
-
-

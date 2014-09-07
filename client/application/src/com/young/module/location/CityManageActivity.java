@@ -3,12 +3,13 @@ package com.young.module.location;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.young.common.util.L;
-import com.young.common.util.LocationUtil;
 import com.young.common.util.SharePreferenceUtil;
 import com.young.common.util.T;
+import com.young.common.view.ProgersssDialog;
 import com.young.entity.City;
 import com.young.module.weather.MainActivity;
 import com.young.sort.list.DragSortListView;
@@ -19,6 +20,7 @@ import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +33,7 @@ import android.database.Cursor;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("HandlerLeak")
 public class CityManageActivity extends FragmentActivity {
 
 	public static final int UPDATE_CITY_SCUESS = 1;
@@ -42,20 +45,21 @@ public class CityManageActivity extends FragmentActivity {
     
     private List<City> cityList;
     private int removeCityIndex;
-    private int selectCityIndex = 0;
+    private ProgersssDialog loadingDialog = null;
     
     private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case UPDATE_CITY_SCUESS:
 				//startManageActivity();
+				loadingDialog.dismiss();
 				cityList.remove(removeCityIndex); 
 				saveCityChangeToSharePreference(cityList);
 				break;
 			case UPDATE_CITY_FAIL:
-				cityList.remove(removeCityIndex); 
-				saveCityChangeToSharePreference(cityList);
-				Toast.makeText(mContext, "update fail", Toast.LENGTH_SHORT).show();
+				loadingDialog.dismiss();
+				loadCity(cityList);
+				Toast.makeText(mContext, "update city fail", Toast.LENGTH_SHORT).show();
 				break;
 			default:
 				break;
@@ -69,6 +73,7 @@ public class CityManageActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         mContext = this;
         setContentView(R.layout.city_manage);
+        loadingDialog = new ProgersssDialog(CityManageActivity.this);
         
         if (mSpUtil == null)
 			mSpUtil = new SharePreferenceUtil(this);
@@ -148,20 +153,21 @@ public class CityManageActivity extends FragmentActivity {
         	saveCityChangeToSharePreference(cityList);
         }
         
-
-        public void doAfterRemove(int which)  {
-        	//do something after remove
-        	L.i("after remove city :" + cityList.size());
+        public boolean doBeforeRemove(int which) {
+        	L.i("before remove city :" + cityList.size());
         	if(cityList.size() == 1){       		
-        		T.showShort(mContext, "请至少选中一个城市！");
+        		T.showShort(mContext, "请至少保留一个城市！");
         		loadCity(cityList);
-        		return;
-        	}
-        	else{
+        		return false;
+        	}else{
+        		loadingDialog.setMsg("正在删除城市...");
+        		loadingDialog.show();
         		new ChangeMyCitiesTask(handler, cityList.get(which), "ModLocation/delete").execute();
             	removeCityIndex = which;
-        	}       	
+        	} 
+        	return true;
         }
+
     }
     
     @Override  
@@ -176,11 +182,11 @@ public class CityManageActivity extends FragmentActivity {
 
 		switch (item.getItemId()) {
 		
-		case android.R.id.home:        
-			Intent intent = new Intent(this, MainActivity.class);            
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
-			startActivity(intent);  
-			//finish();
+		case android.R.id.home:  
+			Intent i = new Intent();		
+			i.putExtra("cityIndex", 0);
+			setResult(RESULT_OK, i);
+			finish();
 			return true;    
 
 		case R.id.add_city:
@@ -200,19 +206,15 @@ public class CityManageActivity extends FragmentActivity {
     
     private void startMainActivity(int city) {
 		Intent i = new Intent();		
-		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		i.putExtra("cityIndex", city);
 		setResult(RESULT_OK, i);
-		this.finish();
+		finish();
 	}
     
     @Override  
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
     	if (requestCode == 0 && resultCode == RESULT_OK) {
-//    		String cityname = data.getExtras().getString("city");
-//    		cityList.add(cityname);
-//			saveCityChangeToSharePreference(cityList);
     		cityList = loadAllCityFromSharePreference();
 			loadCity(cityList);
 		}
@@ -225,9 +227,9 @@ public class CityManageActivity extends FragmentActivity {
 		// TODO Auto-generated method stub
 		Gson gson = new Gson();
 		String citys = gson.toJson(newCitys);
-		L.i(citys);
+		L.i("citys",citys);
 		MainActivity.mSpUtil.setAllCity(citys);		
 	}
-
+    
 }
 

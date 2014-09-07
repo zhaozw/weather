@@ -4,20 +4,19 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.young.common.adapter.HotCityAdapter;
 import com.young.common.adapter.SearchCityAdapter;
 import com.young.common.util.L;
 import com.young.common.util.SharePreferenceUtil;
+import com.young.common.view.ProgersssDialog;
 import com.young.db.CityDB;
 import com.young.entity.City;
 import com.young.modules.R;
-
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
@@ -39,6 +38,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("HandlerLeak")
 public class CitySearchActivity extends FragmentActivity 
 	implements SearchView.OnQueryTextListener {
 	
@@ -53,30 +53,30 @@ public class CitySearchActivity extends FragmentActivity
 	ListView searchResultView;
 	SearchView searchView; 
 	private View mCityContainer;
-	private View mSearchContainer;
 	Object[] hotCitys;  
 	private List<City> mCities;
-	private List<City> myCities;
 	private ArrayList<City> hotCities;
 	
 	private SearchCityAdapter mSearchCityAdapter;
 	private HotCityAdapter mHotCityAdapter;
 	private SharePreferenceUtil mSpUtil;
+	private ProgersssDialog loadingDialog = null;
 	
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case UPDATE_CITY_SCUESS:
+				loadingDialog.dismiss();
 				startManageActivity();
 				break;
 			case UPDATE_CITY_REPEAT:
 				Intent i = new Intent();
-				i.putExtra("flag", "");
 				setResult(RESULT_CANCELED, i);
 				finish();
 				break;
 			case UPDATE_CITY_FAIL:
-				Toast.makeText(mContext, "refresh", Toast.LENGTH_SHORT).show();
+				loadingDialog.dismiss();
+				Toast.makeText(mContext, "add city fail", Toast.LENGTH_SHORT).show();
 				break;
 			default:
 				break;
@@ -90,10 +90,10 @@ public class CitySearchActivity extends FragmentActivity
 		mContext = this;
 		if (mSpUtil == null)
 			mSpUtil = new SharePreferenceUtil(this);
+		loadingDialog = new ProgersssDialog(CitySearchActivity.this);
 		
 		setContentView(R.layout.activity_city_search);
 		mCityContainer = findViewById(R.id.city_content_container);
-		mSearchContainer = findViewById(R.id.search_content_container);
 		mCities = new CityDB(this).getAllCity();
 		
 		hotCityListView = (GridView) findViewById(R.id.hotCitys); 
@@ -108,6 +108,8 @@ public class CitySearchActivity extends FragmentActivity
 					handler.sendEmptyMessage(UPDATE_CITY_REPEAT);
 				}
 				else{
+					loadingDialog.setMsg("正在添加城市...");
+					loadingDialog.show();
 					new ChangeMyCitiesTask(handler, mHotCityAdapter.getItem(position), "InsLocation/merge").execute();
 				}				
 			}
@@ -119,6 +121,8 @@ public class CitySearchActivity extends FragmentActivity
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				L.i(mSearchCityAdapter.getItem(position).toString());
+				loadingDialog.setMsg("正在添加城市...");
+				loadingDialog.show();
 				new ChangeMyCitiesTask(handler, mSearchCityAdapter.getItem(position), "InsLocation/merge").execute();
 			}
 		});
@@ -133,7 +137,6 @@ public class CitySearchActivity extends FragmentActivity
 	
 	private void startManageActivity() {
 		Intent i = new Intent();
-		i.putExtra("flag", "");
 		setResult(RESULT_OK, i);
 		finish();
 	}

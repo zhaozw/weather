@@ -1,22 +1,28 @@
 package com.young.module.weather;
 
+import java.lang.reflect.Type;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.young.common.adapter.FetureWeatherAdapter;
 import com.young.common.util.DateUtil;
 import com.young.common.util.L;
+import com.young.entity.City;
 import com.young.modules.R;
 
-import android.R.integer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,30 +33,28 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class WeatherInfoFragment extends Fragment {
+public class WeatherFragment extends Fragment {
 
 	public static final int GET_WEATHER_SCUESS = 1;
 	public static final int GET_WEATHER_FAIL = 0;
-	private static final String ARG_POSITION = "position";
-	private static final String ARG_POSITION_TITLE = "positionTitle";
+	public static final String ARG_POSITION = "position";
+	public static final String ARG_POSITION_TITLE = "positionTitle";
 	private static final Map<String, String> WIND_DIR_MAP = new HashMap<String, String>();
 	private static final Map<String, String> WIND_MAP = new HashMap<String, String>();
 
 	private int position;
 	private String positionTitle;
-	private String weatherInfoString;
-	private TextView v;
 	private FetureWeatherAdapter fwAdapter;
+	private int width = 0;
+	private FragmentActivity fa;
 	
 	private JSONArray forecast;
 	private JSONArray scene;
-	
-	public static WeatherInfoFragment newInstance(int position, String positionTitle) {
-		WeatherInfoFragment f = new WeatherInfoFragment();
-		Bundle b = new Bundle();
-		b.putInt(ARG_POSITION, position);
-		b.putString(ARG_POSITION_TITLE, positionTitle);
-		f.setArguments(b);
+
+	@SuppressWarnings("static-access")
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		loadWeather(positionTitle);
 		
 		WIND_DIR_MAP.put("0", "无持续风向");
 		WIND_DIR_MAP.put("1", "东北风");
@@ -73,26 +77,49 @@ public class WeatherInfoFragment extends Fragment {
 		WIND_MAP.put("7", "9-10级");
 		WIND_MAP.put("8", "10-11级");
 		WIND_MAP.put("9", "11-12级");
-		return f;
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		initData();
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		DisplayMetrics metrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) getActivity()
                 .getSystemService(getActivity().WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(metrics);
-		int width = metrics.widthPixels;
-		
-		View view=View.inflate(getActivity(),R.layout.weather_current,null);		
-		
+		width = metrics.widthPixels;
+		fa = getActivity();
+		View view = inflater.inflate(R.layout.weather_current, null);  
+		return renderView(view);
+	}
+	
+	
+//	@Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//        if (isVisibleToUser) {
+//        	citys = loadAllCityFromSharePreference();
+//        	loadWeather(citys.get(position).getName());
+//        } else {
+//        }
+//    }
+	
+	public int getPosition() {
+		return position;
+	}
+
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
+
+
+	public String getPositionTitle() {
+		return positionTitle;
+	}
+
+
+	public void setPositionTitle(String positionTitle) {
+		this.positionTitle = positionTitle;
+	}
+	
+	public View renderView(View viewIn){
+		View view = viewIn;
 		LinearLayout backgroundLayout = (LinearLayout)view.findViewById(R.id.todaybackground);
 		LinearLayout.LayoutParams bllParams = new LinearLayout.LayoutParams(width, width);
 		bllParams.setMargins(0, 0, 0, 0);
@@ -123,7 +150,6 @@ public class WeatherInfoFragment extends Fragment {
 	    vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {  
 	        public boolean onPreDraw() {  
 	            int height = todayTempLow.getMeasuredHeight();  
-	            L.i("height", ""+height); 
 	            currentTempView.setPadding(0, 0, 0, height/2);
 	            return true;  
 	        }  
@@ -131,7 +157,6 @@ public class WeatherInfoFragment extends Fragment {
 		
 		cParams.setMargins(0, -width, 0, 0);
 		currentTempView.setLayoutParams(cParams);
-		
 		
 		try {
 			forecast = DateUtil.sortJsonArrayByDate(forecast, "days");
@@ -141,7 +166,8 @@ public class WeatherInfoFragment extends Fragment {
 			todayWind.setText(WIND_MAP.get(scene.getJSONObject(0).getString("l3")));
 			todayWindDir.setText(WIND_DIR_MAP.get(scene.getJSONObject(0).getString("l4")));
 			
-			todayDate.setText("今天 "+DateUtil.dateParse(forecast.getJSONObject(1).getString("days")));
+			L.i("city-paint", forecast.getJSONObject(0).getString("citynm"));
+			todayDate.setText(forecast.getJSONObject(0).getString("citynm")+" 今天 "+DateUtil.dateParse(forecast.getJSONObject(1).getString("days")));
 			todayTempLow.setText(forecast.getJSONObject(1).getString("temp_low")+"℃");
 			todayTempHigh.setText(forecast.getJSONObject(1).getString("temp_high")+"℃");
 			todayTempDesc.setText(forecast.getJSONObject(1).getString("weather"));
@@ -153,8 +179,6 @@ public class WeatherInfoFragment extends Fragment {
 		
 		ListView fetureWeatherList = (ListView)view.findViewById(R.id.fetureList);
 
-//		forecast.remove(0);
-//		forecast.remove(1);
 		JSONArray forecaseTempArray = new JSONArray();
 		if(forecast != null){
 		for(int i=0;i<forecast.length();i++){
@@ -173,7 +197,7 @@ public class WeatherInfoFragment extends Fragment {
 						
 		}
 		}
-		fwAdapter = new FetureWeatherAdapter(getActivity(), forecaseTempArray); 
+		fwAdapter = new FetureWeatherAdapter(fa, forecaseTempArray); 
 		fetureWeatherList.setAdapter(fwAdapter);
 		
 		int totalHeight = 0;  
@@ -188,30 +212,25 @@ public class WeatherInfoFragment extends Fragment {
         fetureWeatherList.setLayoutParams(params);  
         
         fetureWeatherList.setFocusable(false);
-		
-        //view.scrollTo(0, 0);
-		
-		return view;
+        
+        return view;
 	}
 	
-	@Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-        	weatherInfoString = loadWeather(positionTitle);
-        } else {
-        }
-    }
-	
-	private void initData(){
-		position = getArguments().getInt(ARG_POSITION);
-		positionTitle = getArguments().getString(ARG_POSITION_TITLE);
-		weatherInfoString = loadWeather(positionTitle);
+	public List<City> loadAllCityFromSharePreference() {		
+		List<City> citys = new ArrayList<City>();
+		try {
+			Gson gson = new Gson();
+			Type lt=new TypeToken<List<City>>(){}.getType();
+			citys=gson.fromJson(MainActivity.mSpUtil.getAllCity().toString(),lt);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return citys;
 	}
 	
-	public String loadWeather(String cityName){
+	public void loadWeather(String cityName){
 		if("添加城市".equals(cityName)){
-			return "请添加城市"; 
+			return; 
 		}
 		JSONObject currentCityWeather = new JSONObject();
 		try {
@@ -220,15 +239,14 @@ public class WeatherInfoFragment extends Fragment {
 			for(int i=0; i<weatherList.length(); i++){
 				if(cityName.equals(weatherList.getJSONObject(i).getJSONArray("forecast").getJSONObject(0).getString("citynm"))){
 					currentCityWeather = weatherList.getJSONObject(i);
-					forecast = weatherList.getJSONObject(i).getJSONArray("forecast");
-					scene = weatherList.getJSONObject(i).getJSONArray("scene");
+					forecast = currentCityWeather.getJSONArray("forecast");
+					scene = currentCityWeather.getJSONArray("scene");
 					break;
 				}
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return currentCityWeather.toString();
 	
 	}
 

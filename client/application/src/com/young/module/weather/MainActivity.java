@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,13 +39,13 @@ public class MainActivity extends FragmentActivity {
 	private ViewPager pager;
 	private CityPagerAdapter adapter;
 	// private int baseColor = 0xFF96AA39;
-	private ActionBar actionBar;
 
 	private List<City> citys = new ArrayList<City>();
 	protected MenuItem refreshItem;
 	protected RotateImageView refreshActionView;
-	private int currentItem;
+	private int currentItem = 0;
 
+	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -69,14 +68,11 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		actionBar = getActionBar();
-		//actionBar.setDisplayShowTitleEnabled(false);
 		setContentView(R.layout.activity_main);
 		if (mSpUtil == null)
 			mSpUtil = new SharePreferenceUtil(this);
 		pager = (ViewPager) findViewById(R.id.pager);
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-		pager = (ViewPager) findViewById(R.id.pager);
 
 		buildAdapter();
 		buildPager(0);
@@ -86,15 +82,21 @@ public class MainActivity extends FragmentActivity {
 				getContentResolver());
 
 	}
+	
+	@Override
+	protected void onResume(){
+		super.onResume();
+		L.i("onResume", "onResume");
+		buildAdapter();
+		buildPager(currentItem);
+		tabs.setViewPager(pager);
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == 0 && resultCode == RESULT_OK) {
 			int cityIndex = data.getExtras().getInt("cityIndex");
-			L.i("currentTabNum", cityIndex+"");
-			buildAdapter();
-			buildPager(cityIndex);
-			tabs.setViewPager(pager);
+			currentItem = cityIndex;
 		}
 	}
 
