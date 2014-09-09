@@ -254,17 +254,22 @@ public class CitySearchActivity extends FragmentActivity
 			e.printStackTrace();
 		}
 		hotCityList.add(lbs);
-		hotCityList.add(new City("北京","北京","101010100","beijing","bj"));
 		hotCityList.add(new City("上海","上海","101020100","shanghai","sh"));
+		hotCityList.add(new City("北京","北京","101010100","beijing","bj"));
 		hotCityList.add(new City("广东","广州","101280101","guangzhou","gz"));
 		hotCityList.add(new City("广东","深圳","101280601","shenzhen","sz"));
 		hotCityList.add(new City("湖北","武汉","101200101","wuhan","wh"));
 		hotCityList.add(new City("江苏","南京","101190101","nanjing","nj"));
-		hotCityList.add(new City("浙江","杭州","101210101","hangzhou","hz"));
 		hotCityList.add(new City("陕西","西安","101110101","xian","xa"));
-		hotCityList.add(new City("河南","郑州","101180101","zhengzhou","zz"));
 		hotCityList.add(new City("四川","成都","101270101","chengdou","cd"));
+		hotCityList.add(new City("浙江","杭州","101210101","hangzhou","hz"));
+		hotCityList.add(new City("河南","郑州","101180101","zhengzhou","zz"));
+		hotCityList.add(new City("重庆","重庆","101040100","chongqing","cq"));
 		hotCityList.add(new City("辽宁","沈阳","101070101","shenyang","sy"));
+		hotCityList.add(new City("黑龙江","哈尔滨","101050101","haerbin","heb"));
+		hotCityList.add(new City("湖南","长沙","101250101","changsha","cs"));
+		hotCityList.add(new City("江苏","苏州","101190401","suzhou","sz"));
+		hotCityList.add(new City("辽宁","大连","101070201","dalian","dl"));
 		hotCityList.add(new City("天津","天津","101030100","tianjin","tj"));
 		return hotCityList;
 	}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,7 +22,6 @@ import com.google.gson.reflect.TypeToken;
 import com.young.modules.R;
 import com.young.common.adapter.CityPagerAdapter;
 import com.young.common.util.DeviceUtil;
-import com.young.common.util.L;
 import com.young.common.util.SharePreferenceUtil;
 import com.young.common.view.RotateImageView;
 import com.young.entity.City;
@@ -44,6 +44,7 @@ public class MainActivity extends FragmentActivity {
 	protected MenuItem refreshItem;
 	protected RotateImageView refreshActionView;
 	private int currentItem = 0;
+	private Context mContext;
 
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
@@ -54,9 +55,11 @@ public class MainActivity extends FragmentActivity {
 				buildPager(currentItem);
 				tabs.setViewPager(pager);
 				hideRefreshAnimation();
+				Toast.makeText(mContext, "天气更新成功", Toast.LENGTH_SHORT).show();
 				break;
 			case UPDATE_WEATHER_FAIL:
 				hideRefreshAnimation();
+				Toast.makeText(mContext, "天气更新失败", Toast.LENGTH_SHORT).show();
 				break;
 			default:
 				break;
@@ -68,6 +71,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		mContext = this;
 		setContentView(R.layout.activity_main);
 		if (mSpUtil == null)
 			mSpUtil = new SharePreferenceUtil(this);
@@ -77,16 +81,17 @@ public class MainActivity extends FragmentActivity {
 		buildAdapter();
 		buildPager(0);
 		tabs.setViewPager(pager);
-
+		
 		DeviceUtil.DEVICE_ID = DeviceUtil.getDeviceId(getBaseContext(),
 				getContentResolver());
+		
+		new UpdateAllWeatherTask(handler).execute();
 
 	}
 	
 	@Override
 	protected void onResume(){
 		super.onResume();
-		L.i("onResume", "onResume");
 		buildAdapter();
 		buildPager(currentItem);
 		tabs.setViewPager(pager);
@@ -142,13 +147,19 @@ public class MainActivity extends FragmentActivity {
 		case R.id.action_refresh:
 			// TO: refresh the weather
 			showRefreshAnimation(item);
-			Toast.makeText(this, "refresh", Toast.LENGTH_SHORT).show();
 			currentItem = pager.getCurrentItem();
 			new UpdateAllWeatherTask(handler).execute();
 			return true;
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+	    super.onPrepareOptionsMenu(menu);
+	    showRefreshAnimation(menu.findItem(R.id.action_refresh));
+	    return true;
 	}
 	
 	@SuppressLint("NewApi")
