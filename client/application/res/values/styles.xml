@@ -25,6 +25,11 @@
         <item name="android:textSize">12sp</item>
     </style>
     
+    <style name="font_white_14">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    
     <style name="progress_dialog" parent="@android:style/Theme.Dialog">
 	      <item name="android:windowFrame">@null</item> <!--Dialog的windowFrame框为无 --> 
 	      <item name="android:windowIsFloating">false</item><!-- 是否漂现在activity上 -->
