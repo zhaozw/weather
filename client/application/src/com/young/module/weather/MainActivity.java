@@ -2,7 +2,11 @@ package com.young.module.weather;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,10 +24,13 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.young.modules.R;
+import com.young.common.CommonData;
 import com.young.common.adapter.CityPagerAdapter;
 import com.young.common.util.DeviceUtil;
+import com.young.common.util.L;
 import com.young.common.util.SharePreferenceUtil;
 import com.young.common.view.RotateImageView;
+import com.young.db.CityDB;
 import com.young.entity.City;
 import com.young.module.location.CityManageActivity;
 import com.young.module.setting.SettingsActivity;
@@ -71,26 +78,50 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mContext = this;
-		setContentView(R.layout.activity_main);
+		CommonData.setMapData();
+		DeviceUtil.DEVICE_ID = DeviceUtil.getDeviceId(getBaseContext(),
+				getContentResolver());
 		if (mSpUtil == null)
 			mSpUtil = new SharePreferenceUtil(this);
+		mContext = this;
+
+		City lbs = null;
+
+		try {
+			String lbstr = mSpUtil.getLBS();
+			JSONObject lbsObj;
+			lbsObj = new JSONObject(lbstr);
+			String city = lbsObj.getString("City");
+			city = city.substring(0, city.length() - 1);// 去除最后一个“市”
+			String district = lbsObj.getString("District");
+
+			CityDB cityDB = new CityDB(this);
+			lbs = cityDB.getCity(district);
+			if (lbs == null) {
+				lbs = cityDB.getCity(city);
+			}
+			L.i(city + ":" + district);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//mSpUtil.setAllCity(Arrays.asList(lbs).toString());
+
+		setContentView(R.layout.activity_main);
 		pager = (ViewPager) findViewById(R.id.pager);
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 
 		buildAdapter();
 		buildPager(0);
 		tabs.setViewPager(pager);
-		
-		DeviceUtil.DEVICE_ID = DeviceUtil.getDeviceId(getBaseContext(),
-				getContentResolver());
-		
+
 		new UpdateAllWeatherTask(handler).execute();
 
 	}
-	
+
 	@Override
-	protected void onResume(){
+	protected void onResume() {
 		super.onResume();
 		buildAdapter();
 		buildPager(currentItem);
@@ -108,12 +139,12 @@ public class MainActivity extends FragmentActivity {
 	private void buildAdapter() {
 		citys = loadAllCityFromSharePreference();
 		if (citys.size() == 0)
-			citys.add(new City("","添加城市","","",""));
+			citys.add(new City("", "添加城市", "", "", ""));
 		adapter = new CityPagerAdapter(getSupportFragmentManager(), citys);
 	}
 
 	private void buildPager(int currentItemNum) {
-		
+
 		pager.setAdapter(adapter);
 		pager.setCurrentItem(currentItemNum, false);
 		final int pageMargin = (int) TypedValue.applyDimension(
@@ -154,25 +185,26 @@ public class MainActivity extends FragmentActivity {
 
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-	    super.onPrepareOptionsMenu(menu);
-	    showRefreshAnimation(menu.findItem(R.id.action_refresh));
-	    return true;
+		super.onPrepareOptionsMenu(menu);
+		showRefreshAnimation(menu.findItem(R.id.action_refresh));
+		return true;
 	}
-	
+
 	@SuppressLint("NewApi")
 	private void showRefreshAnimation(MenuItem item) {
 		hideRefreshAnimation();
 
 		refreshItem = item;
-		//这里使用一个ImageView设置成MenuItem的ActionView，这样我们就可以使用这个ImageView显示旋转动画了
-		refreshActionView = (RotateImageView) getLayoutInflater().inflate(R.layout.action_view, null);
-		//refreshActionView.setImageResource(R.drawable.refresh1);
+		// 这里使用一个ImageView设置成MenuItem的ActionView，这样我们就可以使用这个ImageView显示旋转动画了
+		refreshActionView = (RotateImageView) getLayoutInflater().inflate(
+				R.layout.action_view, null);
+		// refreshActionView.setImageResource(R.drawable.refresh1);
 		refreshItem.setActionView(refreshActionView);
-		
-		//显示刷新动画
+
+		// 显示刷新动画
 		refreshActionView.startAnim();
 	}
 
@@ -192,12 +224,13 @@ public class MainActivity extends FragmentActivity {
 		startActivityForResult(manageCityIntent, 0);
 	}
 
-	public List<City> loadAllCityFromSharePreference() {		
+	public List<City> loadAllCityFromSharePreference() {
 		List<City> citys = new ArrayList<City>();
 		try {
 			Gson gson = new Gson();
-			Type lt=new TypeToken<List<City>>(){}.getType();
-			citys=gson.fromJson(mSpUtil.getAllCity().toString(),lt);
+			Type lt = new TypeToken<List<City>>() {
+			}.getType();
+			citys = gson.fromJson(mSpUtil.getAllCity().toString(), lt);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
