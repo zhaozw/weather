@@ -22,11 +22,17 @@ public class AppLoadingActivity extends Activity {
 
         RelativeLayout loadingIv = (RelativeLayout) this.findViewById(R.id.loading_page);
         AlphaAnimation animation = new AlphaAnimation(1.0f, 1.0f);
-        animation.setStartOffset(1000);
-        animation.setDuration(1000);
+        animation.setStartOffset(500);
+        animation.setDuration(500);
         loadingIv.setAnimation(animation);
         
-        LocationUtil.startGetLocation(this);
+        LocationUtil.startGetLocation(this);//开启定位
+        
+        Intent intent = new Intent("com.young.common.service.ForecastService"); 
+        Bundle bundle = new Bundle();  
+        bundle.putInt("op", 0);  
+        intent.putExtras(bundle);         
+        startService(intent);       
 
 
         // 给animation设置监听器

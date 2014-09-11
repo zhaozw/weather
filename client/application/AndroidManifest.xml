@@ -58,8 +58,19 @@
             android:screenOrientation="portrait"
             android:label="设置" />
         
-         <!--百度定位  -->
+        <receiver android:name="com.young.common.reciver.AlarmReceiver" android:process=":remote">
+            
+        </receiver>
         
+        <service  
+    		android:name="com.young.common.service.ForecastService"  
+    		android:enabled="true" >  
+    		<intent-filter>  
+        		<action android:name="com.young.common.service.ForecastService" />  
+    		</intent-filter>  
+		</service>  
+         
+         <!--百度定位  -->        
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
