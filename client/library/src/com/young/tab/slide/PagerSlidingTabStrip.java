@@ -33,7 +33,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -79,7 +78,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	private int indicatorColor = 0xFF666666;
 	private int underlineColor = Color.argb(127,255,255,255);
-	private int dividerColor = Color.rgb(103,172,250);
+	private int dividerColor = Color.rgb(62,174,250);
 
 	private boolean shouldExpand = false;
 	private boolean textAllCaps = true;

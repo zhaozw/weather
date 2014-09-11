@@ -147,21 +147,27 @@ public abstract class DragSortCursorAdapter extends CursorAdapter implements Dra
      */
     @Override
     public void remove(int which) {
-        int cursorPos = mListMapping.get(which, which);
-        if (!mRemovedCursorPositions.contains(cursorPos)) {
-            mRemovedCursorPositions.add(cursorPos);
-        }
-
-        int newCount = getCount();
-        for (int i = which; i < newCount; ++i) {
-            mListMapping.put(i, mListMapping.get(i + 1, i + 1));
-        }
-
-        mListMapping.delete(newCount);
-
-        cleanMapping();
-        notifyDataSetChanged();
-        doAfterRemove(which);
+    	if(doBeforeRemove(which)){
+	        int cursorPos = mListMapping.get(which, which);
+	        if (!mRemovedCursorPositions.contains(cursorPos)) {
+	            mRemovedCursorPositions.add(cursorPos);
+	        }
+	
+	        int newCount = getCount();
+	        for (int i = which; i < newCount; ++i) {
+	            mListMapping.put(i, mListMapping.get(i + 1, i + 1));
+	        }
+	
+	        mListMapping.delete(newCount);
+	
+	        cleanMapping();
+	        notifyDataSetChanged();
+	        doAfterRemove(which);
+    	}
+    }
+    
+    public boolean doBeforeRemove(int which) {
+    	return true;
     }
     
     public void doAfterRemove(int which) {

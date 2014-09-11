@@ -1,9 +1,5 @@
 package com.young.common.adapter;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,13 +9,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.young.common.util.DateUtil;
+import com.young.module.weather.WeatherFragment;
 import com.young.modules.R;
 
-import android.R.integer;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,14 +29,9 @@ public class FetureWeatherAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
 	private Context mContext;
 	private final int[] shadeColors = 
-		{ Color.rgb(62, 174, 250),
-			Color.rgb(47, 162, 242), Color.rgb(39, 151, 227),
+		{ Color.rgb(47, 162, 242), Color.rgb(39, 151, 227),
 			Color.rgb(28, 141, 219), Color.rgb(18, 128, 203),
-			Color.rgb(19, 118, 186)};
-//		{ Color.rgb(103, 172, 250),
-//			Color.rgb(91, 163, 245), Color.rgb(84, 153, 231),
-//			Color.rgb(76, 143, 222), Color.rgb(68, 131, 208),
-//			Color.rgb(60, 121, 200), Color.rgb(52, 111, 190) };
+			Color.rgb(19, 118, 186),Color.rgb(10, 108, 170)};
 
 	public FetureWeatherAdapter(Context context, JSONArray fetrueWeathers) {
 		mContext = context;
@@ -84,11 +73,8 @@ public class FetureWeatherAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.weather_feture_item, null);
 		}
-		int color_start = shadeColors[arg0 + 1];
-		int color_end = shadeColors[arg0];// Color.rgb(91,162,242);
-		GradientDrawable grad = new GradientDrawable(// 渐变色
-				Orientation.TOP_BOTTOM, new int[] { color_start, color_end });
-		convertView.setBackgroundDrawable(grad);
+		int color_start = shadeColors[arg0];
+		convertView.setBackgroundColor(color_start);
 		TextView descTv = (TextView) convertView
 				.findViewById(R.id.feture_weather_desc);
 		ImageView weatherIv = (ImageView) convertView
@@ -104,7 +90,9 @@ public class FetureWeatherAdapter extends BaseAdapter {
 			String dateDesc = "";
 			int tempdays = DateUtil.daysBetween(new Date(),
 					DateUtil.StringToDate(date, "yyyy-MM-dd"));
-			if (tempdays == 0) {
+			if (tempdays == -1) {
+				dateDesc = "昨天";
+			} else if (tempdays == 0) {
 				dateDesc = "今天";
 			} else if (tempdays == 1) {
 				dateDesc = "明天";
@@ -121,6 +109,7 @@ public class FetureWeatherAdapter extends BaseAdapter {
 					+ "° - "
 					+ mFetrueWeathers.getJSONObject(arg0)
 							.getString("temp_high") + "°");
+			weatherIv.setBackgroundResource((Integer)WeatherFragment.WEATHER_MAP.get(mFetrueWeathers.getJSONObject(arg0).getString("weather")));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
