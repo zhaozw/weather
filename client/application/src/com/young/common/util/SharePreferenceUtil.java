@@ -11,6 +11,8 @@ public class SharePreferenceUtil {
 	private static final String TIME = "time";
 	private static final String VERSION = "version";
 	private static final String LBS = "location_base";
+	private static final String IS_OPEN_FORECASE = "is_open_forecase";
+	private static final String FORECASE_TIME = "forecase_time";
 	
 	private SharedPreferences sp;
 	private SharedPreferences.Editor editor;
@@ -77,5 +79,23 @@ public class SharePreferenceUtil {
 
 	public String getLBS() {
 		return sp.getString(LBS, "");
+	}
+	
+	public void setForecase(boolean isOpenForeCase) {
+		editor.putBoolean(IS_OPEN_FORECASE, isOpenForeCase);
+		editor.commit();
+	}
+
+	public boolean getForecase() {
+		return sp.getBoolean(IS_OPEN_FORECASE, false);
+	}
+	
+	public void setForecaseTime(String forecaseTime) {
+		editor.putString(FORECASE_TIME, forecaseTime);
+		editor.commit();
+	}
+
+	public String getForecaseTime() {
+		return sp.getString(FORECASE_TIME, "");
 	}
 }

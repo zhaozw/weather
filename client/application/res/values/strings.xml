@@ -22,11 +22,13 @@
     <string name="Friday">周五</string>
     <string name="Saturday">周六</string>
     
-    <string name="forecase_time">预报时间</string>
+    <string name="forecase_time">预报设置</string>
     <string name="feedback">意见反馈</string>
     <string name="version_update">版本更新</string>
     <string name="about">关于我们</string>
     <string name="support">友情支持</string>
+    <string name="open_forecase">开启预报</string>
+    <string name="close_forecase">关闭预报</string>
 
     <string-array name="all_citys">
         <item>上海</item>

@@ -58,6 +58,12 @@
             android:screenOrientation="portrait"
             android:label="设置" />
         
+        <activity
+            android:name="com.young.module.setting.SettingForecaseActivity"
+            android:logo="@drawable/icon"
+            android:screenOrientation="portrait"
+            android:label="预报设置" />
+        
         <receiver android:name="com.young.common.reciver.AlarmReceiver" android:process=":remote">
             
         </receiver>

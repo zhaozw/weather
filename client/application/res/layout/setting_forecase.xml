@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f6f6f6"
+    android:orientation="vertical" >
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="20dp"
+	    android:orientation="vertical" >
+   
+    
+	    <RelativeLayout 
+	        android:layout_width="match_parent"
+	        android:paddingLeft="10dp"
+	    	android:paddingRight="10dp"
+	        android:layout_height="60dp"
+	        android:clickable="true">
+	
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:layout_alignParentLeft="true"
+	            android:gravity="center"
+	            style="@style/font_gray_14"
+	            android:text="@string/open_forecase"/>
+	        
+	        <ImageView 
+	            android:id="@+id/forecase_btn"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:layout_alignParentRight="true"
+	            android:src="@drawable/kaiqi"/>
+	        
+	    </RelativeLayout>
+    
+    
+    
+     </LinearLayout>
+    
+
+</LinearLayout>

@@ -5,4 +5,8 @@
     <color name="city_manage_bg">#ffffff</color>
     <drawable name="background_blue">#3eaefa</drawable>
     <drawable name="background_gray">#ffffff</drawable>
+    
+    <color name="background_blue">#3eaefa</color>
+    <color name="background_blue_1">#2fa2f2</color>
+    
 </resources>
