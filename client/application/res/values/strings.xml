@@ -29,6 +29,7 @@
     <string name="support">友情支持</string>
     <string name="open_forecase">开启预报</string>
     <string name="close_forecase">关闭预报</string>
+    <string name="forecase_time_setting">预报时间设置</string>
 
     <string-array name="all_citys">
         <item>上海</item>
