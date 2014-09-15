@@ -1,8 +1,10 @@
 package com.young.module.setting;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -17,6 +19,8 @@ public class SettingsActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.setting);
+		ActionBar bar = getActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
 
 		Button supportBtn = (Button) findViewById(R.id.support);
 		View forecase = (View) findViewById(R.id.forecase_time);
@@ -67,5 +71,17 @@ public class SettingsActivity extends Activity {
 			}
 		});
 
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+		
+		case android.R.id.home:  
+			finish();
+			return true;    
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

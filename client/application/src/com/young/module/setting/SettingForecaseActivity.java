@@ -1,7 +1,6 @@
 package com.young.module.setting;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +8,11 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -37,16 +38,22 @@ public class SettingForecaseActivity extends Activity {
 
 	private String hourString;
 	private String minuteString;
+	private int hourIndex;
+	private int minuteIndex;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.setting_forecase);
+		ActionBar bar = getActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
 
 		ImageView forecase = (ImageView) findViewById(R.id.forecase_btn);
 		forecaseHourView = (WheelView) findViewById(R.id.month);
 		forecaseMinuteView = (WheelView) findViewById(R.id.day);
+		final View timeSettingView = (View) findViewById(R.id.time_setting_view);
+		final View timeSettingTitle = (View) findViewById(R.id.time_setting_title);
 		
 		hours = getResources().getStringArray(R.array.hours);
 		minutes = getResources().getStringArray(R.array.minutes);
@@ -63,36 +70,46 @@ public class SettingForecaseActivity extends Activity {
 		
 		if(forecaseTimeStr == null || forecaseTimeStr.equals("")){
 			forecase.setImageResource(R.drawable.kaiqi);
+			timeSettingView.setVisibility(View.INVISIBLE);
+			timeSettingTitle.setVisibility(View.INVISIBLE);
 		}else{
 			forecase.setImageResource(R.drawable.guanbi);
+			timeSettingView.setVisibility(View.VISIBLE);
+			timeSettingTitle.setVisibility(View.VISIBLE);
 			JSONObject forecaseJO = new JSONObject();
 			try {
 				forecaseJO = new JSONObject(forecaseTimeStr);
 				hourString = forecaseJO.getString("hour");
 				minuteString = forecaseJO.getString("minute");
+				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		
+		hourIndex = hourList.indexOf(buildHour(hourString)) != -1 ? hourList.indexOf(buildHour(hourString)) : hourList.indexOf("07");
+		forecaseHourView.setCurrentItem(hourIndex);
+		minuteIndex = minuteList.indexOf(minuteString) != -1 ? minuteList.indexOf(minuteString) : minuteList.indexOf("30");
+		forecaseMinuteView.setCurrentItem(minuteIndex);
+		
 		forecase.setOnClickListener(new OnClickListener() {
 
-			@SuppressWarnings("deprecation")
 			@Override
 			public void onClick(View v) {
 				String forecaseTimeStr = MainActivity.mSpUtil.getForecaseTime();
 				if(forecaseTimeStr == null || forecaseTimeStr.equals("")){
+					timeSettingView.setVisibility(View.VISIBLE);
+					timeSettingTitle.setVisibility(View.VISIBLE);
 					((ImageView) v).setImageResource(R.drawable.guanbi);
-					Date currentTime = new Date();
-					int currentHour = currentTime.getHours();
-					int currentminute = currentTime.getMinutes();
-					Map<String, String> timeMap = new HashMap<String, String>();
-					timeMap.put("hour", ""+currentHour);
-					timeMap.put("minute", ""+currentminute);
-					L.i("timeMap", ""+timeMap);
-					MainActivity.mSpUtil.setForecaseTime(timeMap.toString());
+					saveForecaseTime("07","30");
+					hourIndex = hourList.indexOf("07");
+					minuteIndex = minuteList.indexOf("30");
+					forecaseHourView.setCurrentItem(hourIndex);
+					forecaseMinuteView.setCurrentItem(minuteIndex);
  				}else{
+ 					timeSettingView.setVisibility(View.INVISIBLE);
+ 					timeSettingTitle.setVisibility(View.INVISIBLE);
 					((ImageView) v).setImageResource(R.drawable.kaiqi);
 					MainActivity.mSpUtil.setForecaseTime(null);
 				}
@@ -109,6 +126,10 @@ public class SettingForecaseActivity extends Activity {
 			@Override
 			public void onScrollingFinished(WheelView wheel) {
 				// TODO Auto-generated method stub
+				hourIndex = wheel.getCurrentItem();
+				String hour = (String) forecaseHourAdapter.getItemText(hourIndex);
+				String minute = (String) forecaseMinuteAdapter.getItemText(minuteIndex);
+				saveForecaseTime(hour,minute);
 			}
 		});
 		
@@ -120,10 +141,39 @@ public class SettingForecaseActivity extends Activity {
 			@Override
 			public void onScrollingFinished(WheelView wheel) {
 				// TODO Auto-generated method stub
+				minuteIndex = wheel.getCurrentItem();
+				String hour = (String) forecaseHourAdapter.getItemText(hourIndex);
+				String minute = (String) forecaseMinuteAdapter.getItemText(minuteIndex);
+				saveForecaseTime(hour,minute);
 			}
 		});
 
 
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+		
+		case android.R.id.home:  
+			finish();
+			return true;    
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	private String buildHour(String hour){
+		if(hour == null) return "";
+		return hour.length() == 1 ? "0"+hour : hour;
+	}
+	
+	private void saveForecaseTime(String hour, String minute){
+		Map<String, String> timeMap = new HashMap<String, String>();
+		timeMap.put("hour", hour);
+		timeMap.put("minute", minute);
+		L.i("saveForecaseTime", ""+timeMap);
+		MainActivity.mSpUtil.setForecaseTime(timeMap.toString());
 	}
 	
 	private class HourAdapter extends AbstractWheelTextAdapter {

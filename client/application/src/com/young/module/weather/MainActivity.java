@@ -2,6 +2,7 @@ package com.young.module.weather;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.JSONException;
@@ -31,6 +32,7 @@ import com.young.common.util.SharePreferenceUtil;
 import com.young.common.view.RotateImageView;
 import com.young.db.CityDB;
 import com.young.entity.City;
+import com.young.module.location.ChangeMyCitiesTask;
 import com.young.module.location.CityManageActivity;
 import com.young.module.setting.SettingsActivity;
 import com.young.tab.slide.PagerSlidingTabStrip;
@@ -83,33 +85,42 @@ public class MainActivity extends FragmentActivity {
 		if (mSpUtil == null)
 			mSpUtil = new SharePreferenceUtil(this);
 		mContext = this;
-
-		City lbs = null;
-
-		try {
-			String lbstr = mSpUtil.getLBS();
-			JSONObject lbsObj;
-			lbsObj = new JSONObject(lbstr);
-			String city = lbsObj.getString("City");
-			city = city.substring(0, city.length() - 1);// 去除最后一个“市”
-			String district = lbsObj.getString("District");
-
-			CityDB cityDB = new CityDB(this);
-			lbs = cityDB.getCity(district);
-			if (lbs == null) {
-				lbs = cityDB.getCity(city);
-			}
-			L.i(city + ":" + district);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		//mSpUtil.setAllCity(Arrays.asList(lbs).toString());
-
 		setContentView(R.layout.activity_main);
 		pager = (ViewPager) findViewById(R.id.pager);
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+		View emptyView = (View) findViewById(R.id.empty_city);
+
+		citys = loadAllCityFromSharePreference();
+		if (citys == null || citys.size() == 0 || citys.get(0) == null) {
+			City lbs = null;
+
+			try {
+				String lbstr = mSpUtil.getLBS();
+				JSONObject lbsObj;
+				lbsObj = new JSONObject(lbstr);
+				String city = lbsObj.getString("City");
+				city = city.substring(0, city.length() - 1);// 去除最后一个“市”
+				String district = lbsObj.getString("District");
+
+				CityDB cityDB = new CityDB(this);
+				lbs = cityDB.getCity(district);
+				if (lbs == null) {
+					lbs = cityDB.getCity(city);
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(lbs==null){
+				emptyView.setVisibility(View.VISIBLE);
+				return;
+			}else{
+	//			new ChangeMyCitiesTask(handler, lbs, "InsLocation/merge").execute();
+				Gson gson = new Gson();
+				String citys = gson.toJson(Arrays.asList(lbs));
+				mSpUtil.setAllCity(citys);
+			}
+		}
 
 		buildAdapter();
 		buildPager(0);
@@ -137,8 +148,8 @@ public class MainActivity extends FragmentActivity {
 
 	private void buildAdapter() {
 		citys = loadAllCityFromSharePreference();
-		if (citys.size() == 0)
-			citys.add(new City("", "添加城市", "", "", ""));
+//		if (citys.size() == 0)
+//			citys.add(new City("", "添加城市", "", "", ""));
 		adapter = new CityPagerAdapter(getSupportFragmentManager(), citys);
 	}
 
