@@ -127,28 +127,26 @@ public class WeatherFragment extends Fragment {
 
 		try {
 			forecast = DateUtil.sortJsonArrayByDate(forecast, "days");
+			JSONObject today = DateUtil.getSomeDay(forecast, 0);
 			currentTempView.setText(scene.getJSONObject(0).getString("l1"));// +"°");
 			todayHumidity.setText(scene.getJSONObject(0).getString("l2") + "%");
-			todayWind.setText(CommonData.WIND_MAP.get(scene.getJSONObject(0).getString(
-					"l3")));
-			todayWindDir.setText(CommonData.WIND_DIR_MAP.get(scene.getJSONObject(0)
-					.getString("l4")));
+			todayWind.setText(CommonData.WIND_MAP.get(scene.getJSONObject(0)
+					.getString("l3")));
+			todayWindDir.setText(CommonData.WIND_DIR_MAP.get(scene
+					.getJSONObject(0).getString("l4")));
 
 			todayDate.setText(" 今天  "
-					+ DateUtil.dateParse(forecast.getJSONObject(1).getString(
-							"days")));
-			todayTempLow.setText(forecast.getJSONObject(1)
-					.getString("temp_low") + "℃");
-			todayTempHigh.setText(forecast.getJSONObject(1).getString(
-					"temp_high")
-					+ "℃");
-			String weatherDesc = forecast.getJSONObject(1).getString("weather");
+					+ DateUtil.dateParse(today.getString("days")));
+			todayTempLow.setText(today.getString("temp_low") + "℃");
+			todayTempHigh.setText(today.getString("temp_high") + "℃");
+			String weatherDesc = today.getString("weather");
 			todayTempDesc.setText(weatherDesc);
-			
-			if(CommonData.WEATHER_MAP.get(weatherDesc) != null){
-				weatherImg.setBackgroundResource((Integer) CommonData.WEATHER_MAP.get(weatherDesc));
+
+			if (CommonData.WEATHER_MAP.get(weatherDesc) != null) {
+				weatherImg
+						.setBackgroundResource((Integer) CommonData.WEATHER_MAP
+								.get(weatherDesc));
 			}
-			
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -195,9 +193,6 @@ public class WeatherFragment extends Fragment {
 	}
 
 	public void loadWeather(String cityName) {
-		if ("添加城市".equals(cityName)) {
-			return;
-		}
 		JSONObject currentCityWeather = new JSONObject();
 		try {
 			String allWeather = MainActivity.mSpUtil.getAllWeather().toString();

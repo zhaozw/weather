@@ -17,10 +17,11 @@
         android:layout_below="@+id/tabs"
         tools:context=".MainActivity" />
     
-    <RelativeLayout 
+   <RelativeLayout 
         android:layout_width="match_parent"
     	android:layout_height="match_parent" 
     	android:id="@+id/empty_city"
+    	android:clickable="true"
     	android:visibility="invisible">
 
         <Button
@@ -29,7 +30,10 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="马上去添加城市～" />
+            android:clickable="true"
+            android:text="马上去添加城市～" 
+            android:onClick="openCityManageView"/>
+
         
     </RelativeLayout>
 

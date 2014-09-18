@@ -1,12 +1,15 @@
 package com.young.common.adapter;
 
 import java.util.Date;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.young.common.CommonData;
 import com.young.common.util.DateUtil;
 import com.young.modules.R;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -21,17 +24,16 @@ public class FetureWeatherAdapter extends BaseAdapter {
 	private JSONArray mFetrueWeathers;
 	private LayoutInflater mInflater;
 	private Context mContext;
-	private final int[] shadeColors = 
-		{ Color.rgb(47, 162, 242), Color.rgb(39, 151, 227),
-			Color.rgb(28, 141, 219), Color.rgb(18, 128, 203),
-			Color.rgb(19, 118, 186),Color.rgb(10, 108, 170)};
+	private final int[] shadeColors = { Color.rgb(47, 162, 242),
+			Color.rgb(39, 151, 227), Color.rgb(28, 141, 219),
+			Color.rgb(18, 128, 203), Color.rgb(19, 118, 186),
+			Color.rgb(10, 108, 170) };
 
 	public FetureWeatherAdapter(Context context, JSONArray fetrueWeathers) {
 		mContext = context;
 		mFetrueWeathers = fetrueWeathers;
-
 		mInflater = LayoutInflater.from(mContext);
-		
+
 	}
 
 	@Override
@@ -56,7 +58,6 @@ public class FetureWeatherAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int arg0, View convertView, ViewGroup arg2) {
-		
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.weather_feture_item, null);
 		}
@@ -74,7 +75,8 @@ public class FetureWeatherAdapter extends BaseAdapter {
 
 			String date = mFetrueWeathers.getJSONObject(arg0).getString("days");
 			String week = mFetrueWeathers.getJSONObject(arg0).getString("week");
-			String weatherDesc = mFetrueWeathers.getJSONObject(arg0).getString("weather");
+			String weatherDesc = mFetrueWeathers.getJSONObject(arg0).getString(
+					"weather");
 			String dateDesc = "";
 			int tempdays = DateUtil.daysBetween(new Date(),
 					DateUtil.StringToDate(date, "yyyy-MM-dd"));
@@ -89,19 +91,19 @@ public class FetureWeatherAdapter extends BaseAdapter {
 			} else {
 				dateDesc = CommonData.WEEK_PARSE.get(week);
 			}
-			descTv.setText(dateDesc + " "
-					+ weatherDesc);
+			descTv.setText(dateDesc + " " + weatherDesc);
 			dateTv.setText(week + " " + DateUtil.dateParse(date));
 			tempTv.setText(mFetrueWeathers.getJSONObject(arg0).getString(
 					"temp_low")
 					+ "° - "
 					+ mFetrueWeathers.getJSONObject(arg0)
 							.getString("temp_high") + "°");
-			if(CommonData.WEATHER_MAP.get(weatherDesc) != null){
-				int weatherImgId = (int)CommonData.WEATHER_MAP.get(weatherDesc);
+			if (CommonData.WEATHER_MAP.get(weatherDesc) != null) {
+				int weatherImgId = (int) CommonData.WEATHER_MAP
+						.get(weatherDesc);
 				weatherIv.setBackgroundResource(weatherImgId);
 			}
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

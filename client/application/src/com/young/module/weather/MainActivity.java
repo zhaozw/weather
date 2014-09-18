@@ -2,7 +2,6 @@ package com.young.module.weather;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.json.JSONException;
@@ -27,8 +26,8 @@ import com.young.modules.R;
 import com.young.common.CommonData;
 import com.young.common.adapter.CityPagerAdapter;
 import com.young.common.util.DeviceUtil;
-import com.young.common.util.L;
 import com.young.common.util.SharePreferenceUtil;
+import com.young.common.view.ProgersssDialog;
 import com.young.common.view.RotateImageView;
 import com.young.db.CityDB;
 import com.young.entity.City;
@@ -41,6 +40,8 @@ public class MainActivity extends FragmentActivity {
 
 	public static final int UPDATE_WEATHER_SCUESS = 1;
 	public static final int UPDATE_WEATHER_FAIL = 0;
+	public static final int LOCATION_CITY_SCUESS = 3;
+	public static final int LOCATION_CITY_FAIL = 4;
 	public static SharePreferenceUtil mSpUtil;
 
 	private PagerSlidingTabStrip tabs;
@@ -53,6 +54,8 @@ public class MainActivity extends FragmentActivity {
 	protected RotateImageView refreshActionView;
 	private int currentItem = 0;
 	private Context mContext;
+	private ProgersssDialog loadingDialog = null;
+	private View emptyView;
 
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
@@ -63,11 +66,22 @@ public class MainActivity extends FragmentActivity {
 				buildPager(currentItem);
 				tabs.setViewPager(pager);
 				hideRefreshAnimation();
+				loadingDialog.dismiss();
 				Toast.makeText(mContext, "天气更新成功", Toast.LENGTH_SHORT).show();
 				break;
 			case UPDATE_WEATHER_FAIL:
 				hideRefreshAnimation();
+				loadingDialog.dismiss();
 				Toast.makeText(mContext, "天气更新失败", Toast.LENGTH_SHORT).show();
+				break;
+			case LOCATION_CITY_SCUESS:
+				new UpdateAllWeatherTask(handler).execute();
+				Toast.makeText(mContext, "定位城市成功", Toast.LENGTH_SHORT).show();
+				break;
+			case LOCATION_CITY_FAIL:
+				loadingDialog.dismiss();
+				hideRefreshAnimation();
+				Toast.makeText(mContext, "定位城市失败", Toast.LENGTH_SHORT).show();
 				break;
 			default:
 				break;
@@ -86,16 +100,16 @@ public class MainActivity extends FragmentActivity {
 			mSpUtil = new SharePreferenceUtil(this);
 		mContext = this;
 		setContentView(R.layout.activity_main);
+		loadingDialog = new ProgersssDialog(MainActivity.this);
 		pager = (ViewPager) findViewById(R.id.pager);
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-		View emptyView = (View) findViewById(R.id.empty_city);
+		emptyView = (View) findViewById(R.id.empty_city);
 
 		citys = loadAllCityFromSharePreference();
 		if (citys == null || citys.size() == 0 || citys.get(0) == null) {
 			City lbs = null;
-
+			String lbstr = mSpUtil.getLBS();
 			try {
-				String lbstr = mSpUtil.getLBS();
 				JSONObject lbsObj;
 				lbsObj = new JSONObject(lbstr);
 				String city = lbsObj.getString("City");
@@ -111,15 +125,16 @@ public class MainActivity extends FragmentActivity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if(lbs==null){
+			if (lbs == null) {
+				hideRefreshAnimation();
 				emptyView.setVisibility(View.VISIBLE);
-				return;
-			}else{
-	//			new ChangeMyCitiesTask(handler, lbs, "InsLocation/merge").execute();
-				Gson gson = new Gson();
-				String citys = gson.toJson(Arrays.asList(lbs));
-				mSpUtil.setAllCity(citys);
+			} else {
+				loadingDialog.setMsg("正在定位城市...");
+				loadingDialog.show();
+				new ChangeMyCitiesTask(handler, lbs, "InsLocation/merge")
+						.execute();
 			}
+			return;
 		}
 
 		buildAdapter();
@@ -133,9 +148,15 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		buildAdapter();
-		buildPager(currentItem);
-		tabs.setViewPager(pager);
+		citys = loadAllCityFromSharePreference();
+		if (citys != null && citys.size() != 0 && citys.get(0) != null) {
+			emptyView.setVisibility(View.INVISIBLE);
+			buildAdapter();
+			buildPager(currentItem);
+			tabs.setViewPager(pager);
+		} else {
+			hideRefreshAnimation();
+		}
 	}
 
 	@Override
@@ -148,8 +169,6 @@ public class MainActivity extends FragmentActivity {
 
 	private void buildAdapter() {
 		citys = loadAllCityFromSharePreference();
-//		if (citys.size() == 0)
-//			citys.add(new City("", "添加城市", "", "", ""));
 		adapter = new CityPagerAdapter(getSupportFragmentManager(), citys);
 	}
 
@@ -175,21 +194,22 @@ public class MainActivity extends FragmentActivity {
 		switch (item.getItemId()) {
 
 		case R.id.action_setting:
-			// TO: open setting view
 			Intent settingIntent = new Intent(this, SettingsActivity.class);
 			startActivity(settingIntent);
 			return true;
 
 		case R.id.action_city:
-			// TO: open city view
 			startCityManageActivityForResult();
 			return true;
 
 		case R.id.action_refresh:
-			// TO: refresh the weather
-			showRefreshAnimation(item);
-			currentItem = pager.getCurrentItem();
-			new UpdateAllWeatherTask(handler).execute();
+			if (citys == null || citys.size() == 0) {
+				Toast.makeText(mContext, "要先添加城市哦~", Toast.LENGTH_SHORT).show();
+			} else {
+				showRefreshAnimation(item);
+				currentItem = pager.getCurrentItem();
+				new UpdateAllWeatherTask(handler).execute();
+			}
 			return true;
 		}
 
@@ -199,7 +219,10 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		showRefreshAnimation(menu.findItem(R.id.action_refresh));
+		citys = loadAllCityFromSharePreference();
+		if (citys != null && citys.size() != 0 && citys.get(0) != null) {
+			showRefreshAnimation(menu.findItem(R.id.action_refresh));
+		}
 		return true;
 	}
 
@@ -227,6 +250,10 @@ public class MainActivity extends FragmentActivity {
 				refreshItem.setActionView(null);
 			}
 		}
+	}
+
+	public void openCityManageView(View v) {
+		startCityManageActivityForResult();
 	}
 
 	private void startCityManageActivityForResult() {

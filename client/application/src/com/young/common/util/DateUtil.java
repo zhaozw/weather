@@ -12,21 +12,18 @@ import org.json.JSONObject;
 
 public class DateUtil {
 
-	public static JSONArray sortJsonArrayByDate(JSONArray jsonArrays, String key) throws NumberFormatException,
-			JSONException, ParseException {
+	public static JSONArray sortJsonArrayByDate(JSONArray dayArray, String key)
+			throws NumberFormatException, JSONException, ParseException {
 		JSONObject jObject = null;
+		JSONArray jsonArrays = dayArray;
 		for (int i = 0; i < jsonArrays.length(); i++) {
-			int l = daysBetween(
-					new Date(),
-					StringToDate(
-							jsonArrays.getJSONObject(i).getString(key),
-							"yyyy-MM-dd"));
 			for (int j = i + 1; j < jsonArrays.length(); j++) {
-				int nl = daysBetween(
-						new Date(),
-						StringToDate(jsonArrays.getJSONObject(j)
-								.getString(key), "yyyy-MM-dd"));
-				if (l > nl) {
+				Date l = StringToDate(jsonArrays.getJSONObject(i)
+						.getString(key), "yyyy-MM-dd");
+				Date nl = StringToDate(
+						jsonArrays.getJSONObject(j).getString(key),
+						"yyyy-MM-dd");
+				if (l.after(nl)) {
 					jObject = jsonArrays.getJSONObject(j);
 					jsonArrays.put(j, jsonArrays.getJSONObject(i));
 					jsonArrays.put(i, jObject);
@@ -34,6 +31,30 @@ public class DateUtil {
 			}
 		}
 		return jsonArrays;
+	}
+
+	public static JSONObject getSomeDay(JSONArray daysArray, int dis) {
+		try {
+			for (int i = 0; i < daysArray.length(); i++) {
+				int l;
+				l = daysBetween(
+						new Date(),
+						StringToDate(
+								daysArray.getJSONObject(i).getString("days"),
+								"yyyy-MM-dd"));
+				if (l == dis) {
+					return daysArray.getJSONObject(i);
+				}
+
+			}
+			return daysArray != null ? daysArray.getJSONObject(0)
+					: new JSONObject();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new JSONObject();
+		}
+
 	}
 
 	public static Date StringToDate(String dateStr, String formatStr) {
@@ -65,6 +86,12 @@ public class DateUtil {
 		long between_days = (time2 - time1) / (1000 * 3600 * 24);
 
 		return Integer.parseInt(String.valueOf(between_days));
+	}
+
+	public static long getTimeMillis(Date mDate) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(mDate);
+		return cal.getTimeInMillis();
 	}
 
 }

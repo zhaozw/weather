@@ -42,8 +42,8 @@ import android.widget.Toast;
 public class CitySearchActivity extends FragmentActivity 
 	implements SearchView.OnQueryTextListener {
 	
-	public static final int UPDATE_CITY_SCUESS = 1;
-	public static final int UPDATE_CITY_FAIL = 0;
+	public static final int UPDATE_CITY_SCUESS = 3;
+	public static final int UPDATE_CITY_FAIL = 4;
 	public static final int UPDATE_CITY_REPEAT = 2;
 	private Context mContext;
 	

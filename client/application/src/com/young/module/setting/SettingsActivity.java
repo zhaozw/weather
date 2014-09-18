@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-
 import com.young.modules.R;
 import com.young.module.setting.SettingForecaseActivity;;
 
@@ -59,7 +58,9 @@ public class SettingsActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-
+				UpdateManager manager = new UpdateManager(SettingsActivity.this);
+				// 检查软件更新
+				manager.checkUpdate();
 			}
 		});
 
