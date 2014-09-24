@@ -66,9 +66,20 @@ public class SettingForecaseActivity extends Activity {
 		forecaseHourView.setViewAdapter(forecaseHourAdapter);
 		forecaseMinuteView.setViewAdapter(forecaseMinuteAdapter);
 		
+		boolean isForecase = MainActivity.mSpUtil.getForecase();
 		String forecaseTimeStr = MainActivity.mSpUtil.getForecaseTime();
+		try {
+			JSONObject forecaseJO = new JSONObject();
+			forecaseJO = new JSONObject(forecaseTimeStr);
+			hourString = forecaseJO.getString("hour");
+			minuteString = forecaseJO.getString("minute");
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		if(forecaseTimeStr == null || forecaseTimeStr.equals("")){
+		if(!isForecase){
 			forecase.setImageResource(R.drawable.kaiqi);
 			timeSettingView.setVisibility(View.INVISIBLE);
 			timeSettingTitle.setVisibility(View.INVISIBLE);
@@ -76,16 +87,6 @@ public class SettingForecaseActivity extends Activity {
 			forecase.setImageResource(R.drawable.guanbi);
 			timeSettingView.setVisibility(View.VISIBLE);
 			timeSettingTitle.setVisibility(View.VISIBLE);
-			JSONObject forecaseJO = new JSONObject();
-			try {
-				forecaseJO = new JSONObject(forecaseTimeStr);
-				hourString = forecaseJO.getString("hour");
-				minuteString = forecaseJO.getString("minute");
-				
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		
 		hourIndex = hourList.indexOf(buildHour(hourString)) != -1 ? hourList.indexOf(buildHour(hourString)) : hourList.indexOf("07");
@@ -97,24 +98,18 @@ public class SettingForecaseActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				String forecaseTimeStr = MainActivity.mSpUtil.getForecaseTime();
-				if(forecaseTimeStr == null || forecaseTimeStr.equals("")){
+				boolean isForecase = MainActivity.mSpUtil.getForecase();
+				if(!isForecase){
 					timeSettingView.setVisibility(View.VISIBLE);
 					timeSettingTitle.setVisibility(View.VISIBLE);
 					((ImageView) v).setImageResource(R.drawable.guanbi);
-					saveForecaseTime("07","30");
-					hourIndex = hourList.indexOf("07");
-					minuteIndex = minuteList.indexOf("30");
-					forecaseHourView.setCurrentItem(hourIndex);
-					forecaseMinuteView.setCurrentItem(minuteIndex);
+					MainActivity.mSpUtil.setForecase(true);;
  				}else{
  					timeSettingView.setVisibility(View.INVISIBLE);
  					timeSettingTitle.setVisibility(View.INVISIBLE);
 					((ImageView) v).setImageResource(R.drawable.kaiqi);
-					MainActivity.mSpUtil.setForecaseTime(null);
+					MainActivity.mSpUtil.setForecase(false);
 				}
-				
-
 			}
 		});
 		
@@ -172,7 +167,7 @@ public class SettingForecaseActivity extends Activity {
 		Map<String, String> timeMap = new HashMap<String, String>();
 		timeMap.put("hour", hour);
 		timeMap.put("minute", minute);
-		L.i("saveForecaseTime", ""+timeMap);
+		L.i("saveForecaseTime", ""+timeMap.toString());
 		MainActivity.mSpUtil.setForecaseTime(timeMap.toString());
 	}
 	
