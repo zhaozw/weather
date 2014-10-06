@@ -66,6 +66,13 @@
             android:screenOrientation="portrait"
             android:label="预报设置" />
         
+        <activity android:name="com.umeng.fb.ConversationActivity"
+         android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name="com.umeng.fb.ContactActivity"
+         android:theme="@android:style/Theme.NoTitleBar"/>
+        <meta-data android:value="54328ad9fd98c5b7a6001c3f" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data android:value="Umeng" android:name="UMENG_CHANNEL"/>
+        
         <receiver android:name="com.young.common.reciver.AlarmReceiver" android:process=":remote">
             
         </receiver>
