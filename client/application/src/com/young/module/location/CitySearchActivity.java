@@ -4,8 +4,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.young.common.adapter.HotCityAdapter;
@@ -16,6 +18,7 @@ import com.young.common.view.ProgersssDialog;
 import com.young.db.CityDB;
 import com.young.entity.City;
 import com.young.modules.R;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.SearchManager;
@@ -27,6 +30,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,6 +65,7 @@ public class CitySearchActivity extends FragmentActivity
 	private HotCityAdapter mHotCityAdapter;
 	private SharePreferenceUtil mSpUtil;
 	private ProgersssDialog loadingDialog = null;
+	private ChangeMyCitiesTask changeMyCitiesTask;
 	
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -110,7 +115,8 @@ public class CitySearchActivity extends FragmentActivity
 				else{
 					loadingDialog.setMsg("正在添加城市...");
 					loadingDialog.show();
-					new ChangeMyCitiesTask(handler, mHotCityAdapter.getItem(position), "InsLocation/merge").execute();
+					changeMyCitiesTask = new ChangeMyCitiesTask(handler, mHotCityAdapter.getItem(position), "InsLocation/merge");
+					changeMyCitiesTask.execute();
 				}				
 			}
 		});
@@ -123,7 +129,8 @@ public class CitySearchActivity extends FragmentActivity
 				L.i(mSearchCityAdapter.getItem(position).toString());
 				loadingDialog.setMsg("正在添加城市...");
 				loadingDialog.show();
-				new ChangeMyCitiesTask(handler, mSearchCityAdapter.getItem(position), "InsLocation/merge").execute();
+				changeMyCitiesTask = new ChangeMyCitiesTask(handler, mSearchCityAdapter.getItem(position), "InsLocation/merge");
+				changeMyCitiesTask.execute();
 			}
 		});
         
@@ -317,6 +324,21 @@ public class CitySearchActivity extends FragmentActivity
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		 
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                 && event.getRepeatCount() == 0) {
+        	System.out.println("aa--");
+            //do something...
+        	if(loadingDialog.isShowing()){
+        		System.out.println("hh--");
+        		changeMyCitiesTask.cancel(true);
+        	}
+             return true;
+         }
+         return super.onKeyDown(keyCode, event);
+     }
  
 
 }

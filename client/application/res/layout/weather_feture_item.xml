@@ -5,7 +5,7 @@
     android:minHeight="?android:attr/listPreferredItemHeight">
     
     <LinearLayout
-        android:layout_weight="0.16"
+        android:layout_weight="0.14"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
@@ -52,7 +52,7 @@
     
     <TextView
         android:id="@+id/feture_weather_temp"
-        android:layout_weight="0.16"
+        android:layout_weight="0.14"
         android:gravity="center_vertical|right"
         android:textColor="#ffffff"
         android:textSize="18sp"

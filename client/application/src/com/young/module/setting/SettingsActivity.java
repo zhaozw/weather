@@ -8,11 +8,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import com.umeng.fb.FeedbackAgent;
+import com.umeng.fb.util.Log;
 import com.young.modules.R;
-import com.young.module.setting.SettingForecaseActivity;;
+import com.young.module.setting.SettingForecaseActivity;
 
 public class SettingsActivity extends Activity {
 
+	FeedbackAgent fb;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -20,6 +24,12 @@ public class SettingsActivity extends Activity {
 		setContentView(R.layout.setting);
 		ActionBar bar = getActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
+ 
+        Log.LOG = true;
+
+        fb = new FeedbackAgent(this);
+        // check if the app developer has replied to the feedback or not.
+        fb.sync();
 
 		Button supportBtn = (Button) findViewById(R.id.support);
 		View forecase = (View) findViewById(R.id.forecase_time);
@@ -50,6 +60,8 @@ public class SettingsActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				
+				fb.startFeedbackActivity();
 
 			}
 		});
@@ -85,4 +97,5 @@ public class SettingsActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 }

@@ -98,6 +98,8 @@ public class WeatherFragment extends Fragment {
 		TextView todayWindDir = (TextView) view
 				.findViewById(R.id.today_wind_dir);
 		TextView todayWind = (TextView) view.findViewById(R.id.today_wind);
+		TextView todayFeltTemp = (TextView) view
+				.findViewById(R.id.today_felt_temp);
 		TextView todayHumidity = (TextView) view
 				.findViewById(R.id.today_humidity);
 		final TextView todayTempLow = (TextView) view
@@ -134,6 +136,8 @@ public class WeatherFragment extends Fragment {
 					.getString("l3")));
 			todayWindDir.setText(CommonData.WIND_DIR_MAP.get(scene
 					.getJSONObject(0).getString("l4")));
+			todayFeltTemp.setText(scene.getJSONObject(0).getString(
+					"feltTemperature"));
 
 			todayDate.setText(" 今天  "
 					+ DateUtil.dateParse(today.getString("days")));

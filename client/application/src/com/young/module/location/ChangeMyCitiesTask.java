@@ -27,7 +27,7 @@ public class ChangeMyCitiesTask extends AsyncTask<Void, Void, Integer> {
 	private Handler mHandler;
 	private City mCity;
 	private String cityOp;
-	
+
 	private List<City> myCities;
 
 	public ChangeMyCitiesTask(Handler handler, City city, String cityOp) {
@@ -38,27 +38,34 @@ public class ChangeMyCitiesTask extends AsyncTask<Void, Void, Integer> {
 
 	@Override
 	protected Integer doInBackground(Void... params) {
+		if (isCancelled()){
+			return FAIL;
+		}
 		try {
 			Map<String, String> param = new HashMap<String, String>();
 			param.put("mac", DeviceUtil.DEVICE_ID);
 			param.put("location", mCity.getNumber());
 			String netResult = HttpUtil.postRequestByNVP(
-					"http://106.187.94.192/weather/index.php?r="+cityOp,param);
-			if (!TextUtils.isEmpty(netResult)) {
+					"http://106.187.94.192/weather/index.php?r=" + cityOp,
+					param);
+			if (!TextUtils.isEmpty(netResult) && !isCancelled()) {
 				myCities = loadAllCityFromSharePreference();
-				if(cityOp.indexOf("merge") >= 0){
+				if (cityOp.indexOf("merge") >= 0) {
 					myCities.add(mCity);
 					saveCityChangeToSharePreference(myCities);
-					String weatherResult = HttpUtil.postRequestByNVP(
-							"http://106.187.94.192/weather/index.php?r=ReportOne/SendForecast",param);
+					String weatherResult = HttpUtil
+							.postRequestByNVP(
+									"http://106.187.94.192/weather/index.php?r=ReportOne/SendForecast",
+									param);
 					if (!TextUtils.isEmpty(weatherResult)) {
-						String allWeather = MainActivity.mSpUtil.getAllWeather().toString();
+						String allWeather = MainActivity.mSpUtil
+								.getAllWeather().toString();
 						JSONArray weatherList = new JSONArray(allWeather);
 						weatherList.put(new JSONObject(weatherResult));
-						MainActivity.mSpUtil.setAllWeather(weatherList.toString());
+						MainActivity.mSpUtil.setAllWeather(weatherList
+								.toString());
 					}
 				}
-				
 				return SUCCESS;
 			}
 		} catch (Exception e) {
@@ -66,35 +73,35 @@ public class ChangeMyCitiesTask extends AsyncTask<Void, Void, Integer> {
 		}
 		return FAIL;
 	}
-	
-	public List<City> loadAllCityFromSharePreference() {		
+
+	public List<City> loadAllCityFromSharePreference() {
 		List<City> citys = new ArrayList<City>();
 		try {
 			Gson gson = new Gson();
-			Type lt=new TypeToken<List<City>>(){}.getType();
-			citys=gson.fromJson(MainActivity.mSpUtil.getAllCity().toString(),lt);
+			Type lt = new TypeToken<List<City>>() {
+			}.getType();
+			citys = gson.fromJson(MainActivity.mSpUtil.getAllCity().toString(),
+					lt);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return citys;
 	}
-	
+
 	private void saveCityChangeToSharePreference(List<City> newCitys) {
 		// TODO Auto-generated method stub
 		Gson gson = new Gson();
 		String citys = gson.toJson(newCitys);
-		L.i(citys);
-		MainActivity.mSpUtil.setAllCity(citys);		
+		MainActivity.mSpUtil.setAllCity(citys);
 	}
-
 
 	@Override
 	protected void onPostExecute(Integer result) {
 		super.onPostExecute(result);
-		if(result < 0 ){
+		if (result < 0) {
 			mHandler.sendEmptyMessage(CitySearchActivity.UPDATE_CITY_FAIL);
 			L.i("update city fail");
-		}else{
+		} else {
 			mHandler.sendEmptyMessage(CitySearchActivity.UPDATE_CITY_SCUESS);
 			L.i("update city success");
 		}
