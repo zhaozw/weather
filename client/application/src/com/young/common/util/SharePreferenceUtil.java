@@ -87,7 +87,7 @@ public class SharePreferenceUtil {
 	}
 
 	public boolean getForecase() {
-		return sp.getBoolean(IS_OPEN_FORECASE, false);
+		return sp.getBoolean(IS_OPEN_FORECASE, true);
 	}
 	
 	public void setForecaseTime(String forecaseTime) {
@@ -96,6 +96,6 @@ public class SharePreferenceUtil {
 	}
 
 	public String getForecaseTime() {
-		return sp.getString(FORECASE_TIME, "");
+		return sp.getString(FORECASE_TIME, "{minute=30,hour=07}");
 	}
 }

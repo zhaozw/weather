@@ -1,6 +1,11 @@
 package com.young.module.weather;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.young.common.util.L;
 import com.young.common.util.LocationUtil;
+import com.young.common.util.SharePreferenceUtil;
 import com.young.modules.R;
 
 import android.app.Activity;
@@ -26,13 +31,34 @@ public class AppLoadingActivity extends Activity {
         animation.setDuration(500);
         loadingIv.setAnimation(animation);
         
+        SharePreferenceUtil sp = new SharePreferenceUtil(this);
+        String fcTimeStr = sp.getForecaseTime();
+        boolean isForecast = sp.getForecase();
+        if(fcTimeStr == null){
+        	Map<String, String> timeMap = new HashMap<String, String>();
+    		timeMap.put("hour", "07");
+    		timeMap.put("minute", "30");
+    		L.i("LoadSaveForecaseTime", ""+timeMap);
+    		sp.setForecaseTime(timeMap.toString());
+        }
+        if(!isForecast){
+        	Map<String, String> timeMap = new HashMap<String, String>();
+    		timeMap.put("hour", "07");
+    		timeMap.put("minute", "30");
+    		L.i("LoadSaveForecaseTime", ""+timeMap);
+    		sp.setForecaseTime(timeMap.toString());
+        }
+        
         LocationUtil.startGetLocation(this);//开启定位
+        
         
         Intent intent = new Intent("com.young.common.service.ForecastService"); 
         Bundle bundle = new Bundle();  
         bundle.putInt("op", 0);  
         intent.putExtras(bundle);         
-        startService(intent);       
+        startService(intent);    
+        
+        
 
 
         // 给animation设置监听器
