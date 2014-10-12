@@ -8,6 +8,7 @@
         android:layout_weight="0.14"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingLeft="20dp"
         android:orientation="vertical" >
         
         <TextView
@@ -18,7 +19,6 @@
             android:gravity="left|bottom"
             android:text="明天多云"
             android:textColor="#ffffff"
-            android:paddingLeft="25dp"
             android:textSize="14sp" />
         
         <TextView
@@ -29,7 +29,6 @@
             android:gravity="left|top"
             android:text="星期五 7月12日"
             android:textColor="#ffffff"
-            android:paddingLeft="25dp"
             android:textSize="12sp" />
 
     </LinearLayout>
@@ -56,7 +55,7 @@
         android:gravity="center_vertical|right"
         android:textColor="#ffffff"
         android:textSize="18sp"
-        android:paddingRight="25dp"
+        android:paddingRight="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" 
         android:text="20~30"/>

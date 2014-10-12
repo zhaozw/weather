@@ -3,9 +3,11 @@ package com.young.module.weather;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.young.common.CommonData;
@@ -13,6 +15,8 @@ import com.young.common.adapter.FetureWeatherAdapter;
 import com.young.common.util.DateUtil;
 import com.young.entity.City;
 import com.young.modules.R;
+
+import android.R.integer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -131,7 +135,7 @@ public class WeatherFragment extends Fragment {
 			forecast = DateUtil.sortJsonArrayByDate(forecast, "days");
 			JSONObject today = DateUtil.getSomeDay(forecast, 0);
 			currentTempView.setText(scene.getJSONObject(0).getString("l1"));// +"°");
-			todayHumidity.setText(scene.getJSONObject(0).getString("l2") + "%");
+			todayHumidity.setText(getHumidityDesc(scene.getJSONObject(0).getString("l2")));
 			todayWind.setText(CommonData.WIND_MAP.get(scene.getJSONObject(0)
 					.getString("l3")));
 			todayWindDir.setText(CommonData.WIND_DIR_MAP.get(scene
@@ -180,6 +184,11 @@ public class WeatherFragment extends Fragment {
 		}
 
 		return view;
+	}
+	
+	private String getHumidityDesc(String humidityStr){
+		int humidity = Integer.parseInt(humidityStr);
+		return CommonData.HUMIDITY_DESC[humidity/20];
 	}
 
 	public List<City> loadAllCityFromSharePreference() {
