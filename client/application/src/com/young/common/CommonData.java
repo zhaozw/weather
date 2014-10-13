@@ -11,6 +11,7 @@ public class CommonData {
 	public static final Map<String, String> WIND_DIR_MAP = new HashMap<String, String>();
 	public static final Map<String, String> WIND_MAP = new HashMap<String, String>();
 	public static final Map<String, Integer> WEATHER_MAP = new HashMap<String, Integer>();
+	public static final String[] HUMIDITY_DESC = {"干燥","干燥","舒适","湿润","潮湿","潮湿"};
 	
 	public static final void setMapData(){
 		
@@ -66,6 +67,7 @@ public class CommonData {
 		WEATHER_MAP.put("大雪", R.drawable.w_daxue);
 		WEATHER_MAP.put("暴雪", R.drawable.w_baoxue);
 		WEATHER_MAP.put("沙尘暴", R.drawable.w_shachenbao);
+		
 		
 	}
 

@@ -71,8 +71,10 @@ public class SettingForecaseActivity extends Activity {
 		try {
 			JSONObject forecaseJO = new JSONObject();
 			forecaseJO = new JSONObject(forecaseTimeStr);
-			hourString = forecaseJO.getString("hour");
-			minuteString = forecaseJO.getString("minute");
+			L.i("forecaseJO",""+forecaseJO);
+			hourString = ""+(int)Double.parseDouble(forecaseJO.getString("hour"));
+			minuteString = ""+(int)Double.parseDouble(forecaseJO.getString("minute"));
+			L.i("hourString",""+hourString);
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -91,7 +93,7 @@ public class SettingForecaseActivity extends Activity {
 		
 		hourIndex = hourList.indexOf(buildHour(hourString)) != -1 ? hourList.indexOf(buildHour(hourString)) : hourList.indexOf("07");
 		forecaseHourView.setCurrentItem(hourIndex);
-		minuteIndex = minuteList.indexOf(minuteString) != -1 ? minuteList.indexOf(minuteString) : minuteList.indexOf("30");
+		minuteIndex = minuteList.indexOf(buildHour(minuteString)) != -1 ? minuteList.indexOf(buildHour(minuteString)) : minuteList.indexOf("30");
 		forecaseMinuteView.setCurrentItem(minuteIndex);
 		
 		forecase.setOnClickListener(new OnClickListener() {
@@ -124,6 +126,7 @@ public class SettingForecaseActivity extends Activity {
 				hourIndex = wheel.getCurrentItem();
 				String hour = (String) forecaseHourAdapter.getItemText(hourIndex);
 				String minute = (String) forecaseMinuteAdapter.getItemText(minuteIndex);
+				L.i("hour",hour);
 				saveForecaseTime(hour,minute);
 			}
 		});
@@ -165,10 +168,10 @@ public class SettingForecaseActivity extends Activity {
 	
 	private void saveForecaseTime(String hour, String minute){
 		Map<String, String> timeMap = new HashMap<String, String>();
-		timeMap.put("hour", hour);
-		timeMap.put("minute", minute);
+		timeMap.put("hour", ""+hour);
+		timeMap.put("minute", ""+minute);
 		L.i("saveForecaseTime", ""+timeMap.toString());
-		MainActivity.mSpUtil.setForecaseTime(timeMap.toString());
+		MainActivity.mSpUtil.setForecaseTime(""+timeMap.toString());
 	}
 	
 	private class HourAdapter extends AbstractWheelTextAdapter {
