@@ -11,14 +11,13 @@ import org.json.JSONObject;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.umeng.analytics.MobclickAgent;
 import com.young.common.CommonData;
 import com.young.common.adapter.FetureWeatherAdapter;
 import com.young.common.util.DateUtil;
-import com.young.common.util.L;
 import com.young.entity.City;
 import com.young.modules.R;
 
-import android.R.integer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -260,6 +259,15 @@ public class WeatherFragment extends Fragment {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void onResume() {
+	    super.onResume();
+	    MobclickAgent.onPageStart("MainScreen"); //统计页面
+	}
+	public void onPause() {
+	    super.onPause();
+	    MobclickAgent.onPageEnd("MainScreen"); 
 	}
 
 }

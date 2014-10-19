@@ -3,6 +3,7 @@ package com.young.module.weather;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.umeng.analytics.MobclickAgent;
 import com.young.common.util.L;
 import com.young.common.util.LocationUtil;
 import com.young.common.util.SharePreferenceUtil;
@@ -23,7 +24,7 @@ public class AppLoadingActivity extends Activity {
      // TODO Auto-generated method stub 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
-
+        MobclickAgent.updateOnlineConfig( this );
 
         RelativeLayout loadingIv = (RelativeLayout) this.findViewById(R.id.loading_page);
         AlphaAnimation animation = new AlphaAnimation(1.0f, 1.0f);
@@ -80,6 +81,18 @@ public class AppLoadingActivity extends Activity {
             }
         });
     }
+    
+    @Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }
 
 

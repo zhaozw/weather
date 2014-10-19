@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.umeng.analytics.MobclickAgent;
 import com.young.common.util.L;
 import com.young.common.util.SharePreferenceUtil;
 import com.young.common.util.T;
@@ -91,6 +92,18 @@ public class CityManageActivity extends FragmentActivity {
 		ActionBar bar = getActionBar();
 		bar.setDisplayHomeAsUpEnabled(true);
 
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	public List<City> loadAllCityFromSharePreference() {

@@ -1,6 +1,5 @@
 package com.young.common;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -109,6 +108,12 @@ public class CommonData {
 		WEATHER_MAP.put("大雪", R.drawable.w_daxue);
 		WEATHER_MAP.put("暴雪", R.drawable.w_baoxue);
 		WEATHER_MAP.put("沙尘暴", R.drawable.w_shachenbao);
+		WEATHER_MAP.put("冻雨", R.drawable.w_dongyu);
+		WEATHER_MAP.put("浮尘", R.drawable.w_fuchen);
+		WEATHER_MAP.put("强沙尘暴", R.drawable.w_qiangshachenbao);
+		WEATHER_MAP.put("特大暴雪", R.drawable.w_tedabaoxue);
+		WEATHER_MAP.put("扬沙", R.drawable.w_yangsha);
+		WEATHER_MAP.put("霾", R.drawable.w_wuai);
 		
 		
 	}

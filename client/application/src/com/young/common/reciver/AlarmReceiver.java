@@ -30,7 +30,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 		 Toast.makeText(context, "你设置的闹钟时间到了", Toast.LENGTH_SHORT).show(); 
 		 
 		 //定义通知栏展现的内容信息
-		 int icon = R.drawable.logo;
+		 int icon = R.drawable.ic_launcher;
 		 CharSequence tickerText = "我的通知栏标题";
 		 long when = System.currentTimeMillis();
 		 Notification notification = new Notification(icon, tickerText, when);

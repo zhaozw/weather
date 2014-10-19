@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 
+import com.umeng.analytics.MobclickAgent;
 import com.young.wheel.scroll.OnWheelScrollListener;
 
 import android.widget.ImageView;
@@ -147,6 +148,18 @@ public class SettingForecaseActivity extends Activity {
 		});
 
 
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 	
 	@Override

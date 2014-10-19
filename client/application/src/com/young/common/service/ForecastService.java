@@ -64,8 +64,8 @@ public class ForecastService extends Service {
     		JSONObject fcTimeObj;
     		try {
 				fcTimeObj = new JSONObject(fcTimeStr);
-	    		mHour = Integer.parseInt(fcTimeObj.getString("hour"));
-	    		mMinute = Integer.parseInt(fcTimeObj.getString("minute"));
+	    		mHour = (int)Double.parseDouble(fcTimeObj.getString("hour"));
+	    		mMinute = (int)Double.parseDouble(fcTimeObj.getString("minute"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

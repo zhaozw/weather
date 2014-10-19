@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.util.Log;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -118,6 +119,18 @@ public class SettingsActivity extends Activity {
 			return true;    
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

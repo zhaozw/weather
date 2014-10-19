@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.umeng.analytics.MobclickAgent;
 import com.young.modules.R;
 import com.young.common.CommonData;
 import com.young.common.adapter.CityPagerAdapter;
@@ -157,6 +158,13 @@ public class MainActivity extends FragmentActivity {
 		} else {
 			hideRefreshAnimation();
 		}
+		MobclickAgent.onResume(this);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	@Override
