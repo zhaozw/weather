@@ -1,6 +1,9 @@
 package com.young.common.adapter;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,6 +58,16 @@ public class FetureWeatherAdapter extends BaseAdapter {
 	public long getItemId(int arg0) {
 		return arg0;
 	}
+	
+	private String getSingleWeatherDesc(String weatherAll){
+		String[] weathers = weatherAll.split("转|-");
+		List<Integer> indexs = new ArrayList<Integer>();
+		for(String weather : weathers){
+			indexs.add(CommonData.WEATHER_SORTED_LIST.indexOf(weather));			
+		}
+		int minIndex = Collections.min(indexs);
+		return CommonData.WEATHER_SORTED_LIST.get(minIndex);
+	}
 
 	@Override
 	public View getView(int arg0, View convertView, ViewGroup arg2) {
@@ -98,9 +111,11 @@ public class FetureWeatherAdapter extends BaseAdapter {
 					+ "° - "
 					+ mFetrueWeathers.getJSONObject(arg0)
 							.getString("temp_high") + "°");
-			if (CommonData.WEATHER_MAP.get(weatherDesc) != null) {
+			
+			String singleWeather = getSingleWeatherDesc(weatherDesc);
+			if (CommonData.WEATHER_MAP.get(singleWeather) != null) {
 				int weatherImgId = (int) CommonData.WEATHER_MAP
-						.get(weatherDesc);
+						.get(singleWeather);
 				weatherIv.setBackgroundResource(weatherImgId);
 			}
 

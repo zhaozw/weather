@@ -2,6 +2,7 @@ package com.young.module.weather;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -13,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.young.common.CommonData;
 import com.young.common.adapter.FetureWeatherAdapter;
 import com.young.common.util.DateUtil;
+import com.young.common.util.L;
 import com.young.entity.City;
 import com.young.modules.R;
 
@@ -135,13 +137,15 @@ public class WeatherFragment extends Fragment {
 			forecast = DateUtil.sortJsonArrayByDate(forecast, "days");
 			JSONObject today = DateUtil.getSomeDay(forecast, 0);
 			currentTempView.setText(scene.getJSONObject(0).getString("l1"));// +"°");
-			todayHumidity.setText(getHumidityDesc(scene.getJSONObject(0).getString("l2")));
-			todayWind.setText(CommonData.WIND_MAP.get(scene.getJSONObject(0)
+			todayHumidity.setText(getHumidityDesc(scene.getJSONObject(0)
+					.getString("l2")));
+			todayWind.setText(CommonData.WIND_DESC_MAP.get(scene.getJSONObject(0)
 					.getString("l3")));
 			todayWindDir.setText(CommonData.WIND_DIR_MAP.get(scene
 					.getJSONObject(0).getString("l4")));
-			todayFeltTemp.setText(scene.getJSONObject(0).getString(
-					"feltTemperature"));
+			String feltTempStr = scene.getJSONObject(0).getString(
+					"feltTemperature");
+			todayFeltTemp.setText(getFeltTempDesc(feltTempStr, 10));
 
 			todayDate.setText(" 今天  "
 					+ DateUtil.dateParse(today.getString("days")));
@@ -150,10 +154,11 @@ public class WeatherFragment extends Fragment {
 			String weatherDesc = today.getString("weather");
 			todayTempDesc.setText(weatherDesc);
 
-			if (CommonData.WEATHER_MAP.get(weatherDesc) != null) {
+			String singleWeather = getSingleWeatherDesc(weatherDesc);
+			if (CommonData.WEATHER_MAP.get(singleWeather) != null) {
 				weatherImg
 						.setBackgroundResource((Integer) CommonData.WEATHER_MAP
-								.get(weatherDesc));
+								.get(singleWeather));
 			}
 
 		} catch (Exception e) {
@@ -186,9 +191,40 @@ public class WeatherFragment extends Fragment {
 		return view;
 	}
 	
-	private String getHumidityDesc(String humidityStr){
+	private String getSingleWeatherDesc(String weatherAll){
+		String[] weathers = weatherAll.split("转|-");
+		List<Integer> indexs = new ArrayList<Integer>();
+		for(String weather : weathers){
+			indexs.add(CommonData.WEATHER_SORTED_LIST.indexOf(weather));			
+		}
+		int minIndex = Collections.min(indexs);
+		return CommonData.WEATHER_SORTED_LIST.get(minIndex);
+	}
+
+	private String getHumidityDesc(String humidityStr) {
 		int humidity = Integer.parseInt(humidityStr);
-		return CommonData.HUMIDITY_DESC[humidity/20];
+		return CommonData.HUMIDITY_DESC[humidity / 20];
+	}
+
+	private String getFeltTempDesc(String feltTempStr, int nowMonth) {
+		double feltTemp = Double.parseDouble(feltTempStr);
+		if (nowMonth >= 3 && nowMonth <= 8) { // summer
+			for (String temp : CommonData.SUMMER_FELT_TEMP_LIST) {
+				if (feltTemp < Double.parseDouble(temp)) {
+					return CommonData.SUMMER_FELT_TEMP_DESC[CommonData.SUMMER_FELT_TEMP_LIST
+							.indexOf(temp)];
+				}
+			}
+			return CommonData.SUMMER_FELT_TEMP_DESC[CommonData.SUMMER_FELT_TEMP_DESC.length - 1];
+		} else {
+			for (String temp : CommonData.WINTER_FELT_TEMP_LIST) {
+				if (feltTemp < Double.parseDouble(temp)) {
+					return CommonData.WINTER_FELT_TEMP_DESC[CommonData.WINTER_FELT_TEMP_LIST
+							.indexOf(temp)];
+				}
+			}
+			return CommonData.WINTER_FELT_TEMP_DESC[CommonData.WINTER_FELT_TEMP_DESC.length - 1];
+		}
 	}
 
 	public List<City> loadAllCityFromSharePreference() {

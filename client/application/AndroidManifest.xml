@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.young.modules" 
+    package="com.young.modules"
     android:versionCode="0"
-    android:versionName="1.0.0">
+    android:versionName="1.0.0" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
@@ -17,75 +17,85 @@
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
-    
-    <uses-sdk	android:minSdkVersion="11" android:targetSdkVersion="19" />
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="19" />
+
     <application
         android:name="com.young.MyApplication"
         android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" 
         android:screenOrientation="portrait"
-        android:icon="@drawable/ic_launcher">
+        android:theme="@style/AppTheme" >
         <activity
             android:name="com.young.module.weather.AppLoadingActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:label="@string/app_name">
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.young.module.weather.MainActivity"
+        <activity
+            android:name="com.young.module.weather.MainActivity"
+            android:label=""
             android:logo="@drawable/ic_launcher_actionbar"
-            android:screenOrientation="portrait"
-            android:label="" >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.young.module.location.CityManageActivity"
+            android:label="城市管理"
             android:logo="@drawable/icon"
-            android:screenOrientation="portrait"
-            android:label="城市管理" >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.young.module.location.CitySearchActivity"
+            android:label=""
             android:logo="@drawable/icon"
-            android:screenOrientation="portrait"
-            android:label="" >
+            android:screenOrientation="portrait" >
         </activity>
-            
         <activity
             android:name="com.young.module.setting.SettingsActivity"
+            android:label="设置"
             android:logo="@drawable/icon"
-            android:screenOrientation="portrait"
-            android:label="设置" />
-        
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.young.module.setting.SettingForecaseActivity"
+            android:label="预报设置"
             android:logo="@drawable/icon"
-            android:screenOrientation="portrait"
-            android:label="预报设置" />
-        
-        <activity android:name="com.umeng.fb.ConversationActivity"
-         android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name="com.umeng.fb.ContactActivity"
-         android:theme="@android:style/Theme.NoTitleBar"/>
-        <meta-data android:value="54328ad9fd98c5b7a6001c3f" android:name="UMENG_APPKEY"></meta-data>
-        <meta-data android:value="Umeng" android:name="UMENG_CHANNEL"/>
-        
-        <receiver android:name="com.young.common.reciver.AlarmReceiver" android:process=":remote">
-            
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.umeng.fb.ConversationActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name="com.umeng.fb.ContactActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="54328ad9fd98c5b7a6001c3f" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Umeng" />
+
+        <receiver
+            android:name="com.young.common.reciver.AlarmReceiver"
+            android:process=":remote" >
         </receiver>
-        
-        <service  
-    		android:name="com.young.common.service.ForecastService"  
-    		android:enabled="true" >  
-    		<intent-filter>  
-        		<action android:name="com.young.common.service.ForecastService" />  
-    		</intent-filter>  
-		</service>  
-         
-         <!--百度定位  -->        
+
+        <service
+            android:name="com.young.common.service.ForecastService"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="com.young.common.service.ForecastService" />
+            </intent-filter>
+        </service>
+
+        <!-- 百度定位 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -95,11 +105,52 @@
                 </action>
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="T3q5A4PajlHvby9jDGmyEG83" />
-           
 
+        <activity
+            android:name="com.umeng.socialize.view.ShareActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:theme="@style/Theme.UMDialog"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="54328ad9fd98c5b7a6001c3f" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.renn.rennsdk.oauth.OAuthActivity"
+            android:configChanges="orientation|navigation|keyboardHidden" />
     </application>
+
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.SET_DEBUG_APP" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
 </manifest>

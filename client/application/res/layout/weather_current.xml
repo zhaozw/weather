@@ -171,7 +171,7 @@
                        android:layout_weight="0.18"
                        android:textColor="#ffffff"
                        android:textSize="18sp"
-                       android:text="重度污染" /> 
+                       android:text="" /> 
                 </LinearLayout>
 
 		        

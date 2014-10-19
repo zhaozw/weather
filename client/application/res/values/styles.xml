@@ -11,7 +11,7 @@
     <style name="ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:icon">@drawable/ic_launcher_actionbar</item>
         <item name="android:background">#3eaefa</item>
-
+		<item name="android:windowContentOverlay">@null</item>
         <item name="android:singleLine">true</item>
     </style>
     
