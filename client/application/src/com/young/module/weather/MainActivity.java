@@ -150,6 +150,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		citys = loadAllCityFromSharePreference();
+		System.out.println("Resume" + citys);
 		if (citys != null && citys.size() != 0 && citys.get(0) != null) {
 			emptyView.setVisibility(View.INVISIBLE);
 			buildAdapter();
