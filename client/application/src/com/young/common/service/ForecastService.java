@@ -49,14 +49,14 @@ public class ForecastService extends Service {
 	
 	@Override  
     public void onCreate() {  
-		Log.i(TAG,"Oncreate");
+		Log.i(TAG,"ServiceOnCreate");
 		
        
     }  
   
     @Override  
     public void onStart(Intent intent, int startId) {  
-    	Log.i(TAG,"OnStart");
+    	Log.i(TAG,"ServiceOnStart");
     	SharePreferenceUtil sp = new SharePreferenceUtil(this);
     	boolean isForecast = sp.getForecase();
     	if(isForecast){
@@ -102,8 +102,6 @@ public class ForecastService extends Service {
     	     AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
     	     manager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
     	                        firstTime, 5*1000, sender);
-
-    	     Log.i(TAG, "闹钟设定开始！"+mHour+":"+mMinute);
     	}
     	
     }  
