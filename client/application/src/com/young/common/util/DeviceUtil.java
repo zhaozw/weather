@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.telephony.TelephonyManager;
 
 public class DeviceUtil {
@@ -18,6 +19,18 @@ public class DeviceUtil {
 		androidId = "" + android.provider.Settings.Secure.getString(resolver, android.provider.Settings.Secure.ANDROID_ID);
 		UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());
 		return deviceUuid.toString();
+	}
+	
+	public static String getVersionName(Context context){
+		String pkName = context.getPackageName();
+		try {
+			return context.getPackageManager().getPackageInfo(
+						pkName, 0).versionName;
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

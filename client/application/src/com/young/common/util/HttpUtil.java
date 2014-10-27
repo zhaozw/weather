@@ -51,7 +51,8 @@ public class HttpUtil
 		
 		HttpGet get = new HttpGet(url);
 		
-		HttpResponse httpResponse = httpClient.execute(get);
+		HttpClient client = getHttpClient();
+		HttpResponse httpResponse = client.execute(get);
 		
 		if (httpResponse.getStatusLine()
 			.getStatusCode() == 200)

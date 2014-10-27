@@ -151,9 +151,13 @@ public class WeatherFragment extends Fragment {
 			todayTempLow.setText(today.getString("temp_low") + "℃");
 			todayTempHigh.setText(today.getString("temp_high") + "℃");
 			String weatherDesc = today.getString("weather");
-			todayTempDesc.setText(weatherDesc);
 
 			String singleWeather = getSingleWeatherDesc(weatherDesc);
+			if(weatherDesc.length()<=4){
+				todayTempDesc.setText(weatherDesc);
+			}else{
+				todayTempDesc.setText(singleWeather);
+			}
 			if (CommonData.WEATHER_MAP.get(singleWeather) != null) {
 				weatherImg
 						.setBackgroundResource((Integer) CommonData.WEATHER_MAP

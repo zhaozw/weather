@@ -9,4 +9,10 @@
     <color name="background_blue">#3eaefa</color>
     <color name="background_blue_1">#2fa2f2</color>
     
+    <color name="background_white">#ffffff</color>
+    <color name="background_white_1">#eeeeee</color>
+    
+    <color name="background_f6f6f6">#f6f6f6</color>
+    <color name="background_f6f6f6_1">#eeeeee</color>
+    
 </resources>

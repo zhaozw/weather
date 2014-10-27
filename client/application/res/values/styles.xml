@@ -30,6 +30,11 @@
         <item name="android:textSize">14sp</item>
     </style>
     
+    <style name="font_acacac_14">
+        <item name="android:textColor">#acacac</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    
     <style name="font_white_20">
         <item name="android:textColor">#ffffff</item>
         <item name="android:textSize">20sp</item>

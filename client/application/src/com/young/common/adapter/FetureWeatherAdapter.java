@@ -104,7 +104,12 @@ public class FetureWeatherAdapter extends BaseAdapter {
 			} else {
 				dateDesc = CommonData.WEEK_PARSE.get(week);
 			}
-			descTv.setText(dateDesc + " " + weatherDesc);
+			String singleWeather = getSingleWeatherDesc(weatherDesc);
+			if(weatherDesc.length()<=4){
+				descTv.setText(dateDesc + " " + weatherDesc);
+			}else{
+				descTv.setText(dateDesc + " " + singleWeather);
+			}
 			dateTv.setText(week + " " + DateUtil.dateParse(date));
 			tempTv.setText(mFetrueWeathers.getJSONObject(arg0).getString(
 					"temp_low")
@@ -112,7 +117,6 @@ public class FetureWeatherAdapter extends BaseAdapter {
 					+ mFetrueWeathers.getJSONObject(arg0)
 							.getString("temp_high") + "°");
 			
-			String singleWeather = getSingleWeatherDesc(weatherDesc);
 			if (CommonData.WEATHER_MAP.get(singleWeather) != null) {
 				int weatherImgId = (int) CommonData.WEATHER_MAP
 						.get(singleWeather);

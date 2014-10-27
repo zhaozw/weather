@@ -210,14 +210,14 @@
 		                       android:layout_height="match_parent"
 		                       android:gravity="left|bottom"
 		                       android:layout_weight="0.18"
-		                       android:textColor="#99ffffff"
+		                       android:textColor="#ffffff"
 		                       android:textSize="16sp"
 		                       android:text="32" />
 					        <TextView
 		                       android:layout_width="wrap_content"
 		                       android:layout_height="match_parent"
 		                       android:layout_weight="0.18"
-		                       android:textColor="#99ffffff"
+		                       android:textColor="#ffffff"
 		                       android:textSize="11sp"
 		                       android:text="@string/felt_temp" />
 				        </LinearLayout>
@@ -262,7 +262,7 @@
 		                       android:layout_height="match_parent"
 		                       android:gravity="left|bottom"
 		                       android:layout_weight="0.18"
-		                       android:textColor="#99ffffff"
+		                       android:textColor="#ffffff"
 		                       android:textSize="16sp"
 		                       android:text="1级" />
 					        <TextView
@@ -270,7 +270,7 @@
 		                       android:layout_width="wrap_content"
 		                       android:layout_height="match_parent"
 		                       android:layout_weight="0.18"
-		                       android:textColor="#99ffffff"
+		                       android:textColor="#ffffff"
 		                       android:textSize="10sp"
 		                       android:text="西南风" />
 			        	</LinearLayout>
@@ -318,14 +318,14 @@
 	                       android:layout_height="match_parent"
 	                       android:gravity="left|bottom"
 	                       android:layout_weight="0.18"
-	                       android:textColor="#99ffffff"
+	                       android:textColor="#ffffff"
 	                       android:textSize="16sp"
 	                       android:text="64%" />
 				        <TextView
 	                       android:layout_width="match_parent"
 	                       android:layout_height="match_parent"
 	                       android:layout_weight="0.18"
-	                       android:textColor="#99ffffff"
+	                       android:textColor="#ffffff"
 	                       android:textSize="10sp"
 	                       android:text="@string/humidity" />
 			        </LinearLayout> 

@@ -78,9 +78,9 @@ public class UpdateManager
 	/**
 	 * 检测软件更新
 	 */
-	public void checkUpdate()
+	public void checkUpdate(String newVersion)
 	{
-		if (isUpdate())
+		if (isUpdate(newVersion))
 		{
 			// 显示提示对话框
 			showNoticeDialog();
@@ -95,30 +95,14 @@ public class UpdateManager
 	 * 
 	 * @return
 	 */
-	private boolean isUpdate()
+	private boolean isUpdate(String newVersion)
 	{
 		// 获取当前软件版本
-		int versionCode = getVersionCode(mContext);
-		// 把version.xml放到网络上，然后获取文件信息
-		InputStream inStream = ParseXmlService.class.getClassLoader().getResourceAsStream("version.xml");
-		// 解析XML文件。 由于XML文件比较小，因此使用DOM方式进行解析
-		ParseXmlService service = new ParseXmlService();
-		try
-		{
-			mHashMap = service.parseXml(inStream);
-		} catch (Exception e)
-		{
-			e.printStackTrace();
+		String versionCode = getVersionCode(mContext);
+		if(!versionCode.equals(versionCode)){
+			return true;
 		}
-		if (null != mHashMap)
-		{
-			int serviceCode = Integer.valueOf(mHashMap.get("version"));
-			// 版本判断
-			if (serviceCode > versionCode)
-			{
-				return true;
-			}
-		}
+		
 		return false;
 	}
 
@@ -128,13 +112,13 @@ public class UpdateManager
 	 * @param context
 	 * @return
 	 */
-	private int getVersionCode(Context context)
+	private String getVersionCode(Context context)
 	{
-		int versionCode = 0;
+		String versionCode = "";
 		try
 		{
 			// 获取软件版本号，对应AndroidManifest.xml下android:versionCode
-			versionCode = context.getPackageManager().getPackageInfo("com.young.modules", 0).versionCode;
+			versionCode = context.getPackageManager().getPackageInfo("com.young.modules", 0).versionName;
 		} catch (NameNotFoundException e)
 		{
 			e.printStackTrace();

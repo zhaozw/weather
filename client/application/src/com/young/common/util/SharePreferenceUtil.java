@@ -63,13 +63,13 @@ public class SharePreferenceUtil {
 	}
 
 	// database
-	public void setVersion(int version) {
-		editor.putInt(VERSION, version);
+	public void setVersion(String version) {
+		editor.putString(VERSION, version);
 		editor.commit();
 	}
 
-	public int getVersion() {
-		return sp.getInt(VERSION, -1);
+	public String getVersion() {
+		return sp.getString(VERSION, "1.3.0");
 	}
 	
 	public void setLBS(String lbs) {

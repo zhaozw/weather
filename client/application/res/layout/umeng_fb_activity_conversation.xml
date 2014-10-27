@@ -34,14 +34,14 @@
             android:layout_centerInParent="true"
             android:text="@string/umeng_fb_title"
             android:textColor="#ffffff"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/umeng_fb_conversation_contact_entry"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:layout_below="@id/umeng_fb_conversation_header"
+        android:layout_alignParentTop="true"
         android:background="@color/umeng_fb_color_btn_pressed" >
 
         <TextView

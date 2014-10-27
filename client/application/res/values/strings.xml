@@ -26,7 +26,7 @@
     <string name="feedback">意见反馈</string>
     <string name="version_update">版本更新</string>
     <string name="about">关于我们</string>
-    <string name="support">友情支持</string>
+    <string name="support">友情分享</string>
     <string name="open_forecase">开启预报</string>
     <string name="close_forecase">关闭预报</string>
     <string name="forecase_time_setting">预报时间设置</string>
@@ -69,5 +69,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_feedback">Feedback</string>
+    
+    <string name="about_us">“好天气” 是Toway团队精心打造的一款生活类移动APP，简洁实用的界面，精准的实时天气和预报，温馨的天气提醒，化繁为简，为用户提供极致的体验。</string>
 
 </resources>
