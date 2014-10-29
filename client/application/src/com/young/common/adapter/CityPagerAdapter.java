@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.view.ViewGroup;
 import com.young.entity.City;
-import com.young.module.weather.WeatherFragment;
+import com.young.modules.weather.WeatherFragment;
 
 public class CityPagerAdapter extends FragmentPagerAdapter {
 

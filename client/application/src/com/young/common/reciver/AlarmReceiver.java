@@ -7,7 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.young.common.util.HttpUtil;
 import com.young.common.util.SharePreferenceUtil;
-import com.young.module.weather.MainActivity;
+import com.young.modules.weather.MainActivity;
 import com.young.modules.R;
 import android.app.Notification;
 import android.app.NotificationManager;

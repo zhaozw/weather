@@ -1,4 +1,4 @@
-package com.young.module.location;
+package com.young.modules.location;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import com.young.common.util.DeviceUtil;
 import com.young.common.util.HttpUtil;
 import com.young.common.util.L;
 import com.young.entity.City;
-import com.young.module.weather.MainActivity;
+import com.young.modules.weather.MainActivity;
 
 public class ChangeMyCitiesTask extends AsyncTask<Void, Void, Integer> {
 	private static final int SUCCESS = 0;

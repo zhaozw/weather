@@ -1,4 +1,4 @@
-package com.young.module.setting;
+package com.young.modules.setting;
 
 import java.util.HashMap;
 
@@ -27,9 +27,9 @@ import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
 import com.young.common.util.HttpUtil;
 import com.young.modules.R;
-import com.young.module.setting.SettingForecaseActivity;
-import com.young.module.weather.MainActivity;
-import com.young.module.weather.UpdateAllWeatherTask;
+import com.young.modules.setting.SettingForecaseActivity;
+import com.young.modules.weather.MainActivity;
+import com.young.modules.weather.UpdateAllWeatherTask;
 
 public class SettingsActivity extends Activity {
 

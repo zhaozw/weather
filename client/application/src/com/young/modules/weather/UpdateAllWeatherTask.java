@@ -1,4 +1,4 @@
-package com.young.module.weather;
+package com.young.modules.weather;
 
 import java.util.HashMap;
 import java.util.Map;

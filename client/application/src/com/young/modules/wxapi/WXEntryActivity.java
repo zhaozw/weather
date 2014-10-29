@@ -1,5 +1,5 @@
 
-package com.young.module.wxapi;
+package com.young.modules.wxapi;
 
 import com.umeng.socialize.weixin.view.WXCallbackActivity;
 

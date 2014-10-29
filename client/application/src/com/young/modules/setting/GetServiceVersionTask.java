@@ -1,4 +1,4 @@
-package com.young.module.setting;
+package com.young.modules.setting;
 
 import org.json.JSONObject;
 
@@ -8,7 +8,7 @@ import android.text.TextUtils;
 
 import com.young.common.util.HttpUtil;
 import com.young.common.util.L;
-import com.young.module.weather.MainActivity;
+import com.young.modules.weather.MainActivity;
 
 public class GetServiceVersionTask extends AsyncTask<Void, Void, Integer> {
 	private static final int SUCCESS = 0;
