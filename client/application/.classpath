@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="libs/locSDK_4.2.jar"/>
 	<classpathentry kind="lib" path="libs/umeng-feedback-v4.3.jar"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="lib" path="libs/umeng_social_sdk.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
