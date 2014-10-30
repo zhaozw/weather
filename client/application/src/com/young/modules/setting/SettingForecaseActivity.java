@@ -1,4 +1,4 @@
-package com.young.module.setting;
+package com.young.modules.setting;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -33,7 +33,7 @@ import com.young.common.reciver.AlarmReceiver;
 import com.young.common.service.ForecastService;
 import com.young.common.util.L;
 import com.young.common.util.SharePreferenceUtil;
-import com.young.module.weather.MainActivity;
+import com.young.modules.weather.MainActivity;
 import com.young.modules.R;
 import com.young.wheel.scroll.WheelView;
 import com.young.wheel.scroll.adapter.AbstractWheelTextAdapter;

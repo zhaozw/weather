@@ -1,6 +1,4 @@
-package com.young.module.setting;
-
-import java.util.HashMap;
+package com.young.modules.setting;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -19,21 +17,21 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.util.Log;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
-import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
-import com.young.common.util.HttpUtil;
 import com.young.modules.R;
-import com.young.module.setting.SettingForecaseActivity;
-import com.young.module.weather.MainActivity;
-import com.young.module.weather.UpdateAllWeatherTask;
+import com.young.modules.setting.SettingForecaseActivity;
+import com.young.modules.weather.MainActivity;
 
 public class SettingsActivity extends Activity {
 
 	FeedbackAgent fb;
+	SnsPostListener SnsPostListener;
 	
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
@@ -76,21 +74,7 @@ public class SettingsActivity extends Activity {
 		
 		// 首先在您的Activity中添加如下成员变量
 		final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
-		// 设置分享内容
-		mController.setShareContent("友盟社会化组件（SDK）让移动应用快速整合社交分享功能，http://www.umeng.com/social");
-		// 设置分享图片, 参数2为图片的url地址
-		mController.setShareMedia(new UMImage(mContext, 
-		                                      "http://www.umeng.com/images/pic/banner_module_social.png"));
-		// 设置分享图片，参数2为本地图片的资源引用
-		//mController.setShareMedia(new UMImage(getActivity(), R.drawable.icon));
-		// 设置分享图片，参数2为本地图片的路径(绝对路径)
-		//mController.setShareMedia(new UMImage(getActivity(), 
-//		                                BitmapFactory.decodeFile("/mnt/sdcard/icon.png")));
-
-
-		//mController.getConfig().removePlatform( SHARE_MEDIA.RENREN, SHARE_MEDIA.WEIXIN);
 		
-		// wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
 		String appID = "wx280e54e9704d30a3";
 		String appSecret = "ea6582bdf3591005a925433a30533d51";
 		// 添加微信平台
@@ -104,9 +88,9 @@ public class SettingsActivity extends Activity {
 		//设置微信好友分享内容
 		WeiXinShareContent weixinContent = new WeiXinShareContent();
 		//设置分享文字
-		weixinContent.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能，微信");
+		weixinContent.setShareContent("天气预报就该如此简单，今天，你感受天气了吗？ http://www.toway.in");
 		//设置title
-		weixinContent.setTitle("友盟社会化分享组件-微信");
+		weixinContent.setTitle("好天气，好生活");
 		//设置分享内容跳转URL
 		weixinContent.setTargetUrl("http://www.toway.in");
 		//设置分享图片
@@ -114,9 +98,9 @@ public class SettingsActivity extends Activity {
 		
 		//设置微信朋友圈分享内容
 		CircleShareContent circleMedia = new CircleShareContent();
-		circleMedia.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能，朋友圈");
+		circleMedia.setShareContent("天气预报就该如此简单，今天，你感受天气了吗？ http://www.toway.in");
 		//设置朋友圈title
-		circleMedia.setTitle("友盟社会化分享组件-朋友圈");
+		circleMedia.setTitle("好天气，好生活");
 		circleMedia.setTargetUrl("http://www.toway.in");
 		mController.setShareMedia(circleMedia);
 		
@@ -166,6 +150,27 @@ public class SettingsActivity extends Activity {
 				startActivity(aboutIntent);
 			}
 		});
+		
+		SnsPostListener  = new SnsPostListener() {
+
+	        @Override
+		    public void onStart() {
+	
+		    }
+
+		    @Override
+		    public void onComplete(SHARE_MEDIA platform, int stCode,
+		        SocializeEntity entity) {
+			      if (stCode == 200) {
+			        Toast.makeText(SettingsActivity.this, "分享成功", Toast.LENGTH_SHORT)
+			            .show();
+			      } else {
+			        Toast.makeText(SettingsActivity.this,
+			            "分享失败 : error code : " + stCode, Toast.LENGTH_SHORT)
+			            .show();
+			      }
+		    }
+		};
 
 	}
 	
@@ -192,5 +197,7 @@ public class SettingsActivity extends Activity {
 		super.onPause();
 		MobclickAgent.onPause(this);
 	}
+	
+	
 
 }

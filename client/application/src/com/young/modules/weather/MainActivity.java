@@ -1,4 +1,4 @@
-package com.young.module.weather;
+package com.young.modules.weather;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -32,9 +32,9 @@ import com.young.common.view.ProgersssDialog;
 import com.young.common.view.RotateImageView;
 import com.young.db.CityDB;
 import com.young.entity.City;
-import com.young.module.location.ChangeMyCitiesTask;
-import com.young.module.location.CityManageActivity;
-import com.young.module.setting.SettingsActivity;
+import com.young.modules.location.ChangeMyCitiesTask;
+import com.young.modules.location.CityManageActivity;
+import com.young.modules.setting.SettingsActivity;
 import com.young.tab.slide.PagerSlidingTabStrip;
 
 public class MainActivity extends FragmentActivity {

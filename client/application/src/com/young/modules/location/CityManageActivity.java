@@ -1,4 +1,4 @@
-package com.young.module.location;
+package com.young.modules.location;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import com.young.common.util.SharePreferenceUtil;
 import com.young.common.util.T;
 import com.young.common.view.ProgersssDialog;
 import com.young.entity.City;
-import com.young.module.weather.MainActivity;
+import com.young.modules.weather.MainActivity;
 import com.young.sort.list.DragSortListView;
 import com.young.sort.list.SimpleDragSortCursorAdapter;
 import com.young.modules.R;

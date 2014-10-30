@@ -1,4 +1,4 @@
-package com.young.module.location;
+package com.young.modules.location;
 
 import java.io.IOException;
 import java.util.List;

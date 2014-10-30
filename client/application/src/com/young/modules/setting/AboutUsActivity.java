@@ -1,4 +1,4 @@
-package com.young.module.setting;
+package com.young.modules.setting;
 
 import android.app.ActionBar;
 import android.app.Activity;
