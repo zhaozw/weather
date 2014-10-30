@@ -61,9 +61,9 @@ public class CommonData {
 		WIND_MAP.put("8", "10-11级");
 		WIND_MAP.put("9", "11-12级");
 		
-		WIND_DESC_MAP.put("0", "轻微");
-		WIND_DESC_MAP.put("1", "和缓");
-		WIND_DESC_MAP.put("2", "清劲");
+		WIND_DESC_MAP.put("0", "微风");
+		WIND_DESC_MAP.put("1", "和风");
+		WIND_DESC_MAP.put("2", "劲风");
 		WIND_DESC_MAP.put("3", "强风");
 		WIND_DESC_MAP.put("4", "强风");
 		WIND_DESC_MAP.put("5", "烈风");

@@ -1,29 +1,22 @@
 package com.young.common.service;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TimeZone;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.young.common.reciver.AlarmReceiver;
 import com.young.common.util.L;
 import com.young.common.util.SharePreferenceUtil;
-import com.young.common.util.T;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
+
 
 public class ForecastService extends Service {
 	
@@ -42,7 +35,6 @@ public class ForecastService extends Service {
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -67,7 +59,6 @@ public class ForecastService extends Service {
 	    		mHour = (int)Double.parseDouble(fcTimeObj.getString("hour"));
 	    		mMinute = (int)Double.parseDouble(fcTimeObj.getString("minute"));
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -114,15 +105,13 @@ public class ForecastService extends Service {
     public class MyThread implements Runnable {  
         @Override  
         public void run() {  
-            // TODO Auto-generated method stub  
             while (true) {  
                 try {  
                     Thread.sleep(1000);// 线程暂停10秒，单位毫秒  
                     Message message = new Message();  
                     message.what = 1;  
                     handler.sendMessage(message);// 发送消息  
-                } catch (InterruptedException e) {  
-                    // TODO Auto-generated catch block  
+                } catch (InterruptedException e) {   
                     e.printStackTrace();  
                 }  
             }  

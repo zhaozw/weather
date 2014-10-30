@@ -1,10 +1,20 @@
 package com.young.common.reciver;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.young.common.CommonData;
 import com.young.common.util.HttpUtil;
 import com.young.common.util.SharePreferenceUtil;
 import com.young.module.weather.MainActivity;
@@ -26,44 +36,94 @@ public class AlarmReceiver extends BroadcastReceiver {
 	private Context mContex;
 	private Intent mIntent;
 	private SharePreferenceUtil sp;
-	private WakeLock wakeLock = null; 
+	private WakeLock wakeLock = null;
+	private Calendar calendar = Calendar.getInstance(); 
+	private String forecastDay = "今天";
 	
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
-			 String result = (String)msg.obj;
 			 JSONObject forecast;
-			try {
-				 forecast = new JSONObject(result);
-				 int cityid  = forecast.getInt("cityid");
-				 String citynm = forecast.getString("citynm");
-				 String weather = forecast.getString("weather");
-				 String temp_high = forecast.getString("temp_high");
-				 String temp_low = forecast.getString("temp_low");
-				 String temp_current = forecast.getString("temp_current");
-				 
-				 String ns = Context.NOTIFICATION_SERVICE;
-				 NotificationManager mNotificationManager = (NotificationManager)AlarmReceiver.this.mContex.getSystemService(ns);
-				 Intent notificationIntent = new Intent(AlarmReceiver.this.mContex, MainActivity.class);
-				 PendingIntent contentIntent = PendingIntent.getActivity(AlarmReceiver.this.mContex, 0,notificationIntent, 0);
-				 
-				 String ContentTitle = "今天 " + weather + " " + temp_low + "℃~ " + temp_high + "℃ 风力";
-				 String ContentText = "请注意天气变化";
-				 String ContentInfo = citynm;
-			     Notification notification = new NotificationCompat.Builder(AlarmReceiver.this.mContex)
-	                 .setSmallIcon(R.drawable.notice_icon)
-	                 .setTicker(ContentTitle).setContentInfo(ContentInfo)
-	                 .setContentTitle(ContentTitle).setContentText(ContentText)
-	                 .setContentIntent(contentIntent)
-	                 .setAutoCancel(true).setDefaults(Notification.DEFAULT_ALL)
-	                 .build();
-			      mNotificationManager.notify(1, notification);
-			     
-			      releaseWakeLock();
-				 
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			 
+			 String result = (String)msg.obj;
+			 if(result == null){//网络连接失败，获取预报接口失败，得从预报5天天气里面获取数据。
+				 try {
+					JSONArray citys = new JSONArray(sp.getAllCity());
+					String mCity = citys.getJSONObject(0).getString("number");
+					JSONArray weathers = new JSONArray(sp.getAllWeather());
+					for (int i = 0 ;i < weathers.length(); i++){
+						if(mCity.equals(weathers.getJSONObject(i).getString("cityid"))){
+							JSONArray forecasts = new JSONArray(weathers.getJSONObject(i).getString("forecast"));
+							SimpleDateFormat   sDateFormat   =   new   SimpleDateFormat("yyyy-MM-dd");   
+						    String   localTime   =   sDateFormat.format(getForecastDate());
+							for(int j = 0; j < forecasts.length(); j++){
+								String fTime = forecasts.getJSONObject(j).getString("days");
+								if(fTime.equals(localTime)){
+									int cityid  = forecasts.getJSONObject(j).getInt("cityid");
+									 String citynm = forecasts.getJSONObject(j).getString("citynm");
+									 String weather = forecasts.getJSONObject(j).getString("weather");
+									 String temp_high = forecasts.getJSONObject(j).getString("temp_high");
+									 String temp_low = forecasts.getJSONObject(j).getString("temp_low");
+									 String winp = forecasts.getJSONObject(j).getString("winp");
+									 
+									 String ns = Context.NOTIFICATION_SERVICE;
+									 NotificationManager mNotificationManager = (NotificationManager)AlarmReceiver.this.mContex.getSystemService(ns);
+									 Intent notificationIntent = new Intent(AlarmReceiver.this.mContex, MainActivity.class);
+									 PendingIntent contentIntent = PendingIntent.getActivity(AlarmReceiver.this.mContex, 0,notificationIntent, 0);
+									 
+									 String ContentTitle = forecastDay +" "+ getSingleWeatherDesc(weather) + " "+ temp_low + "~" + temp_high + "℃"+" " + winp ;
+									 String ContentText = "";
+									 String ContentInfo = citynm;
+								     Notification notification = new NotificationCompat.Builder(AlarmReceiver.this.mContex)
+						                 .setSmallIcon(R.drawable.notice_icon)
+						                 .setTicker(ContentTitle).setContentInfo(ContentInfo)
+						                 .setContentTitle(ContentTitle).setContentText(ContentText)
+						                 .setContentIntent(contentIntent)
+						                 .setAutoCancel(true).setDefaults(Notification.DEFAULT_ALL)
+						                 .build();
+							
+								      mNotificationManager.notify(1, notification);				     								 
+								}
+							}
+						}
+					}
+					
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			 }
+			 else{//获取预报接口成功，把数据放置在通知里面
+				 try {
+					 forecast = new JSONObject(result);
+					 int cityid  = forecast.getInt("cityid");
+					 String citynm = forecast.getString("citynm");
+					 String weather = forecast.getString("weather");
+					 String temp_high = forecast.getString("temp_high");
+					 String temp_low = forecast.getString("temp_low");
+					 String temp_current = forecast.getString("temp_current");
+					 String wind_speed = forecast.getString("wind_speed");
+					 String wind = CommonData.WIND_DESC_MAP.get(wind_speed);
+					 
+					 String ns = Context.NOTIFICATION_SERVICE;
+					 Date fDate = getForecastDate();
+					 NotificationManager mNotificationManager = (NotificationManager)AlarmReceiver.this.mContex.getSystemService(ns);
+					 Intent notificationIntent = new Intent(AlarmReceiver.this.mContex, MainActivity.class);
+					 PendingIntent contentIntent = PendingIntent.getActivity(AlarmReceiver.this.mContex, 0,notificationIntent, 0);
+					 
+					 String ContentTitle = forecastDay +" "+ getSingleWeatherDesc(weather) + " "+ temp_low + "~" + temp_high + "℃"+" " + wind ;
+					 String ContentText = "好天气祝您今天有个好心情！";
+					 String ContentInfo = citynm;
+				     Notification notification = new NotificationCompat.Builder(AlarmReceiver.this.mContex)
+		                 .setSmallIcon(R.drawable.notice_icon)
+		                 .setTicker(ContentTitle).setContentInfo(ContentInfo)
+		                 .setContentTitle(ContentTitle).setContentText(ContentText)
+		                 .setContentIntent(contentIntent)
+		                 .setAutoCancel(true).setDefaults(Notification.DEFAULT_ALL)
+		                 .build();
+				      mNotificationManager.notify(1, notification);				     				 
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			 }
+		     releaseWakeLock();
 		}
 	};
 	
@@ -89,6 +149,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         			System.out.println(netResult);
         		} catch (Exception e) {
         			e.printStackTrace();
+        			Message msg = handler.obtainMessage();
+        			msg.obj = null;
+        			handler.sendMessage(msg);
         		}
         	}
         }
@@ -113,6 +176,18 @@ public class AlarmReceiver extends BroadcastReceiver {
         } 
     }
 	
+	private Date getForecastDate() { 
+		calendar.setTimeInMillis(System.currentTimeMillis());
+		calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+		int hour = calendar.get(Calendar.HOUR);
+		int minute = calendar.get(Calendar.MINUTE);
+		if(hour>19 || (hour == 18 && minute >=30 )){
+			calendar.add(Calendar.DATE,1);
+			forecastDay = "明天";
+		}
+		return calendar.getTime();		
+    }
+	
 	@Override
     public void onReceive(Context context, Intent intent) {
 		 this.mContex = context;
@@ -121,6 +196,21 @@ public class AlarmReceiver extends BroadcastReceiver {
 		 sp = new SharePreferenceUtil(context);
 		 Thread mThread = new Thread(runnable);  
          mThread.start();//线程启动  
+	}
+	
+	private String getSingleWeatherDesc(String weatherAll){
+		if(weatherAll.length()<=4){
+			return weatherAll;
+		}
+		else{
+			String[] weathers = weatherAll.split("转|-");
+			List<Integer> indexs = new ArrayList<Integer>();
+			for(String weather : weathers){
+				indexs.add(CommonData.WEATHER_SORTED_LIST.indexOf(weather));			
+			}
+			int minIndex = Collections.min(indexs);
+			return CommonData.WEATHER_SORTED_LIST.get(minIndex);
+		}
 	}
 		
 }
