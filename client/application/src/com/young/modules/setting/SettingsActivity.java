@@ -21,6 +21,8 @@ import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
+import com.umeng.socialize.sso.SinaSsoHandler;
+import com.umeng.socialize.sso.TencentWBSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
@@ -74,6 +76,11 @@ public class SettingsActivity extends Activity {
 		
 		// 首先在您的Activity中添加如下成员变量
 		final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
+		
+		//设置新浪SSO handler
+		mController.getConfig().setSsoHandler(new SinaSsoHandler());
+		//设置腾讯微博SSO handler
+		mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
 		
 		String appID = "wx280e54e9704d30a3";
 		String appSecret = "ea6582bdf3591005a925433a30533d51";
@@ -129,7 +136,9 @@ public class SettingsActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				
-				fb.startFeedbackActivity();
+//				fb.startFeedbackActivity();
+				Intent aboutIntent = new Intent(SettingsActivity.this, FeedbackActivity.class);
+				startActivity(aboutIntent);
 
 			}
 		});
