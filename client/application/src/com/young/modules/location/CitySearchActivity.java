@@ -15,6 +15,7 @@ import com.young.common.adapter.HotCityAdapter;
 import com.young.common.adapter.SearchCityAdapter;
 import com.young.common.util.L;
 import com.young.common.util.SharePreferenceUtil;
+import com.young.common.util.T;
 import com.young.common.view.ProgersssDialog;
 import com.young.db.CityDB;
 import com.young.entity.City;
@@ -50,6 +51,8 @@ public class CitySearchActivity extends FragmentActivity
 	public static final int UPDATE_CITY_SCUESS = 3;
 	public static final int UPDATE_CITY_FAIL = 4;
 	public static final int UPDATE_CITY_REPEAT = 2;
+	public static final int RESULT_REPEAT = 11;
+	
 	private Context mContext;
 	
 	ArrayList<String> mCitysList = new ArrayList<String>(); 
@@ -77,12 +80,12 @@ public class CitySearchActivity extends FragmentActivity
 				break;
 			case UPDATE_CITY_REPEAT:
 				Intent i = new Intent();
-				setResult(RESULT_CANCELED, i);
+				setResult(RESULT_REPEAT, i);
 				finish();
 				break;
 			case UPDATE_CITY_FAIL:
 				loadingDialog.dismiss();
-				Toast.makeText(mContext, "add city fail", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, "添加城市失败，请检查你的网络", Toast.LENGTH_SHORT).show();
 				break;
 			default:
 				break;
@@ -108,7 +111,10 @@ public class CitySearchActivity extends FragmentActivity
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				L.i(mHotCityAdapter.getItem(position).getName());
+				if(mHotCityAdapter.getItem(position) == null){
+					Toast.makeText(mContext, "城市定位中...", Toast.LENGTH_SHORT).show();
+					return;
+				}
 				List<City> cityList =  loadAllCityFromSharePreference();
 				if(cityList.contains(mHotCityAdapter.getItem(position))){
 					handler.sendEmptyMessage(UPDATE_CITY_REPEAT);
@@ -270,8 +276,8 @@ public class CitySearchActivity extends FragmentActivity
 			}
 			L.i(city+":"+district);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			L.i("定位城市失败！");
 		}
 		hotCityList.add(lbs);
 		hotCityList.add(new City("上海","上海","101020100","shanghai","sh"));
@@ -343,12 +349,11 @@ public class CitySearchActivity extends FragmentActivity
         if (keyCode == KeyEvent.KEYCODE_BACK
                  && event.getRepeatCount() == 0) {
         	System.out.println("aa--");
-            //do something...
         	if(loadingDialog.isShowing()){
         		System.out.println("hh--");
         		changeMyCitiesTask.cancel(true);
-        	}
-             return true;
+        		return false;
+        	}        
          }
          return super.onKeyDown(keyCode, event);
      }

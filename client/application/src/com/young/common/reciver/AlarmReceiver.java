@@ -69,8 +69,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 									 Intent notificationIntent = new Intent(AlarmReceiver.this.mContex, MainActivity.class);
 									 PendingIntent contentIntent = PendingIntent.getActivity(AlarmReceiver.this.mContex, 0,notificationIntent, 0);
 									 
-									 String ContentTitle = forecastDay +" "+ getSingleWeatherDesc(weather) + " "+ temp_low + "~" + temp_high + "℃"+" " + winp ;
-									 String ContentText = "";
+									 String ContentTitle = forecastDay +"  "+ getSingleWeatherDesc(weather) + "  "+ temp_low + "~" + temp_high + "℃"+"  " + winp ;
+									 String ContentText = getNoticeContext(weather, temp_high, temp_low, "4");
 									 String ContentInfo = citynm;
 								     Notification notification = new NotificationCompat.Builder(AlarmReceiver.this.mContex)
 						                 .setSmallIcon(R.drawable.notice_icon)
@@ -108,8 +108,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 					 Intent notificationIntent = new Intent(AlarmReceiver.this.mContex, MainActivity.class);
 					 PendingIntent contentIntent = PendingIntent.getActivity(AlarmReceiver.this.mContex, 0,notificationIntent, 0);
 					 
-					 String ContentTitle = forecastDay +" "+ getSingleWeatherDesc(weather) + " "+ temp_low + "~" + temp_high + "℃"+" " + wind ;
-					 String ContentText = "好天气祝您今天有个好心情！";
+					 String ContentTitle = forecastDay +"  "+ getSingleWeatherDesc(weather) + "  "+ temp_low + "~" + temp_high + "℃"+"  " + wind ;
+					 String ContentText = getNoticeContext(weather, temp_high, temp_low, wind_speed);
 					 String ContentInfo = citynm;
 				     Notification notification = new NotificationCompat.Builder(AlarmReceiver.this.mContex)
 		                 .setSmallIcon(R.drawable.notice_icon)
@@ -194,6 +194,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 		 this.mIntent = intent;
 		 acquireWakeLock();
 		 sp = new SharePreferenceUtil(context);
+		 CommonData.setMapData();
 		 Thread mThread = new Thread(runnable);  
          mThread.start();//线程启动  
 	}
@@ -211,6 +212,73 @@ public class AlarmReceiver extends BroadcastReceiver {
 			int minIndex = Collections.min(indexs);
 			return CommonData.WEATHER_SORTED_LIST.get(minIndex);
 		}
+	}
+	
+	
+	private String getNoticeContext(String weather, String temp_high, String temp_low, String winp){
+		String showWeather = getSingleWeatherDesc(weather);
+		String context = "";
+		String mainWeather = "";
+		int tempGap =  Integer.parseInt(temp_high) - Integer.parseInt(temp_low);
+		int wind =  Integer.parseInt(winp);
+		
+		String[] weathers = weather.split("转|-");
+		List<Integer> indexs = new ArrayList<Integer>();
+		for(String wea : weathers){
+			System.out.println(wea);
+			System.out.println(CommonData.WEATHER_SORTED_LIST);
+			indexs.add(CommonData.WEATHER_SORTED_LIST.indexOf(wea));			
+		}
+		int minIndex = Collections.min(indexs);
+		mainWeather = CommonData.WEATHER_SORTED_LIST.get(minIndex);
+		
+		
+		if (mainWeather.equals("晴")){
+			if(wind<=4){
+				context = "今天真是个好天气，出去活动一下！";
+			}
+			else{
+				context = "今天风有点大，出门请注意安全！";
+			}
+		}
+		else if(mainWeather.equals("多云") || mainWeather.equals("阴")){
+			if(tempGap>10){
+				context = "今天昼夜温差有点大，请注意保暖！";
+			}
+			else{
+				if(wind<=4){
+					context = "请不要让乌云遮住你内心的阳光！";
+				}
+				else{
+					context = "今天风有点大，请做好防护工作！";
+				}
+			}
+		}
+		else if(mainWeather.equals("雾")){
+			context = "今天有雾，能见度低，请注意出行安全！";
+		}
+		else if(mainWeather.equals("中雨") || mainWeather.equals("小雨") || mainWeather.equals("雷阵雨") || mainWeather.equals("阵雨")){
+			context = "今天有"+ mainWeather +"， 出门请带好雨具！";
+		}
+		else if(mainWeather.equals("大雨") || mainWeather.equals("暴雨") || mainWeather.equals("大暴雨") || mainWeather.equals("特大暴雨")
+				|| mainWeather.equals("冰雹") || mainWeather.equals("冻雨")){
+			context = "今天有"+ mainWeather +"， 出门请一定注意安全！";
+		}
+		else if(mainWeather.equals("雨夹雪") || mainWeather.equals("小雪") || mainWeather.equals("阵雪") || mainWeather.equals("中雪")
+				|| mainWeather.equals("大雪") || mainWeather.equals("暴雪")){
+			context = "今天有"+ mainWeather +"， 出门请做好防寒工作！";
+		}
+		else if(mainWeather.equals("雾")){
+			context = "今天有雾，能见度低，请注意出行安全！";
+		}
+		else if(mainWeather.equals("霾") || mainWeather.equals("扬沙") || mainWeather.equals("浮尘")){
+			context = "今天有"+ mainWeather +"， 出门请带好防毒面具！";
+		}
+		else if(mainWeather.equals("强沙尘暴") || mainWeather.equals("沙尘暴")){
+			context = "今天有"+ mainWeather +"， 还是不出门的为好！";
+		}
+		
+		return context;
 	}
 		
 }

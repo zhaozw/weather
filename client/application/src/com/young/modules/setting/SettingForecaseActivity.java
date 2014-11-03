@@ -51,6 +51,8 @@ public class SettingForecaseActivity extends Activity {
 	private int hourIndex;
 	private int minuteIndex;
 	
+	public static final long DAY = 1000L * 60 * 60 * 24;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -221,7 +223,7 @@ public class SettingForecaseActivity extends Activity {
     	     // 进行闹铃注册
     	     AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
     	     manager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-    	                        firstTime, 5*1000, sender);
+    	                        firstTime, DAY, sender);
     	}
     	else{    
             // 取消闹铃

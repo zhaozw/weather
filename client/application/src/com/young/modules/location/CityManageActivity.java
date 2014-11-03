@@ -39,7 +39,8 @@ public class CityManageActivity extends FragmentActivity {
 
 	public static final int UPDATE_CITY_SCUESS = 3;
 	public static final int UPDATE_CITY_FAIL = 4;
-
+	public static final int RESULT_REPEAT = 11;
+	
 	private SimpleDragSortCursorAdapter adapter;
 	private SharePreferenceUtil mSpUtil;
 	private Context mContext;
@@ -59,7 +60,7 @@ public class CityManageActivity extends FragmentActivity {
 			case UPDATE_CITY_FAIL:
 				loadingDialog.dismiss();
 				loadCity(cityList);
-				Toast.makeText(mContext, "update city fail", Toast.LENGTH_SHORT)
+				Toast.makeText(mContext, "删除城市失败，请检查网络！", Toast.LENGTH_SHORT)
 						.show();
 				break;
 			default:
@@ -228,7 +229,7 @@ public class CityManageActivity extends FragmentActivity {
 		if (requestCode == 0 && resultCode == RESULT_OK) {
 			cityList = loadAllCityFromSharePreference();
 			loadCity(cityList);
-		} else if (requestCode == 0 && resultCode == RESULT_CANCELED) {
+		} else if (requestCode == 0 && resultCode == RESULT_REPEAT) {
 			T.showShort(this, "该城市已经在列表当中!");
 		}
 	}

@@ -92,7 +92,7 @@ public class ForecastService extends Service {
     	     // 进行闹铃注册
     	     AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
     	     manager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-    	                        firstTime, 5*1000, sender);
+    	                        firstTime, DAY, sender);
     	}
     	
     }  
