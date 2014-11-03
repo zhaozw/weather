@@ -21,6 +21,9 @@ import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.sso.SinaSsoHandler;
+import com.umeng.socialize.sso.TencentWBSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
@@ -75,6 +78,11 @@ public class SettingsActivity extends Activity {
 		// 首先在您的Activity中添加如下成员变量
 		final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
 		
+		//设置新浪SSO handler
+		mController.getConfig().setSsoHandler(new SinaSsoHandler());
+		//设置腾讯微博SSO handler
+		mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
+		
 		String appID = "wx280e54e9704d30a3";
 		String appSecret = "ea6582bdf3591005a925433a30533d51";
 		// 添加微信平台
@@ -85,24 +93,32 @@ public class SettingsActivity extends Activity {
 		wxCircleHandler.setToCircle(true);
 		wxCircleHandler.addToSocialSDK();
 		
+		UMImage localImage = new UMImage(mContext, R.drawable.ic_launcher);
+		
 		//设置微信好友分享内容
 		WeiXinShareContent weixinContent = new WeiXinShareContent();
 		//设置分享文字
-		weixinContent.setShareContent("天气预报就该如此简单，今天，你感受天气了吗？ http://www.toway.in");
+		weixinContent.setShareContent("天气预报就该如此简单，今天，你感受天气了吗？");
 		//设置title
 		weixinContent.setTitle("好天气，好生活");
 		//设置分享内容跳转URL
 		weixinContent.setTargetUrl("http://www.toway.in");
+		
 		//设置分享图片
+		weixinContent.setShareImage(localImage);
 		mController.setShareMedia(weixinContent);
 		
 		//设置微信朋友圈分享内容
 		CircleShareContent circleMedia = new CircleShareContent();
-		circleMedia.setShareContent("天气预报就该如此简单，今天，你感受天气了吗？ http://www.toway.in");
+		circleMedia.setShareContent("天气预报就该如此简单，今天，你感受天气了吗？");
 		//设置朋友圈title
 		circleMedia.setTitle("好天气，好生活");
 		circleMedia.setTargetUrl("http://www.toway.in");
+		//设置分享图片
+		weixinContent.setShareImage(localImage);
 		mController.setShareMedia(circleMedia);
+		
+		mController.getConfig().removePlatform( SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE);
 		
 		supportBtn.setOnClickListener(new OnClickListener() {
 
@@ -129,7 +145,9 @@ public class SettingsActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				
-				fb.startFeedbackActivity();
+//				fb.startFeedbackActivity();
+				Intent aboutIntent = new Intent(SettingsActivity.this, FeedbackActivity.class);
+				startActivity(aboutIntent);
 
 			}
 		});

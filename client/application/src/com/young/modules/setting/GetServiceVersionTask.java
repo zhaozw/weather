@@ -1,7 +1,5 @@
 package com.young.modules.setting;
 
-import org.json.JSONObject;
-
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -25,8 +23,7 @@ public class GetServiceVersionTask extends AsyncTask<Void, Void, Integer> {
 			String netResult = HttpUtil.getRequest(
 					"http://106.187.94.192/weather/index.php?r=Version/get");//wClient.getAllWeatherInfo();
 			if (!TextUtils.isEmpty(netResult)) {
-				JSONObject jObject = new JSONObject(netResult);
-				setNewVersion(jObject.getString("code"));
+				setNewVersion(netResult);
 				return SUCCESS;
 			}
 		} catch (Exception e) {
